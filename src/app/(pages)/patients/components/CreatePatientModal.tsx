@@ -3,7 +3,6 @@
 import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
 import PersonalInformationInput from "./PersonalInformationInput";
-import MedicalInformationInput from "./MedicalInformationInput";
 
 const CreatePatientModal = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
