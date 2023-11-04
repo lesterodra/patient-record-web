@@ -1,0 +1,66 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model PatientInformation {
+  id                       Int             @id @default(autoincrement())
+  patientNo                String          @unique
+  firstName                String?
+  lastName                 String?
+  middleName               String?
+  philHealthNo             String?
+  height                   String?
+  weight                   String?
+  birthDate                String?
+  address                  String?
+  gender                   String?
+  nationality              String?
+  civilStatus              String?
+  contactNo                String?
+  knownAllergies           Json?
+  personalMedicalHistories Json?
+  previousSurgeries        Json?
+  appointmentType          String?
+  dilateType               String?
+  sourceOfReferral         String?
+  patientRecords           PatientRecord[]
+  createdAt                DateTime        @default(now())
+  updatedAt                DateTime        @updatedAt
+}
+
+model PatientRecord {
+  id                    Int                 @id @default(autoincrement())
+  reasonForVisit        String
+  previousMedicines     String?
+  autoRefractionOD      String?
+  autoRefractionOs      String?
+  appointmentDateTime   DateTime
+  intraOcularPressureOD String?
+  intraOcularPressureOS String?
+  medicalDoctor         String?
+  patientInformation    PatientInformation? @relation(fields: [patientInformationId], references: [id])
+  patientInformationId  Int
+  visualAcuities        VisualAcuity[]
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+}
+
+model VisualAcuity {
+  id              Int            @id @default(autoincrement())
+  eyeType         String
+  sc              String?
+  ph              String?
+  cc              String?
+  ncc             String?
+  j               String?
+  patientRecord   PatientRecord? @relation(fields: [patientRecordId], references: [id])
+  patientRecordId Int?
+}
