@@ -4,24 +4,29 @@ import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
 import useSWRMutation from "swr/mutation";
 import PersonalInformationInput from "./PersonalInformationInput";
-
-const savePatient = async (url: string) => {
-  const response = await fetch(url, {
-    method: "POST",
-    body: JSON.stringify({ test: 123 }),
-  });
-
-  return response.json();
-};
+import { useAppSelector } from "@/redux/store";
 
 const CreatePatientModal = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { patientInformationInput } = useAppSelector(
+    (state) => state.patientReducer.value
+  );
+
+  const savePatient = async (url: string) => {
+    const response = await fetch(url, {
+      method: "POST",
+      body: JSON.stringify(patientInformationInput),
+    });
+
+    return response.json();
+  };
+
   const { trigger, data, error, isMutating } = useSWRMutation(
     "/api/patients",
     savePatient
   );
 
-  console.log({ data });
+  console.log({ data, patientInformationInput });
   const onSavePatientClick = () => {
     trigger();
   };

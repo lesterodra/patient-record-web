@@ -1,16 +1,26 @@
+import { ChangeEvent, useState, useEffect } from "react";
+
 type CheckboxItemProps = {
   name: string;
   items: string[];
   isRow?: boolean;
   disabled?: boolean;
+  onSelectedItemsChanged?: (selectedItems: string[]) => void;
 };
 
 const CheckboxItem = ({
   name,
   items,
+  onSelectedItemsChanged,
   isRow = false,
   disabled = false,
 }: CheckboxItemProps) => {
+  const [selectedItems, setSelectedItems] = useState<string[]>([]);
+
+  useEffect(() => {
+    onSelectedItemsChanged && onSelectedItemsChanged(selectedItems);
+  }, [selectedItems]);
+
   return (
     <div className={`flex ${!isRow && "flex-col"} gap-3`}>
       {items.map((item, index) => (
@@ -22,6 +32,13 @@ const CheckboxItem = ({
             value={item}
             className="h-7 w-7 rounded-md"
             key={index}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+              e.target.checked
+                ? setSelectedItems((prev) => [...prev, e.target.value])
+                : setSelectedItems((prev: string[]) =>
+                    prev.filter((value: string) => value !== e.target.value)
+                  );
+            }}
           />
           <span className="mr-1">{item}</span>
         </div>
