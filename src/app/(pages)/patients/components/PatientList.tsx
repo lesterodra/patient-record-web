@@ -1,35 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import type { PatientInformation } from "@prisma/client";
 import { Pagination, Table } from "flowbite-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import UpdatePatientModal from "./UpdatePatientModal";
+import { getValueDisplay } from "@/utils/displayParser";
 
-const samplePatients = [
-  {
-    id: "1",
-    patientNo: "EC-2309-00001",
-    patientName: "Lorem Ipsum San-san",
-    gender: "Male",
-    birthDate: "January 1, 1990",
-  },
-  {
-    id: "2",
-    patientNo: "EC-2309-00002",
-    patientName: "Lorem Ipsum San-san",
-    gender: "Female",
-    birthDate: "March 1, 1990",
-  },
-  {
-    id: "3",
-    patientNo: "EC-2309-00003",
-    patientName: "Lorem Ipsum San-san",
-    gender: "Male",
-    birthDate: "February 1, 1992",
-  },
-];
-
-const PatientList = () => {
+const PatientList = ({
+  patientList,
+}: {
+  patientList: PatientInformation[];
+}) => {
   const [isUpdatePatientModalOpen, setIsUpdatePatientModalOpen] =
     useState<boolean>(false);
 
@@ -51,24 +34,27 @@ const PatientList = () => {
             </Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {samplePatients.map((patient) => (
+            {patientList.map((patient) => (
               <Table.Row
                 key={patient.id}
-                className="bg-white text-black dark:border-gray-700 dark:bg-gray-800"
+                className="bg-white text-black dark:border-gray-700 dark:bg-gray-800 hover:bg-slate-100"
               >
-                <Table.Cell>{patient.patientNo}</Table.Cell>
-                <Table.Cell className="text-black font-bold">
-                  {patient.patientName}
-                </Table.Cell>
-                <Table.Cell>{patient.gender}</Table.Cell>
-                <Table.Cell>{patient.birthDate}</Table.Cell>
                 <Table.Cell>
                   <Link
-                    className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
-                    href="/patients/1"
+                    className="underline text-blue-500"
+                    href={`/patients/${patient.id}`}
                   >
-                    <p>View</p>
+                    {getValueDisplay(patient.patientNo)}
                   </Link>
+                </Table.Cell>
+                <Table.Cell className="text-black font-bold">
+                  {`${patient.lastName}, ${patient.firstName} ${
+                    patient.middleName ?? ""
+                  }`}
+                </Table.Cell>
+                <Table.Cell>{getValueDisplay(patient.gender)}</Table.Cell>
+                <Table.Cell>{getValueDisplay(patient.birthDate)}</Table.Cell>
+                <Table.Cell>
                   <p
                     className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
                     onClick={() => {
@@ -83,6 +69,11 @@ const PatientList = () => {
                 </Table.Cell>
               </Table.Row>
             ))}
+            {patientList.length === 0 && (
+              <Table.Row>
+                <Table.Cell colSpan={5}>No Records found!</Table.Cell>
+              </Table.Row>
+            )}
           </Table.Body>
         </Table>
         <div className="flex justify-between items-center">

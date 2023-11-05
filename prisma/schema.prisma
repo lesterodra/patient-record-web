@@ -12,7 +12,7 @@ datasource db {
 
 model PatientInformation {
   id                       Int             @id @default(autoincrement())
-  patientNo                String          @unique
+  patientNo                String?         @unique
   firstName                String?
   lastName                 String?
   middleName               String?
@@ -33,24 +33,28 @@ model PatientInformation {
   sourceOfReferral         String?
   patientRecords           PatientRecord[]
   createdAt                DateTime        @default(now())
-  updatedAt                DateTime        @updatedAt
+  updatedAt                DateTime?       @updatedAt
+
+  @@map("patient_informations")
 }
 
 model PatientRecord {
   id                    Int                 @id @default(autoincrement())
   reasonForVisit        String
-  previousMedicines     String?
+  previousMedicines     String?             @db.Text
   autoRefractionOD      String?
   autoRefractionOs      String?
   appointmentDateTime   DateTime
   intraOcularPressureOD String?
   intraOcularPressureOS String?
   medicalDoctor         String?
-  patientInformation    PatientInformation? @relation(fields: [patientInformationId], references: [id])
+  patientInformation    PatientInformation? @relation(fields: [patientInformationId], references: [id], onDelete: Cascade)
   patientInformationId  Int
   visualAcuities        VisualAcuity[]
   createdAt             DateTime            @default(now())
-  updatedAt             DateTime            @updatedAt
+  updatedAt             DateTime?           @updatedAt
+
+  @@map("patient_records")
 }
 
 model VisualAcuity {
@@ -61,6 +65,10 @@ model VisualAcuity {
   cc              String?
   ncc             String?
   j               String?
-  patientRecord   PatientRecord? @relation(fields: [patientRecordId], references: [id])
+  patientRecord   PatientRecord? @relation(fields: [patientRecordId], references: [id], onDelete: Cascade)
   patientRecordId Int?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime?      @updatedAt
+
+  @@map("visual_acuities")
 }

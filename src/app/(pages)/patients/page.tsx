@@ -2,10 +2,10 @@ import CreatePatientModal from "./components/CreatePatientModal";
 import PatientList from "./components/PatientList";
 import PageHeading from "@/app/components/PageHeading";
 import PatientSearch from "./components/PatientSearch";
+import prisma from "@/db";
+import { useAppSelector } from "@/redux/store";
 
-const getPatients = async () => {
-  return [];
-};
+const getPatients = () => prisma.patientInformation.findMany();
 
 const Patients = async () => {
   const patients = await getPatients();
@@ -16,7 +16,7 @@ const Patients = async () => {
         <CreatePatientModal />
       </div>
       <PatientSearch />
-      <PatientList />
+      <PatientList patientList={patients} />
     </PageHeading>
   );
 };
