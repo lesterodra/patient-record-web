@@ -15,8 +15,32 @@ const PersonalInformationInput = () => {
     <>
       <p className="mb-3 font-bold text-xl">Personal Information</p>
       <div className=" flex justify-between  mb-3">
-        <CheckboxItem name="patientType" isRow items={["W/IN", "PVT"]} />
-        <CheckboxItem name="dilateType" isRow items={["OD", "OS", "OU"]} />
+        <CheckboxItem
+          name="patientType"
+          isRow
+          items={["W/IN", "PVT"]}
+          isSingleSelection
+          onSelectedItemsChanged={(selectedItems) => {
+            dispatch(
+              updatePatientInformationInput({
+                appointmentType: selectedItems[0],
+              })
+            );
+          }}
+        />
+        <CheckboxItem
+          name="dilateType"
+          isRow
+          items={["OD", "OS", "OU"]}
+          isSingleSelection
+          onSelectedItemsChanged={(selectedItems) => {
+            dispatch(
+              updatePatientInformationInput({
+                dilateType: selectedItems[0],
+              })
+            );
+          }}
+        />
       </div>
       <div className="mb-3"></div>
       <div className="content">
@@ -151,8 +175,8 @@ const PersonalInformationInput = () => {
       <div className="flex gap-10">
         <CheckboxItem
           name="knownAllergies"
-          isRow
           items={["Dust", "Seafood", "Medication", "Others"]}
+          isRow
           onSelectedItemsChanged={(selectedItems) => {
             dispatch(
               updatePatientInformationInput({
@@ -169,6 +193,7 @@ const PersonalInformationInput = () => {
         <CheckboxItem
           name="sourceOfReferral"
           isRow
+          isSingleSelection
           items={[
             "Referral from MD",
             "Relatives",
@@ -179,7 +204,7 @@ const PersonalInformationInput = () => {
           onSelectedItemsChanged={(selectedItems) => {
             dispatch(
               updatePatientInformationInput({
-                sourceOfReferral: selectedItems,
+                sourceOfReferral: selectedItems[0],
               })
             );
           }}

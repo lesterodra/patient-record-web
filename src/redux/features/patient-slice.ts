@@ -18,7 +18,7 @@ type PatientType = {
   previousSurgeries?: string[];
   appointmentType?: string;
   dilateType?: string;
-  sourceOfReferral?: string[];
+  sourceOfReferral?: string;
 };
 
 type InitialState = {

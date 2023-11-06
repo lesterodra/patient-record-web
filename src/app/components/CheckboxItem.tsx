@@ -5,6 +5,7 @@ type CheckboxItemProps = {
   items: string[];
   isRow?: boolean;
   disabled?: boolean;
+  isSingleSelection?: boolean;
   onSelectedItemsChanged?: (selectedItems: string[]) => void;
 };
 
@@ -14,6 +15,7 @@ const CheckboxItem = ({
   onSelectedItemsChanged,
   isRow = false,
   disabled = false,
+  isSingleSelection = false,
 }: CheckboxItemProps) => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
 
@@ -32,9 +34,14 @@ const CheckboxItem = ({
             value={item}
             className="h-7 w-7 rounded-md"
             key={index}
+            checked={selectedItems.includes(item)}
             onChange={(e: ChangeEvent<HTMLInputElement>) => {
               e.target.checked
-                ? setSelectedItems((prev) => [...prev, e.target.value])
+                ? setSelectedItems((prev) =>
+                    isSingleSelection
+                      ? [e.target.value]
+                      : [...prev, e.target.value]
+                  )
                 : setSelectedItems((prev: string[]) =>
                     prev.filter((value: string) => value !== e.target.value)
                   );
