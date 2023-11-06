@@ -100,7 +100,15 @@ const PersonalInformationInput = () => {
               );
             }}
           />
-          <GenderSelect />
+          <GenderSelect
+            onGenderChanged={(value: string) => {
+              dispatch(
+                updatePatientInformationInput({
+                  gender: value,
+                })
+              );
+            }}
+          />
           <DatePicker
             label="Birth Date"
             onChange={(e) => {
@@ -214,26 +222,30 @@ const PersonalInformationInput = () => {
       <div className="flex gap-10">
         <CheckboxItem
           name="medicalHistory"
-          items={MEDICAL_HISTORY.slice(0, 3)}
-        />
-        <CheckboxItem
-          name="medicalHistory"
-          items={MEDICAL_HISTORY.slice(3, 6)}
-        />
-        <CheckboxItem
-          name="medicalHistory"
-          items={MEDICAL_HISTORY.slice(6, 9)}
+          items={MEDICAL_HISTORY}
+          itemPerColumn={3}
+          onSelectedItemsChanged={(selectedItems) => {
+            dispatch(
+              updatePatientInformationInput({
+                personalMedicalHistories: selectedItems,
+              })
+            );
+          }}
         />
       </div>
       <p className="mb-3 mt-8 font-bold text-xl">Previous Laser/Surgery</p>
       <div className="flex gap-10">
         <CheckboxItem
           name="previousLaserSurgeries"
-          items={PREVIOUS_SURGERIES.slice(0, 5)}
-        />
-        <CheckboxItem
-          name="previousLaserSurgeries"
-          items={PREVIOUS_SURGERIES.slice(5, 9)}
+          items={PREVIOUS_SURGERIES}
+          itemPerColumn={5}
+          onSelectedItemsChanged={(selectedItems) => {
+            dispatch(
+              updatePatientInformationInput({
+                previousSurgeries: selectedItems,
+              })
+            );
+          }}
         />
       </div>
     </>
