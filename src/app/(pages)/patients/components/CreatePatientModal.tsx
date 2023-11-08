@@ -11,7 +11,6 @@ const CreatePatientModal = () => {
   const { patientInformationInput } = useAppSelector(
     (state) => state.patientReducer.value
   );
-
   const savePatient = async (url: string) => {
     const response = await fetch(url, {
       method: "POST",
@@ -20,15 +19,10 @@ const CreatePatientModal = () => {
 
     return response.json();
   };
-
-  const { trigger, data, error, isMutating } = useSWRMutation(
-    "/api/patients",
-    savePatient
-  );
-
-  console.log({ data, patientInformationInput });
+  const { trigger } = useSWRMutation("/api/patients", savePatient);
   const onSavePatientClick = () => {
     trigger();
+    setIsOpen(false);
   };
 
   return (

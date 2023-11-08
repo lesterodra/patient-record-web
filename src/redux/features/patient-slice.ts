@@ -1,6 +1,8 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type PatientType = {
+  id?: string;
+  patientNo?: string;
   lastName?: string;
   firstName?: string;
   middleName?: string;
@@ -21,16 +23,24 @@ type PatientType = {
   sourceOfReferral?: string;
 };
 
+type PatientListResponse = {
+  data: PatientType[];
+  page: number;
+  limit: number;
+  totalPage: number;
+  totalRecords: number;
+};
+
 type InitialState = {
   value: {
-    patientList?: PatientType[];
+    patientList?: PatientListResponse;
     patientInformationInput?: PatientType;
   };
 };
 
 const initialState: InitialState = {
   value: {
-    patientList: [],
+    patientList: undefined,
     patientInformationInput: {},
   },
 };
@@ -39,10 +49,11 @@ export const patient = createSlice({
   name: "patient",
   initialState,
   reducers: {
-    fetchPatients: (state, action: PayloadAction<PatientType[]>) => {
+    fetchPatients: (state, action: PayloadAction<PatientListResponse>) => {
       return {
         value: {
-          patientList: [...(state.value.patientList ?? []), ...action.payload],
+          ...state.value,
+          patientList: action.payload,
         },
       };
     },
@@ -52,6 +63,7 @@ export const patient = createSlice({
     ) => {
       return {
         value: {
+          ...state.value,
           patientInformationInput: {
             ...(state.value.patientInformationInput ?? {}),
             ...action.payload,

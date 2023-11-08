@@ -1,20 +1,44 @@
 "use client";
 
-import { useState } from "react";
-import type { PatientInformation } from "@prisma/client";
+import { useEffect, useState } from "react";
 import { Pagination, Table } from "flowbite-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import UpdatePatientModal from "./UpdatePatientModal";
 import { getValueDisplay } from "@/utils/displayParser";
+import { useDispatch } from "react-redux";
+import { AppDispatch, useAppSelector } from "@/redux/store";
+import useSWRMutation from "swr/mutation";
+import { fetchPatients } from "@/redux/features/patient-slice";
 
-const PatientList = ({
-  patientList,
-}: {
-  patientList: PatientInformation[];
-}) => {
+const getPatients = async (url: string) => {
+  const response = await fetch(url);
+
+  return response.json();
+};
+
+const PatientList = () => {
   const [isUpdatePatientModalOpen, setIsUpdatePatientModalOpen] =
     useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const dispatch = useDispatch<AppDispatch>();
+  const { patientList } = useAppSelector((state) => state.patientReducer.value);
+
+  const { trigger, data } = useSWRMutation(
+    `api/patients?page=${currentPage}&limit=3`,
+    getPatients
+  );
+
+  useEffect(() => {
+    trigger();
+  }, []);
+
+  useEffect(() => {
+    trigger();
+  }, [currentPage]);
+
+  useEffect(() => {
+    dispatch(fetchPatients(data));
+  }, [data]);
 
   return (
     <>
@@ -34,7 +58,7 @@ const PatientList = ({
             </Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {patientList.map((patient) => (
+            {patientList?.data?.map((patient) => (
               <Table.Row
                 key={patient.id}
                 className="bg-white text-black dark:border-gray-700 dark:bg-gray-800 hover:bg-slate-100"
@@ -69,7 +93,7 @@ const PatientList = ({
                 </Table.Cell>
               </Table.Row>
             ))}
-            {patientList.length === 0 && (
+            {patientList?.totalRecords === 0 && (
               <Table.Row>
                 <Table.Cell colSpan={5}>No Records found!</Table.Cell>
               </Table.Row>
@@ -78,14 +102,17 @@ const PatientList = ({
         </Table>
         <div className="flex justify-between items-center">
           <div>
-            <p>Showing 10 of 100 Records</p>
+            <p>
+              Showing 1 to {currentPage * (patientList?.limit ?? 3)} of{" "}
+              {patientList?.totalRecords} Records
+            </p>
           </div>
           <Pagination
-            currentPage={1}
+            currentPage={currentPage}
             onPageChange={(page) => {
-              // setCurrentPage(page);
+              setCurrentPage(page);
             }}
-            totalPages={100}
+            totalPages={patientList?.totalPage || 0}
           />
         </div>
       </div>

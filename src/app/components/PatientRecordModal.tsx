@@ -16,7 +16,6 @@ const PatientRecordModal = ({
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
 
   useEffect(() => {
-    console.log({ canvasRef: canvasRef.current });
     const canvas = canvasRef.current as unknown as HTMLCanvasElement;
     if (!canvas) {
       return;

@@ -1,23 +1,40 @@
 import prisma from "@/db";
 import { NextRequest, NextResponse } from "next/server";
-import { text } from "node:stream/consumers";
 
 export async function GET(request: NextRequest) {
-  //   const page_str = request.nextUrl.searchParams.get("page");
-  //   const limit_str = request.nextUrl.searchParams.get("limit");
-  //   const page = page_str ? parseInt(page_str, 10) : 1;
-  //   const limit = limit_str ? parseInt(limit_str, 10) : 10;
-  //   const skip = (page - 1) * limit;
-  //   const feedbacks = await prisma.feedback.findMany({
-  //     skip,
-  //     take: limit,
-  //   });
-  //   let json_response = {
-  //     status: "success",
-  //     results: feedbacks.length,
-  //     feedbacks,
-  //   };
-  //   return NextResponse.json(json_response);
+  try {
+    const requestPage = request.nextUrl.searchParams.get("page");
+    const requestLimit = request.nextUrl.searchParams.get("limit");
+    const page = requestPage ? parseInt(requestPage, 10) : 1;
+    const limit = requestLimit ? parseInt(requestLimit, 10) : 10;
+    const skip = (page - 1) * limit;
+
+    const totalPatientCount = await prisma.patientInformation.count();
+    const patients = await prisma.patientInformation.findMany({
+      skip,
+      take: limit,
+      orderBy: {
+        id: "desc",
+      },
+    });
+
+    return new NextResponse(
+      JSON.stringify({
+        page,
+        limit,
+        totalRecords: totalPatientCount,
+        totalPage: Math.ceil(totalPatientCount / limit),
+        data: patients,
+      })
+    );
+  } catch (error: any) {
+    console.log({ error });
+
+    return new NextResponse(JSON.stringify({ data: "Internal Server Error" }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 }
 
 export async function POST(request: Request) {
@@ -87,6 +104,7 @@ export async function POST(request: Request) {
     });
   } catch (error) {
     console.log({ error });
+
     return new NextResponse(JSON.stringify({ data: "Internal Server Error" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },

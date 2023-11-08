@@ -9,7 +9,7 @@ const Home = () => {
   const { patientList } = useAppSelector((state) => state.patientReducer.value);
 
   const onButtonClick = () => {
-    dispatch(fetchPatients([{ firstName: "test111", lastName: "22222" }]));
+    // dispatch(fetchPatients([{ firstName: "test111", lastName: "22222" }]));
   };
 
   return (
