@@ -3,9 +3,15 @@
 import PatientRecordModal from "@/app/components/PatientRecordModal";
 import CreatePatientRecordModal from "../../components/CreatePatientRecordModal";
 import { Button } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { PatientInformation } from "@prisma/client";
 import { convertToReadableDate, getValueDisplay } from "@/utils/displayParser";
+import { AppDispatch, useAppSelector } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import {
+  appendPatientRecordList,
+  getPatientRecordList,
+} from "@/utils/dataFetchers";
 
 const PatientDetail = ({
   patientDetail,
@@ -16,6 +22,19 @@ const PatientDetail = ({
     useState<boolean>(false);
   const [isCreatePatientRecordModalOpen, setIsCreatePatientRecordModalOpen] =
     useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const { recordList } = useAppSelector((state) => state.recordReducer.value);
+  const dispatch = useDispatch<AppDispatch>();
+  const loadMoreRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    getPatientRecordList(dispatch, { page: currentPage, limit: 3 });
+  }, []);
+
+  const onLoadMoreClick = () => {
+    appendPatientRecordList(dispatch, { page: currentPage + 1, limit: 3 });
+    setCurrentPage(currentPage + 1);
+  };
 
   return (
     <div>
@@ -100,30 +119,25 @@ const PatientDetail = ({
             </select>
           </div>
         </div>
-        <div className="mt-4">
-          <div
-            className="underline text-blue-500 cursor-pointer"
-            onClick={() => setIsPatientRecordModalOpen(true)}
-          >
-            <p>July 21, 2020</p>
+        {recordList?.data.map((record) => (
+          <div className="mt-4">
+            <div
+              className="underline text-blue-500 cursor-pointer"
+              onClick={() => setIsPatientRecordModalOpen(true)}
+            >
+              <p>{`${record.recordNo} ${convertToReadableDate(
+                record.createdAt ?? ""
+              )}`}</p>
+            </div>
           </div>
-        </div>
-        <div className="mt-4">
-          <div
-            className="underline text-blue-500 cursor-pointer"
-            onClick={() => setIsPatientRecordModalOpen(true)}
-          >
-            <p>January 03, 2020</p>
-          </div>
-        </div>
-        <div className="mt-4">
-          <div
-            className="underline text-blue-500 cursor-pointer"
-            onClick={() => setIsPatientRecordModalOpen(true)}
-          >
-            <p>December 21, 2019</p>
-          </div>
-        </div>
+        ))}
+        {recordList &&
+          recordList?.data.length !== 0 &&
+          recordList.totalPage > currentPage && (
+            <div ref={loadMoreRef} className="flex justify-center">
+              <Button onClick={onLoadMoreClick}>Load more</Button>
+            </div>
+          )}
       </div>
     </div>
   );

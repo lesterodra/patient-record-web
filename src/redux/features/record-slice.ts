@@ -1,7 +1,9 @@
+import { PatientInformation } from "@prisma/client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 type RecordType = {
   id?: string;
+  recordNo?: string;
   patientInformationId?: number;
   reasonForVisit?: string;
   previousMedicines?: string;
@@ -11,6 +13,8 @@ type RecordType = {
   intraOcularPressureOD?: string;
   intraOcularPressureOS?: string;
   medicalDoctor?: string;
+  patientInformation?: PatientInformation;
+  createdAt?: string;
 };
 
 type RecordListResponse = {
@@ -47,6 +51,24 @@ export const record = createSlice({
         },
       };
     },
+    appendRecords: (state, action: PayloadAction<RecordListResponse>) => {
+      console.log({
+        prev: state.value.recordList?.data,
+        current: action.payload,
+      });
+      return {
+        value: {
+          ...state.value,
+          recordList: {
+            ...action.payload,
+            data: [
+              ...(state.value.recordList?.data ?? []),
+              ...action.payload.data,
+            ],
+          },
+        },
+      };
+    },
     updatePatientRecordInput: (state, action: PayloadAction<RecordType>) => {
       return {
         value: {
@@ -61,5 +83,6 @@ export const record = createSlice({
   },
 });
 
-export const { fetchRecords, updatePatientRecordInput } = record.actions;
+export const { fetchRecords, updatePatientRecordInput, appendRecords } =
+  record.actions;
 export default record.reducer;

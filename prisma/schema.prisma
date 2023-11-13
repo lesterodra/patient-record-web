@@ -40,7 +40,7 @@ model PatientInformation {
 
 model PatientRecord {
   id                    Int                 @id @default(autoincrement())
-  patientNo             String?             @unique
+  recordNo              String?             @unique
   reasonForVisit        String?
   previousMedicines     String?             @db.Text
   autoRefractionOD      String?

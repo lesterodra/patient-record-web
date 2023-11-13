@@ -16,6 +16,7 @@ export async function GET(request: NextRequest) {
       orderBy: {
         id: "desc",
       },
+      include: { patientInformation: true },
     });
 
     return new NextResponse(
@@ -72,7 +73,7 @@ export async function POST(request: Request) {
       const dateToday = new Date();
       await tx.patientRecord.update({
         data: {
-          patientNo: `RC-${dateToday.getFullYear()}${(dateToday.getMonth() + 1)
+          recordNo: `RC-${dateToday.getFullYear()}${(dateToday.getMonth() + 1)
             .toString()
             .padStart(2, "0")}-${patientRecord.id.toString().padStart(7, "0")}`,
         },

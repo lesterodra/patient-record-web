@@ -1,40 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Pagination, Table } from "flowbite-react";
-import Link from "next/link";
 import PatientRecordModal from "@/app/components/PatientRecordModal";
-
-const samplePatientRecords = [
-  {
-    id: "1",
-    recordNo: "RC-000000001",
-    patientNo: "EC-2309-00001",
-    patientName: "Lorem Ipsum San-san",
-    gender: "Male",
-    recordDate: "January 1, 1990",
-  },
-  {
-    id: "2",
-    recordNo: "RC-000000002",
-    patientNo: "EC-2309-00002",
-    patientName: "Lorem Ipsum San-san",
-    gender: "Female",
-    recordDate: "March 1, 1990",
-  },
-  {
-    id: "3",
-    recordNo: "RC-000000003",
-    patientNo: "EC-2309-00003",
-    patientName: "Lorem Ipsum San-san",
-    gender: "Male",
-    recordDate: "February 1, 1992",
-  },
-];
+import { AppDispatch, useAppSelector } from "@/redux/store";
+import { useDispatch } from "react-redux";
+import { getPatientRecordList } from "@/utils/dataFetchers";
 
 const PatientRecords = () => {
   const [isPatientRecordModalOpen, setIsPatientRecordModalOpen] =
     useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const { recordList } = useAppSelector((state) => state.recordReducer.value);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    getPatientRecordList(dispatch, { page: currentPage, limit: 5 });
+  }, [currentPage]);
 
   return (
     <>
@@ -50,23 +32,31 @@ const PatientRecords = () => {
             <Table.HeadCell>Patient name</Table.HeadCell>
             <Table.HeadCell className="w-52">Gender</Table.HeadCell>
             <Table.HeadCell className="w-60">Record date</Table.HeadCell>
+            <Table.HeadCell className="w-60">Status</Table.HeadCell>
             <Table.HeadCell className="w-3">
               <span className="sr-only">Edit</span>
             </Table.HeadCell>
           </Table.Head>
           <Table.Body className="divide-y">
-            {samplePatientRecords.map((patientRecord) => (
+            {recordList?.data.map((patientRecord) => (
               <Table.Row
                 key={patientRecord.id}
                 className="bg-white text-black dark:border-gray-700 dark:bg-gray-800"
               >
                 <Table.Cell>{patientRecord.recordNo}</Table.Cell>
-                <Table.Cell>{patientRecord.patientNo}</Table.Cell>
-                <Table.Cell className="text-black font-bold">
-                  {patientRecord.patientName}
+                <Table.Cell>
+                  {patientRecord.patientInformation?.patientNo}
                 </Table.Cell>
-                <Table.Cell>{patientRecord.gender}</Table.Cell>
-                <Table.Cell>{patientRecord.recordDate}</Table.Cell>
+                <Table.Cell className="text-black font-bold">
+                  {patientRecord.patientInformation?.lastName},{" "}
+                  {patientRecord.patientInformation?.firstName}{" "}
+                  {patientRecord.patientInformation?.middleName}
+                </Table.Cell>
+                <Table.Cell>
+                  {patientRecord.patientInformation?.gender}
+                </Table.Cell>
+                <Table.Cell>{patientRecord.createdAt}</Table.Cell>
+                <Table.Cell>For Doctors checkup</Table.Cell>
                 <Table.Cell>
                   <p
                     className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
@@ -95,11 +85,11 @@ const PatientRecords = () => {
             <p>Showing 10 of 100 Records</p>
           </div>
           <Pagination
-            currentPage={1}
+            currentPage={recordList?.page ?? 1}
             onPageChange={(page) => {
-              // setCurrentPage(page);
+              setCurrentPage(page);
             }}
-            totalPages={100}
+            totalPages={recordList?.totalPage ?? 0}
           />
         </div>
       </div>

@@ -30,7 +30,7 @@ CREATE TABLE `patient_informations` (
 -- CreateTable
 CREATE TABLE `patient_records` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `patientNo` VARCHAR(191) NULL,
+    `recordNo` VARCHAR(191) NULL,
     `reasonForVisit` VARCHAR(191) NULL,
     `previousMedicines` TEXT NULL,
     `autoRefractionOD` VARCHAR(191) NULL,
@@ -43,7 +43,7 @@ CREATE TABLE `patient_records` (
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL,
 
-    UNIQUE INDEX `patient_records_patientNo_key`(`patientNo`),
+    UNIQUE INDEX `patient_records_recordNo_key`(`recordNo`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
