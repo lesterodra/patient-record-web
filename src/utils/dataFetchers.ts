@@ -7,15 +7,15 @@ export const createPatientRecord = async (
   dispatch: AppDispatch,
   data: {
     patientInformationId: number;
-    reasonForVisit: string;
-    previousMedicines: string;
-    autoRefractionOD: string;
-    autoRefractionOs: string;
-    appointmentTime: string;
-    intraOcularPressureOD: string;
-    intraOcularPressureOS: string;
-    medicalDoctor: string;
-    visualAcuities: any[];
+    reasonForVisit?: string[];
+    previousMedicines?: string;
+    autoRefractionOD?: string;
+    autoRefractionOs?: string;
+    appointmentTime?: string;
+    intraOcularPressureOD?: string;
+    intraOcularPressureOS?: string;
+    medicalDoctor?: string;
+    visualAcuities?: any[];
   }
 ) => {
   try {

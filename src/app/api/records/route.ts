@@ -80,7 +80,12 @@ export async function POST(request: Request) {
         where: { id: patientRecord.id },
       });
 
-      await tx.visualAcuity.createMany({ data: visualAcuities });
+      await tx.visualAcuity.createMany({
+        data: visualAcuities.map((visualAcuity: any) => ({
+          ...visualAcuity,
+          patientRecordId: patientRecord.id,
+        })),
+      });
     });
     return new NextResponse(JSON.stringify({ data: "Successful" }), {
       status: 200,

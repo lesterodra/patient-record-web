@@ -4,28 +4,25 @@ import { Button, Modal, Table } from "flowbite-react";
 import MedicalInformationInput from "./MedicalInformationInput";
 import { createPatientRecord } from "@/utils/dataFetchers";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
+import { AppDispatch, useAppSelector } from "@/redux/store";
 
-const CreatePatientRecordModal = ({
-  isOpen,
-  setIsOpen,
-}: {
+type CreatePatientRecordModalProps = {
   isOpen: boolean;
+  patientInformationId: number;
   setIsOpen: (value: boolean) => void;
-}) => {
+};
+
+const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
+  const { isOpen, setIsOpen, patientInformationId } = props;
   const dispatch = useDispatch<AppDispatch>();
+  const { patientRecordInput } = useAppSelector(
+    (state) => state.recordReducer.value
+  );
+
   const onCreateRecordClick = async () => {
     await createPatientRecord(dispatch, {
-      patientInformationId: 1,
-      reasonForVisit: "",
-      previousMedicines: "",
-      autoRefractionOD: "",
-      autoRefractionOs: "",
-      appointmentTime: "",
-      intraOcularPressureOD: "",
-      intraOcularPressureOS: "",
-      medicalDoctor: "",
-      visualAcuities: [],
+      ...patientRecordInput,
+      patientInformationId,
     });
   };
 

@@ -1,11 +1,20 @@
-import { PatientInformation } from "@prisma/client";
+import { PatientInformation, PatientRecord } from "@prisma/client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+export type VisualAcuity = {
+  eyeType: string;
+  sc: string;
+  ph: string;
+  cc: string;
+  ncc: string;
+  j: string;
+};
+
 type RecordType = {
-  id?: string;
+  id?: number;
   recordNo?: string;
   patientInformationId?: number;
-  reasonForVisit?: string;
+  reasonForVisit?: string[];
   previousMedicines?: string;
   autoRefractionOD?: string;
   autoRefractionOs?: string;
@@ -14,11 +23,13 @@ type RecordType = {
   intraOcularPressureOS?: string;
   medicalDoctor?: string;
   patientInformation?: PatientInformation;
+  visualAcuities?: VisualAcuity[];
   createdAt?: string;
+  updatedAt?: string;
 };
 
 type RecordListResponse = {
-  data: RecordType[];
+  data: PatientRecord[];
   page: number;
   limit: number;
   totalPage: number;

@@ -41,7 +41,7 @@ model PatientInformation {
 model PatientRecord {
   id                    Int                 @id @default(autoincrement())
   recordNo              String?             @unique
-  reasonForVisit        String?
+  reasonForVisit        Json?
   previousMedicines     String?             @db.Text
   autoRefractionOD      String?
   autoRefractionOs      String?
@@ -59,17 +59,17 @@ model PatientRecord {
 }
 
 model VisualAcuity {
-  id              Int            @id @default(autoincrement())
+  id              Int           @id @default(autoincrement())
   eyeType         String
   sc              String?
   ph              String?
   cc              String?
   ncc             String?
   j               String?
-  patientRecord   PatientRecord? @relation(fields: [patientRecordId], references: [id], onDelete: Cascade)
-  patientRecordId Int?
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime?      @updatedAt
+  patientRecord   PatientRecord @relation(fields: [patientRecordId], references: [id], onDelete: Cascade)
+  patientRecordId Int
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime?     @updatedAt
 
   @@map("visual_acuities")
 }

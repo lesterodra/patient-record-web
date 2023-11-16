@@ -31,7 +31,7 @@ CREATE TABLE `patient_informations` (
 CREATE TABLE `patient_records` (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `recordNo` VARCHAR(191) NULL,
-    `reasonForVisit` VARCHAR(191) NULL,
+    `reasonForVisit` JSON NULL,
     `previousMedicines` TEXT NULL,
     `autoRefractionOD` VARCHAR(191) NULL,
     `autoRefractionOs` VARCHAR(191) NULL,
@@ -56,7 +56,7 @@ CREATE TABLE `visual_acuities` (
     `cc` VARCHAR(191) NULL,
     `ncc` VARCHAR(191) NULL,
     `j` VARCHAR(191) NULL,
-    `patientRecordId` INTEGER NULL,
+    `patientRecordId` INTEGER NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NULL,
 

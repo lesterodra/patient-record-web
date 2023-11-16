@@ -4,14 +4,18 @@ import CheckboxItem from "@/app/components/CheckboxItem";
 import { Button, Modal, Table } from "flowbite-react";
 import { useEffect, useRef } from "react";
 import sampleDrawing from "../../../public/my-file.png";
+import { PatientRecord } from "@prisma/client";
 
 const PatientRecordModal = ({
   isOpen,
   setIsOpen,
+  patientRecord,
 }: {
+  patientRecord: PatientRecord;
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
 }) => {
+  console.log({ patientRecord });
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
 
@@ -38,7 +42,7 @@ const PatientRecordModal = ({
 
   return (
     <Modal show={isOpen} size="4xl" onClose={() => setIsOpen(false)}>
-      <Modal.Header>Record details</Modal.Header>
+      <Modal.Header>Record details: {patientRecord.recordNo}</Modal.Header>
       <Modal.Body>
         <div className="space-y-6">
           <div>
