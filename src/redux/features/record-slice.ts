@@ -10,7 +10,7 @@ export type VisualAcuity = {
   j: string;
 };
 
-type RecordType = {
+type RecordInputType = {
   id?: number;
   recordNo?: string;
   patientInformationId?: number;
@@ -28,8 +28,26 @@ type RecordType = {
   updatedAt?: string;
 };
 
+type RecordType = {
+  id: number;
+  recordNo: string;
+  patientInformationId: number;
+  reasonForVisit: string[];
+  previousMedicines: string;
+  autoRefractionOD: string;
+  autoRefractionOs: string;
+  appointmentTime: string;
+  intraOcularPressureOD: string;
+  intraOcularPressureOS: string;
+  medicalDoctor: string;
+  patientInformation: PatientInformation;
+  visualAcuities: VisualAcuity[];
+  createdAt: Date;
+  updatedAt: Date;
+};
+
 type RecordListResponse = {
-  data: PatientRecord[];
+  data: RecordType[];
   page: number;
   limit: number;
   totalPage: number;
@@ -39,7 +57,7 @@ type RecordListResponse = {
 type InitialState = {
   value: {
     recordList?: RecordListResponse;
-    patientRecordInput?: RecordType;
+    patientRecordInput?: RecordInputType;
   };
 };
 
@@ -80,7 +98,10 @@ export const record = createSlice({
         },
       };
     },
-    updatePatientRecordInput: (state, action: PayloadAction<RecordType>) => {
+    updatePatientRecordInput: (
+      state,
+      action: PayloadAction<RecordInputType>
+    ) => {
       return {
         value: {
           ...state.value,

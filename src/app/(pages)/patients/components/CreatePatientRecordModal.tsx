@@ -2,7 +2,11 @@
 
 import { Button, Modal, Table } from "flowbite-react";
 import MedicalInformationInput from "./MedicalInformationInput";
-import { createPatientRecord } from "@/utils/dataFetchers";
+import {
+  createPatientRecord,
+  getPatientList,
+  getPatientRecordList,
+} from "@/utils/dataFetchers";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 
@@ -24,6 +28,8 @@ const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
       ...patientRecordInput,
       patientInformationId,
     });
+    getPatientRecordList(dispatch, {});
+    setIsOpen(false);
   };
 
   return (

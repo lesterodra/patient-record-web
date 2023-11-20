@@ -4,10 +4,14 @@ import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
 import useSWRMutation from "swr/mutation";
 import PersonalInformationInput from "./PersonalInformationInput";
-import { useAppSelector } from "@/redux/store";
+import { AppDispatch, useAppSelector } from "@/redux/store";
+import { getPatientList } from "@/utils/dataFetchers";
+import { useDispatch } from "react-redux";
+import { clearPatientInformationInput } from "@/redux/features/patient-slice";
 
 const CreatePatientModal = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const dispatch = useDispatch<AppDispatch>();
   const { patientInformationInput } = useAppSelector(
     (state) => state.patientReducer.value
   );
@@ -22,6 +26,8 @@ const CreatePatientModal = () => {
   const { trigger } = useSWRMutation("/api/patients", savePatient);
   const onSavePatientClick = () => {
     trigger();
+    dispatch(clearPatientInformationInput());
+    getPatientList(dispatch, {});
     setIsOpen(false);
   };
 

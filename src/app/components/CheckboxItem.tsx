@@ -7,6 +7,7 @@ type CheckboxItemProps = {
   disabled?: boolean;
   isSingleSelection?: boolean;
   itemPerColumn?: number;
+  checkedValue?: string;
   onSelectedItemsChanged?: (selectedItems: string[]) => void;
 };
 
@@ -18,6 +19,7 @@ const CheckboxItem = ({
   disabled = false,
   isSingleSelection = false,
   itemPerColumn,
+  checkedValue,
 }: CheckboxItemProps) => {
   const [selectedItems, setSelectedItems] = useState<string[]>([]);
   const numberOfColumns = itemPerColumn
@@ -56,7 +58,7 @@ const CheckboxItem = ({
                 value={item}
                 className="h-7 w-7 rounded-md"
                 key={index}
-                checked={selectedItems.includes(item)}
+                checked={selectedItems.includes(item) || checkedValue === item}
                 onChange={(e: ChangeEvent<HTMLInputElement>) => {
                   e.target.checked
                     ? setSelectedItems((prev) =>

@@ -7,14 +7,8 @@ import UpdatePatientModal from "./UpdatePatientModal";
 import { getValueDisplay } from "@/utils/displayParser";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
-import useSWRMutation from "swr/mutation";
-import { fetchPatients } from "@/redux/features/patient-slice";
-
-const getPatients = async (url: string) => {
-  const response = await fetch(url);
-
-  return response.json();
-};
+import { getPatientList } from "@/utils/dataFetchers";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 const PatientList = () => {
   const [isUpdatePatientModalOpen, setIsUpdatePatientModalOpen] =
@@ -23,22 +17,9 @@ const PatientList = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { patientList } = useAppSelector((state) => state.patientReducer.value);
 
-  const { trigger, data } = useSWRMutation(
-    `api/patients?page=${currentPage}&limit=3`,
-    getPatients
-  );
-
   useEffect(() => {
-    trigger();
-  }, []);
-
-  useEffect(() => {
-    trigger();
+    getPatientList(dispatch, { page: currentPage, limit: 5 });
   }, [currentPage]);
-
-  useEffect(() => {
-    dispatch(fetchPatients(data));
-  }, [data]);
 
   return (
     <>
@@ -96,6 +77,13 @@ const PatientList = () => {
             {patientList?.totalRecords === 0 && (
               <Table.Row>
                 <Table.Cell colSpan={5}>No Records found!</Table.Cell>
+              </Table.Row>
+            )}
+            {!patientList && (
+              <Table.Row>
+                <Table.Cell colSpan={5}>
+                  <LoadingSpinner />
+                </Table.Cell>
               </Table.Row>
             )}
           </Table.Body>

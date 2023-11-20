@@ -1,3 +1,4 @@
+import { fetchPatients } from "@/redux/features/patient-slice";
 import { fetchRecords, appendRecords } from "@/redux/features/record-slice";
 import { AppDispatch } from "@/redux/store";
 import { PatientRecord } from "@prisma/client";
@@ -78,6 +79,22 @@ export const appendPatientRecordList = async (
     });
 
     dispatch(appendRecords(response.data));
+  } catch (error) {
+    console.log({ error });
+  }
+};
+
+export const getPatientList = async (
+  dispatch: AppDispatch,
+  data?: { page?: number; limit?: number }
+) => {
+  try {
+    const { page = 1, limit = 5 } = data ?? {};
+    const response = await axios.get("/api/patients", {
+      params: { page, limit },
+    });
+
+    dispatch(fetchPatients(response.data));
   } catch (error) {
     console.log({ error });
   }

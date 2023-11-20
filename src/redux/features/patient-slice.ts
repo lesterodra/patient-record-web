@@ -71,8 +71,15 @@ export const patient = createSlice({
         },
       };
     },
+    clearPatientInformationInput: (state) => ({
+      value: { ...state.value, patientInformationInput: {} },
+    }),
   },
 });
 
-export const { fetchPatients, updatePatientInformationInput } = patient.actions;
+export const {
+  fetchPatients,
+  updatePatientInformationInput,
+  clearPatientInformationInput,
+} = patient.actions;
 export default patient.reducer;

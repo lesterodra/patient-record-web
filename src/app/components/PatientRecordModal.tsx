@@ -5,6 +5,7 @@ import { Button, Modal, Table } from "flowbite-react";
 import { useEffect, useRef } from "react";
 import sampleDrawing from "../../../public/my-file.png";
 import { PatientRecord } from "@prisma/client";
+import Link from "next/link";
 
 const PatientRecordModal = ({
   isOpen,
@@ -42,7 +43,16 @@ const PatientRecordModal = ({
 
   return (
     <Modal show={isOpen} size="4xl" onClose={() => setIsOpen(false)}>
-      <Modal.Header>Record details: {patientRecord.recordNo}</Modal.Header>
+      <Modal.Header>
+        Record details:{" "}
+        <Link
+          className="text-blue-500 underline"
+          target="_blank"
+          href={`/records/${patientRecord.id}`}
+        >
+          {patientRecord.recordNo}
+        </Link>
+      </Modal.Header>
       <Modal.Body>
         <div className="space-y-6">
           <div>
