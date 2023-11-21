@@ -16,6 +16,14 @@ export const createPatientRecord = async (
     intraOcularPressureOD?: string;
     intraOcularPressureOS?: string;
     medicalDoctor?: string;
+    refractionOd?: string;
+    refractionOdNegative?: string;
+    refractionOdX?: string;
+    refractionOs?: string;
+    refractionOsNegative?: string;
+    refractionOsX?: string;
+    refractionAdd?: string;
+    refractionPd?: string;
     visualAcuities?: any[];
   }
 ) => {
@@ -31,6 +39,14 @@ export const createPatientRecord = async (
       intraOcularPressureOS,
       medicalDoctor,
       visualAcuities,
+      refractionOd,
+      refractionOdNegative,
+      refractionOdX,
+      refractionOs,
+      refractionOsNegative,
+      refractionOsX,
+      refractionAdd,
+      refractionPd,
     } = data;
 
     const response = await axios.post("/api/records", {
@@ -44,6 +60,14 @@ export const createPatientRecord = async (
       intraOcularPressureOS,
       medicalDoctor,
       visualAcuities,
+      refractionOd,
+      refractionOdNegative,
+      refractionOdX,
+      refractionOs,
+      refractionOsNegative,
+      refractionOsX,
+      refractionAdd,
+      refractionPd,
     });
 
     return response.data;
@@ -54,12 +78,12 @@ export const createPatientRecord = async (
 
 export const getPatientRecordList = async (
   dispatch: AppDispatch,
-  data?: { page?: number; limit?: number }
+  data?: { page?: number; limit?: number; sortOrder?: string }
 ) => {
   try {
-    const { page = 1, limit = 5 } = data ?? {};
+    const { sortOrder, page = 1, limit = 5 } = data ?? {};
     const response = await axios.get("/api/records", {
-      params: { page, limit },
+      params: { page, limit, sortOrder },
     });
 
     dispatch(fetchRecords(response.data));

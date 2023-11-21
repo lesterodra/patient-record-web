@@ -24,8 +24,8 @@ const CreatePatientModal = () => {
     return response.json();
   };
   const { trigger } = useSWRMutation("/api/patients", savePatient);
-  const onSavePatientClick = () => {
-    trigger();
+  const onSavePatientClick = async () => {
+    await trigger();
     dispatch(clearPatientInformationInput());
     getPatientList(dispatch, {});
     setIsOpen(false);

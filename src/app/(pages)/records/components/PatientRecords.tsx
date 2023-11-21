@@ -72,6 +72,11 @@ const PatientRecords = () => {
                 </Table.Cell>
               </Table.Row>
             ))}
+            {recordList?.totalRecords === 0 && (
+              <Table.Row>
+                <Table.Cell colSpan={5}>No Records found!</Table.Cell>
+              </Table.Row>
+            )}
             {!recordList && (
               <Table.Row>
                 <Table.Cell colSpan={5}>

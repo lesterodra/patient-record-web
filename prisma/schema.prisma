@@ -51,6 +51,14 @@ model PatientRecord {
   medicalDoctor         String?
   patientInformation    PatientInformation? @relation(fields: [patientInformationId], references: [id], onDelete: Cascade)
   patientInformationId  Int
+  refractionOd          String?
+  refractionOdNegative  String?
+  refractionOdX         String?
+  refractionOs          String?
+  refractionOsNegative  String?
+  refractionOsX         String?
+  refractionAdd         String?
+  refractionPd          String?
   visualAcuities        VisualAcuity[]
   createdAt             DateTime            @default(now())
   updatedAt             DateTime?           @updatedAt

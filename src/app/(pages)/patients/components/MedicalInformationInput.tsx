@@ -238,6 +238,13 @@ const MedicalInformationInput = () => {
           <input
             type="text"
             className="border-t-0 border-l-0 border-r-0 w-16"
+            onChange={(e) => {
+              dispatch(
+                updatePatientRecordInput({
+                  refractionOd: e.target.value,
+                })
+              );
+            }}
           />
         </div>
         <div className="flex items-end gap-3">
@@ -245,6 +252,13 @@ const MedicalInformationInput = () => {
           <input
             type="text"
             className="border-t-0 border-l-0 border-r-0 w-16"
+            onChange={(e) => {
+              dispatch(
+                updatePatientRecordInput({
+                  refractionOdNegative: e.target.value,
+                })
+              );
+            }}
           />
         </div>
         <div className="flex items-end gap-3">
@@ -252,6 +266,13 @@ const MedicalInformationInput = () => {
           <input
             type="text"
             className="border-t-0 border-l-0 border-r-0 w-16"
+            onChange={(e) => {
+              dispatch(
+                updatePatientRecordInput({
+                  refractionOdX: e.target.value,
+                })
+              );
+            }}
           />
         </div>
       </div>
@@ -261,6 +282,13 @@ const MedicalInformationInput = () => {
           <input
             type="text"
             className="border-t-0 border-l-0 border-r-0 w-16"
+            onChange={(e) => {
+              dispatch(
+                updatePatientRecordInput({
+                  refractionOs: e.target.value,
+                })
+              );
+            }}
           />
         </div>
         <div className="flex items-end gap-3">
@@ -268,6 +296,13 @@ const MedicalInformationInput = () => {
           <input
             type="text"
             className="border-t-0 border-l-0 border-r-0 w-16"
+            onChange={(e) => {
+              dispatch(
+                updatePatientRecordInput({
+                  refractionOsNegative: e.target.value,
+                })
+              );
+            }}
           />
         </div>
         <div className="flex items-end gap-3">
@@ -275,6 +310,13 @@ const MedicalInformationInput = () => {
           <input
             type="text"
             className="border-t-0 border-l-0 border-r-0 w-16"
+            onChange={(e) => {
+              dispatch(
+                updatePatientRecordInput({
+                  refractionOsX: e.target.value,
+                })
+              );
+            }}
           />
         </div>
       </div>
@@ -284,6 +326,13 @@ const MedicalInformationInput = () => {
           <input
             type="text"
             className="border-t-0 border-l-0 border-r-0 w-16"
+            onChange={(e) => {
+              dispatch(
+                updatePatientRecordInput({
+                  refractionAdd: e.target.value,
+                })
+              );
+            }}
           />
         </div>
         <div className="flex items-end gap-3">
@@ -291,6 +340,13 @@ const MedicalInformationInput = () => {
           <input
             type="text"
             className="border-t-0 border-l-0 border-r-0 w-16"
+            onChange={(e) => {
+              dispatch(
+                updatePatientRecordInput({
+                  refractionPd: e.target.value,
+                })
+              );
+            }}
           />
           <span>mm</span>
         </div>

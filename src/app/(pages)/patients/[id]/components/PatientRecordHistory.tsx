@@ -14,6 +14,7 @@ const PatientRecordHistory = () => {
   const { recordList } = useAppSelector((state) => state.recordReducer.value);
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
+  const [sortOrder, setSortOrder] = useState<string>("desc");
   const [isPatientRecordModalOpen, setIsPatientRecordModalOpen] =
     useState<boolean>(false);
   const [patientRecord, setPatientRecord] = useState<PatientRecord | null>(
@@ -22,8 +23,12 @@ const PatientRecordHistory = () => {
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    getPatientRecordList(dispatch, { page: currentPage, limit: 3 });
+    getPatientRecordList(dispatch, { sortOrder, page: currentPage, limit: 3 });
   }, []);
+
+  useEffect(() => {
+    getPatientRecordList(dispatch, { sortOrder, page: 1, limit: 3 });
+  }, [sortOrder]);
 
   const onLoadMoreClick = () => {
     appendPatientRecordList(dispatch, { page: currentPage + 1, limit: 3 });
@@ -50,9 +55,13 @@ const PatientRecordHistory = () => {
         <p className="text-xl">Patient Records</p>
         <div>
           <span>Order by: </span>
-          <select>
-            <option>Newest First</option>
-            <option>Oldest First</option>
+          <select
+            onChange={(e) => {
+              setSortOrder(e.target.value);
+            }}
+          >
+            <option value="desc">Newest First</option>
+            <option value="asc">Oldest First</option>
           </select>
         </div>
       </div>

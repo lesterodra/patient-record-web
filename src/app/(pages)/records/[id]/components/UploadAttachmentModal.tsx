@@ -24,7 +24,6 @@ const UploadAttachmentModal = () => {
                 type="file"
                 multiple
                 onChange={(e) => {
-                  console.log("image change");
                   setSelectedImages(e.target.files);
                 }}
               />

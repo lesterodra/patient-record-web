@@ -24,6 +24,14 @@ type RecordInputType = {
   medicalDoctor?: string;
   patientInformation?: PatientInformation;
   visualAcuities?: VisualAcuity[];
+  refractionOd?: string;
+  refractionOdNegative?: string;
+  refractionOdX?: string;
+  refractionOs?: string;
+  refractionOsNegative?: string;
+  refractionOsX?: string;
+  refractionAdd?: string;
+  refractionPd?: string;
   createdAt?: string;
   updatedAt?: string;
 };
@@ -41,6 +49,14 @@ type RecordType = {
   intraOcularPressureOS: string;
   medicalDoctor: string;
   patientInformation: PatientInformation;
+  refractionOd: string;
+  refractionOdNegative: string;
+  refractionOdX: string;
+  refractionOs: string;
+  refractionOsNegative: string;
+  refractionOsX: string;
+  refractionAdd: string;
+  refractionPd: string;
   visualAcuities: VisualAcuity[];
   createdAt: Date;
   updatedAt: Date;
@@ -112,9 +128,16 @@ export const record = createSlice({
         },
       };
     },
+    clearRecordInput: (state) => ({
+      value: { ...state.value, patientRecordInput: {} },
+    }),
   },
 });
 
-export const { fetchRecords, updatePatientRecordInput, appendRecords } =
-  record.actions;
+export const {
+  fetchRecords,
+  updatePatientRecordInput,
+  appendRecords,
+  clearRecordInput,
+} = record.actions;
 export default record.reducer;

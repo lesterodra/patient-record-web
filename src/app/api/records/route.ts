@@ -5,17 +5,19 @@ export async function GET(request: NextRequest) {
   try {
     const requestPage = request.nextUrl.searchParams.get("page");
     const requestLimit = request.nextUrl.searchParams.get("limit");
+    const requestOrder = request.nextUrl.searchParams.get("sortOrder");
     const page = requestPage ? parseInt(requestPage, 10) : 1;
     const limit = requestLimit ? parseInt(requestLimit, 10) : 10;
     const skip = (page - 1) * limit;
+    const orderBy = requestOrder ?? "desc";
 
     const totalRecordCount = await prisma.patientRecord.count();
     const records = await prisma.patientRecord.findMany({
       skip,
       take: limit,
       orderBy: {
-        id: "desc",
-      },
+        id: orderBy,
+      } as any,
       include: { patientInformation: true },
     });
 
@@ -51,6 +53,14 @@ export async function POST(request: Request) {
       intraOcularPressureOS,
       medicalDoctor,
       visualAcuities,
+      refractionOd,
+      refractionOdNegative,
+      refractionOdX,
+      refractionOs,
+      refractionOsNegative,
+      refractionOsX,
+      refractionAdd,
+      refractionPd,
     } = await request.json();
 
     await prisma.$transaction(async (tx) => {
@@ -65,6 +75,14 @@ export async function POST(request: Request) {
           intraOcularPressureOD,
           intraOcularPressureOS,
           medicalDoctor,
+          refractionOd,
+          refractionOdNegative,
+          refractionOdX,
+          refractionOs,
+          refractionOsNegative,
+          refractionOsX,
+          refractionAdd,
+          refractionPd,
         },
         select: { id: true },
       });
