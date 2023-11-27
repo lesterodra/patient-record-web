@@ -1,4 +1,5 @@
 import { Button, Modal } from "flowbite-react";
+import Image from "next/image";
 import { useState } from "react";
 
 const UploadAttachmentModal = () => {
@@ -32,10 +33,10 @@ const UploadAttachmentModal = () => {
                   new Array(selectedImages.length)
                     .fill(null)
                     .map((_, index) => (
-                      <img
+                      <Image
                         key={`image-${index}`}
                         alt="not found"
-                        width={"250px"}
+                        width={250}
                         src={URL.createObjectURL(selectedImages[index])}
                       />
                     ))}

@@ -91,8 +91,9 @@ const PatientRecordHistory = (props: PatientRecordHistoryProps) => {
           </select>
         </div>
       </div>
-      {recordList?.data.map((record) => (
+      {recordList?.data.map((record, index) => (
         <div
+          key={`record-${index}`}
           className="mt-4 border border-black-100 cursor-pointer hover:bg-gray-100 p-2 rounded"
           onClick={() => {
             openPatientRecordModal(record.id || 0);
