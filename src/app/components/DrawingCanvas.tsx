@@ -14,7 +14,7 @@ const DrawingCanvas = () => {
     }
 
     canvas.width = 700;
-    canvas.height = 500;
+    canvas.height = 400;
 
     const context = canvas.getContext("2d") as CanvasRenderingContext2D;
     context.lineCap = "round";

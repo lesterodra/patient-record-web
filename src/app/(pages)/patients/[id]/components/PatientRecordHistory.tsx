@@ -10,7 +10,12 @@ import { Button } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 
-const PatientRecordHistory = () => {
+type PatientRecordHistoryProps = {
+  patientInformationId: number;
+};
+
+const PatientRecordHistory = (props: PatientRecordHistoryProps) => {
+  const { patientInformationId } = props;
   const { recordList } = useAppSelector((state) => state.recordReducer.value);
   const loadMoreRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -22,16 +27,37 @@ const PatientRecordHistory = () => {
   );
   const dispatch = useDispatch<AppDispatch>();
 
-  useEffect(() => {
-    getPatientRecordList(dispatch, { sortOrder, page: currentPage, limit: 3 });
-  }, []);
+  // useEffect(() => {
+  //   getPatientRecordList(dispatch, {
+  //     patientInformationId,
+  //     sortOrder,
+  //     page: currentPage,
+  //     limit: 3,
+  //   });
+  // }, []);
 
   useEffect(() => {
-    getPatientRecordList(dispatch, { sortOrder, page: 1, limit: 3 });
+    getPatientRecordList(dispatch, {
+      patientInformationId,
+      sortOrder,
+      page: 1,
+      limit: 3,
+    });
   }, [sortOrder]);
 
+  useEffect(() => {
+    console.log("total records update:", recordList?.totalRecords);
+
+    setCurrentPage(1);
+  }, [recordList?.totalRecords]);
+
   const onLoadMoreClick = () => {
-    appendPatientRecordList(dispatch, { page: currentPage + 1, limit: 3 });
+    appendPatientRecordList(dispatch, {
+      page: currentPage + 1,
+      limit: 3,
+      sortOrder,
+      patientInformationId,
+    });
     setCurrentPage(currentPage + 1);
   };
 

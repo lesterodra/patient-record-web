@@ -29,7 +29,7 @@ const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
       patientInformationId,
     });
     dispatch(clearRecordInput());
-    getPatientRecordList(dispatch, {});
+    getPatientRecordList(dispatch, { patientInformationId, page: 1, limit: 3 });
     setIsOpen(false);
   };
 

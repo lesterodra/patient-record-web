@@ -6,13 +6,22 @@ export async function GET(request: NextRequest) {
     const requestPage = request.nextUrl.searchParams.get("page");
     const requestLimit = request.nextUrl.searchParams.get("limit");
     const requestOrder = request.nextUrl.searchParams.get("sortOrder");
+    const requestPatientInformationId = request.nextUrl.searchParams.get(
+      "patientInformationId"
+    );
     const page = requestPage ? parseInt(requestPage, 10) : 1;
     const limit = requestLimit ? parseInt(requestLimit, 10) : 10;
+    const patientInformationId = requestPatientInformationId
+      ? parseInt(requestPatientInformationId, 10)
+      : undefined;
     const skip = (page - 1) * limit;
     const orderBy = requestOrder ?? "desc";
 
-    const totalRecordCount = await prisma.patientRecord.count();
+    const totalRecordCount = await prisma.patientRecord.count({
+      where: { patientInformationId },
+    });
     const records = await prisma.patientRecord.findMany({
+      where: { patientInformationId },
       skip,
       take: limit,
       orderBy: {

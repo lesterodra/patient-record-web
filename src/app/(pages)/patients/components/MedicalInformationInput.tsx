@@ -1,5 +1,4 @@
 import CheckboxItem from "@/app/components/CheckboxItem";
-import DrawingCanvas from "@/app/components/DrawingCanvas";
 import Dropdown from "@/app/components/Dropdown";
 import {
   VisualAcuity,
@@ -398,6 +397,7 @@ const MedicalInformationInput = () => {
       </div>
       <div className="flex items-end gap-3">
         <Dropdown
+          width="w-72"
           label="MD"
           options={["Lorem Ipsum", "John Doe", "Jane Doe"]}
           onChange={(e) => {
@@ -408,10 +408,6 @@ const MedicalInformationInput = () => {
             );
           }}
         />
-      </div>
-      <p className="mb-3 mt-8 font-bold text-xl">Diagnosis</p>
-      <div className="flex gap-3 mb-5">
-        <DrawingCanvas />
       </div>
     </>
   );

@@ -88,21 +88,23 @@ const PatientList = () => {
             )}
           </Table.Body>
         </Table>
-        <div className="flex justify-between items-center">
-          <div>
-            <p>
-              Showing 1 to {currentPage * (patientList?.limit ?? 3)} of{" "}
-              {patientList?.totalRecords} Records
-            </p>
+        {patientList && (
+          <div className="flex justify-between items-center">
+            <div>
+              <p>
+                Showing 1 to {patientList.data.length} of {""}
+                {patientList?.totalRecords} Records
+              </p>
+            </div>
+            <Pagination
+              currentPage={currentPage}
+              onPageChange={(page) => {
+                setCurrentPage(page);
+              }}
+              totalPages={patientList?.totalPage || 0}
+            />
           </div>
-          <Pagination
-            currentPage={currentPage}
-            onPageChange={(page) => {
-              setCurrentPage(page);
-            }}
-            totalPages={patientList?.totalPage || 0}
-          />
-        </div>
+        )}
       </div>
     </>
   );

@@ -83,7 +83,7 @@ const PatientDetail = ({
           <b>Previous Laser/Surgery: </b>{" "}
           {getValueDisplay(patientDetail.previousSurgeries?.toString())}
         </p>
-        <PatientRecordHistory />
+        <PatientRecordHistory patientInformationId={patientDetail.id} />
       </div>
     </div>
   );

@@ -78,12 +78,17 @@ export const createPatientRecord = async (
 
 export const getPatientRecordList = async (
   dispatch: AppDispatch,
-  data?: { page?: number; limit?: number; sortOrder?: string }
+  data?: {
+    patientInformationId?: number;
+    page?: number;
+    limit?: number;
+    sortOrder?: string;
+  }
 ) => {
   try {
-    const { sortOrder, page = 1, limit = 5 } = data ?? {};
+    const { patientInformationId, sortOrder, page = 1, limit = 5 } = data ?? {};
     const response = await axios.get("/api/records", {
-      params: { page, limit, sortOrder },
+      params: { page, limit, sortOrder, patientInformationId },
     });
 
     dispatch(fetchRecords(response.data));
@@ -94,12 +99,17 @@ export const getPatientRecordList = async (
 
 export const appendPatientRecordList = async (
   dispatch: AppDispatch,
-  data?: { page?: number; limit?: number }
+  data?: {
+    page?: number;
+    limit?: number;
+    patientInformationId?: number;
+    sortOrder?: string;
+  }
 ) => {
   try {
-    const { page = 1, limit = 5 } = data ?? {};
+    const { page = 1, limit = 5, patientInformationId, sortOrder } = data ?? {};
     const response = await axios.get("/api/records", {
-      params: { page, limit },
+      params: { page, limit, patientInformationId, sortOrder },
     });
 
     dispatch(appendRecords(response.data));

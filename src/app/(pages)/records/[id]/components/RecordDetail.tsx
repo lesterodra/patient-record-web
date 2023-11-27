@@ -5,6 +5,7 @@ import { PatientRecord } from "@prisma/client";
 import { Button, Table } from "flowbite-react";
 import ViewAttachmentModal from "./ViewAttachmentModal";
 import UploadAttachmentModal from "./UploadAttachmentModal";
+import DrawingModal from "./DrawingModal";
 
 type RecordDetailType = {
   recordDetail: PatientRecord;
@@ -18,6 +19,7 @@ const RecordDetail = (props: RecordDetailType) => {
       <div className="mt-6 mb-6 flex justify-between">
         <p className="text-2xl font-bold">{recordDetail.recordNo}</p>
         <div className="flex gap-4">
+          <DrawingModal />
           <ViewAttachmentModal />
           <UploadAttachmentModal />
         </div>
@@ -25,7 +27,7 @@ const RecordDetail = (props: RecordDetailType) => {
       <div className=" flex justify-between  mb-5">
         <CheckboxItem
           disabled
-          name="missing"
+          name="type"
           checkedValue="OR"
           isRow
           items={["OR", "CONS"]}
