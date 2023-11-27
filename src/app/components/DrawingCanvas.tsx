@@ -24,6 +24,8 @@ const DrawingCanvas = () => {
   }, []);
 
   const startDrawing = ({ nativeEvent }: { nativeEvent: any }) => {
+    nativeEvent.preventDefault();
+
     const { offsetX, offsetY } = nativeEvent;
 
     if (!contextRef.current) {
@@ -35,10 +37,11 @@ const DrawingCanvas = () => {
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
     setIsDrawing(true);
-    nativeEvent.preventDefault();
   };
 
   const draw = ({ nativeEvent }: { nativeEvent: any }) => {
+    nativeEvent.preventDefault();
+
     if (!isDrawing || !contextRef.current) {
       return;
     }
@@ -46,7 +49,6 @@ const DrawingCanvas = () => {
     const { offsetX, offsetY } = nativeEvent;
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
-    nativeEvent.preventDefault();
   };
 
   const stopDrawing = () => {
