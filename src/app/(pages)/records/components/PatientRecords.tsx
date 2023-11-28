@@ -21,7 +21,7 @@ const PatientRecords = () => {
 
   return (
     <>
-      <div className="mt-5">
+      <div className="mt-5" style={{ overflowX: "auto" }}>
         <Table hoverable>
           <Table.Head>
             <Table.HeadCell className="w-52">Record No.</Table.HeadCell>
