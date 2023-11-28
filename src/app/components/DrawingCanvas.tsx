@@ -25,19 +25,19 @@ const DrawingCanvas = () => {
 
   const startDrawing = ({ nativeEvent }: { nativeEvent: any }) => {
     console.log({ nativeEvent });
+    const bcr = nativeEvent.target.getBoundingClientRect();
 
-    let offsetX = nativeEvent.offsetX;
-    let offsetY = nativeEvent.offsetY;
+    let offsetX = nativeEvent.clientX - bcr.x;
+    let offsetY = nativeEvent.clientY - bcr.y;
 
     if (nativeEvent.type === "touchstart") {
-      offsetX = nativeEvent.touches[0].clientX;
-      offsetY = nativeEvent.touches[0].clientY;
+      offsetX = nativeEvent.touches[0].clientX - bcr.x;
+      offsetY = nativeEvent.touches[0].clientY - bcr.y;
     }
 
     if (!contextRef.current) {
       return;
     }
-    console.log({ offsetX, offsetY });
 
     contextRef.current.beginPath();
     contextRef.current.moveTo(offsetX, offsetY);
@@ -52,15 +52,15 @@ const DrawingCanvas = () => {
       return;
     }
 
-    let offsetX = nativeEvent.offsetX;
-    let offsetY = nativeEvent.offsetY;
+    const bcr = nativeEvent.target.getBoundingClientRect();
+    let offsetX = nativeEvent.clientX - bcr.x;
+    let offsetY = nativeEvent.clientY - bcr.y;
 
     if (nativeEvent.type === "touchmove") {
-      offsetX = nativeEvent.touches[0].clientX;
-      offsetY = nativeEvent.touches[0].clientY;
+      offsetX = nativeEvent.touches[0].clientX - bcr.x;
+      offsetY = nativeEvent.touches[0].clientY - bcr.y;
     }
 
-    // const { offsetX, offsetY } = nativeEvent;
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
     // nativeEvent.preventDefault();
