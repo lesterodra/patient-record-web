@@ -1,8 +1,12 @@
+import { setDrawingDataUrl } from "@/redux/features/record-slice";
+import { AppDispatch } from "@/redux/store";
 import { useEffect, useRef, useState } from "react";
+import { useDispatch } from "react-redux";
 
 const DrawingCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
 
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
   const [isMarker, setIsMarker] = useState<boolean>(true);
@@ -13,13 +17,13 @@ const DrawingCanvas = () => {
       return;
     }
 
-    canvas.width = 400;
+    canvas.width = 800;
     canvas.height = 300;
 
     const context = canvas.getContext("2d") as CanvasRenderingContext2D;
     context.lineCap = "round";
     context.strokeStyle = "black";
-    context.lineWidth = 4;
+    context.lineWidth = 3;
     contextRef.current = context;
   }, []);
 
@@ -44,7 +48,6 @@ const DrawingCanvas = () => {
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
     setIsDrawing(true);
-    // nativeEvent.preventDefault();
   };
 
   const draw = ({ nativeEvent }: { nativeEvent: any }) => {
@@ -63,7 +66,6 @@ const DrawingCanvas = () => {
 
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
-    // nativeEvent.preventDefault();
   };
 
   const stopDrawing = () => {
@@ -73,6 +75,7 @@ const DrawingCanvas = () => {
 
     contextRef.current.closePath();
     setIsDrawing(false);
+    dispatch(setDrawingDataUrl(canvasRef?.current?.toDataURL() ?? ""));
   };
 
   const setToDraw = () => {
@@ -131,24 +134,32 @@ const DrawingCanvas = () => {
         >
           Clear
         </button>
-        <button
+        {/* <button
           onClick={async () => {
             const image = canvasRef?.current?.toDataURL();
+            console.log({ image });
             const blob = await (await fetch(image || "")).blob();
 
-            console.log(blob);
-            const a = document.createElement("a");
-            a.download = "my-file.png";
-            a.href = URL.createObjectURL(blob);
-            a.addEventListener("click", (e) => {
-              setTimeout(() => URL.revokeObjectURL(a.href), 30 * 1000);
+            console.log(blob.toString());
+            // const a = document.createElement("a");
+            // a.download = "my-file.png";
+            // a.href = URL.createObjectURL(blob);
+            // a.addEventListener("click", (e) => {
+            //   setTimeout(() => URL.revokeObjectURL(a.href), 30 * 1000);
+            // });
+            // a.click();
+
+            fetch("/api/drawings", {
+              method: "POST",
+              body: JSON.stringify({
+                data: image,
+              }),
             });
-            a.click();
           }}
         >
           Save
-        </button>
-        <button
+        </button> */}
+        {/* <button
           onClick={() => {
             var image = new Image();
             image.onload = function () {
@@ -164,7 +175,7 @@ const DrawingCanvas = () => {
           }}
         >
           Load
-        </button>
+        </button> */}
       </div>
     </div>
   );

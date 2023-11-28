@@ -74,6 +74,7 @@ type InitialState = {
   value: {
     recordList?: RecordListResponse;
     patientRecordInput?: RecordInputType;
+    drawingDataUrl?: string;
   };
 };
 
@@ -81,6 +82,7 @@ const initialState: InitialState = {
   value: {
     recordList: undefined,
     patientRecordInput: {},
+    drawingDataUrl: "",
   },
 };
 
@@ -131,6 +133,14 @@ export const record = createSlice({
     clearRecordInput: (state) => ({
       value: { ...state.value, patientRecordInput: {} },
     }),
+    setDrawingDataUrl: (state, action: PayloadAction<string>) => {
+      return {
+        value: {
+          ...state.value,
+          drawingDataUrl: action.payload,
+        },
+      };
+    },
   },
 });
 
@@ -139,5 +149,6 @@ export const {
   updatePatientRecordInput,
   appendRecords,
   clearRecordInput,
+  setDrawingDataUrl,
 } = record.actions;
 export default record.reducer;

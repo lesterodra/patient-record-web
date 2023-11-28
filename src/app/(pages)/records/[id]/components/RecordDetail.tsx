@@ -1,14 +1,13 @@
 "use client";
 
 import CheckboxItem from "@/app/components/CheckboxItem";
-import { PatientRecord } from "@prisma/client";
-import { Button, Table } from "flowbite-react";
-import ViewAttachmentModal from "./ViewAttachmentModal";
-import UploadAttachmentModal from "./UploadAttachmentModal";
+import { Prisma } from "@prisma/client";
+import { Table } from "flowbite-react";
 import DrawingModal from "./DrawingModal";
+import Image from "next/image";
 
 type RecordDetailType = {
-  recordDetail: PatientRecord;
+  recordDetail: Prisma.PatientRecordGetPayload<{ include: { drawings: true } }>;
 };
 
 const RecordDetail = (props: RecordDetailType) => {
@@ -19,9 +18,9 @@ const RecordDetail = (props: RecordDetailType) => {
       <div className="mt-6 mb-6 flex justify-between">
         <p className="text-2xl font-bold">{recordDetail.recordNo}</p>
         <div className="flex gap-4">
-          <DrawingModal />
-          <ViewAttachmentModal />
-          <UploadAttachmentModal />
+          <DrawingModal patientRecordId={recordDetail.id} />
+          {/* <ViewAttachmentModal />
+          <UploadAttachmentModal /> */}
         </div>
       </div>
       <div className=" flex justify-between  mb-5">
@@ -138,6 +137,21 @@ const RecordDetail = (props: RecordDetailType) => {
       <div>
         <span className="mb-3 mt-8 font-bold text-xl">MD: </span>
         <span>{recordDetail.medicalDoctor}</span>
+      </div>
+      <div>
+        <span className="mb-3 mt-8 font-bold text-xl">Diagnosis: </span>
+        <div className="flex gap-3">
+          {recordDetail.drawings.map((drawing) => (
+            <div className="border border-black">
+              <Image
+                src={drawing.data as string}
+                alt=""
+                width={500}
+                height={400}
+              />
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );

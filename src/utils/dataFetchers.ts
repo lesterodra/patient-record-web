@@ -133,3 +133,24 @@ export const getPatientList = async (
     console.log({ error });
   }
 };
+
+export const saveDrawing = async (
+  dispatch: AppDispatch,
+  data: {
+    patientRecordId: number;
+    dataUrl: string;
+  }
+) => {
+  try {
+    const { patientRecordId, dataUrl } = data;
+
+    const response = await axios.post("/api/drawings", {
+      patientRecordId,
+      dataUrl,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log({ error });
+  }
+};

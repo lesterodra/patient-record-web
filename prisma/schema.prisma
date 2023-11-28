@@ -61,6 +61,7 @@ model PatientRecord {
   refractionAdd         String?
   refractionPd          String?
   visualAcuities        VisualAcuity[]
+  drawings              Drawing[]
   createdAt             DateTime            @default(now())
   updatedAt             DateTime?           @updatedAt
 
@@ -81,4 +82,15 @@ model VisualAcuity {
   updatedAt       DateTime?     @updatedAt
 
   @@map("visual_acuities")
+}
+
+model Drawing {
+  id              Int           @id @default(autoincrement())
+  patientRecord   PatientRecord @relation(fields: [patientRecordId], references: [id], onDelete: Cascade)
+  data            String?       @db.Text
+  patientRecordId Int
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime?     @updatedAt
+
+  @@map("drawings")
 }
