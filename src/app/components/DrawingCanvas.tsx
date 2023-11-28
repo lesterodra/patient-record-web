@@ -13,8 +13,8 @@ const DrawingCanvas = () => {
       return;
     }
 
-    canvas.width = 700;
-    canvas.height = 400;
+    canvas.width = 400;
+    canvas.height = 300;
 
     const context = canvas.getContext("2d") as CanvasRenderingContext2D;
     context.lineCap = "round";
@@ -24,31 +24,46 @@ const DrawingCanvas = () => {
   }, []);
 
   const startDrawing = ({ nativeEvent }: { nativeEvent: any }) => {
-    nativeEvent.preventDefault();
+    console.log({ nativeEvent });
 
-    const { offsetX, offsetY } = nativeEvent;
+    let offsetX = nativeEvent.offsetX;
+    let offsetY = nativeEvent.offsetY;
+
+    if (nativeEvent.type === "touchstart") {
+      offsetX = nativeEvent.touches[0].clientX;
+      offsetY = nativeEvent.touches[0].clientY;
+    }
 
     if (!contextRef.current) {
       return;
     }
+    console.log({ offsetX, offsetY });
 
     contextRef.current.beginPath();
     contextRef.current.moveTo(offsetX, offsetY);
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
     setIsDrawing(true);
+    // nativeEvent.preventDefault();
   };
 
   const draw = ({ nativeEvent }: { nativeEvent: any }) => {
-    nativeEvent.preventDefault();
-
     if (!isDrawing || !contextRef.current) {
       return;
     }
 
-    const { offsetX, offsetY } = nativeEvent;
+    let offsetX = nativeEvent.offsetX;
+    let offsetY = nativeEvent.offsetY;
+
+    if (nativeEvent.type === "touchmove") {
+      offsetX = nativeEvent.touches[0].clientX;
+      offsetY = nativeEvent.touches[0].clientY;
+    }
+
+    // const { offsetX, offsetY } = nativeEvent;
     contextRef.current.lineTo(offsetX, offsetY);
     contextRef.current.stroke();
+    // nativeEvent.preventDefault();
   };
 
   const stopDrawing = () => {
@@ -87,6 +102,9 @@ const DrawingCanvas = () => {
         onMouseMove={draw}
         onMouseUp={stopDrawing}
         onMouseLeave={stopDrawing}
+        onTouchStart={startDrawing}
+        onTouchEnd={stopDrawing}
+        onTouchMove={draw}
       ></canvas>
       <div className="flex gap-3">
         <button
