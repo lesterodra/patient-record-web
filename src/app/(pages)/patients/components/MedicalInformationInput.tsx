@@ -47,16 +47,16 @@ const MedicalInformationInput = () => {
     <>
       <div className=" flex justify-between mb-5">
         <CheckboxItem
-          name="missing"
+          name="visitType"
           isRow
           items={["OR", "CONS"]}
           isSingleSelection
           onSelectedItemsChanged={(selectedItems) => {
-            // dispatch(
-            //   // updatePatientRecordInput({
-            //   //   : selectedItems[0],
-            //   // })
-            // );
+            dispatch(
+              updatePatientRecordInput({
+                visitType: selectedItems[0],
+              })
+            );
           }}
         />
       </div>

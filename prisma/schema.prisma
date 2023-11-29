@@ -43,6 +43,7 @@ model PatientRecord {
   id                    Int                 @id @default(autoincrement())
   recordNo              String?             @unique
   reasonForVisit        Json?
+  visitType             String?
   previousMedicines     String?             @db.Text
   autoRefractionOD      String?
   autoRefractionOs      String?

@@ -5,7 +5,6 @@ import {
   setDrawingList,
 } from "@/redux/features/record-slice";
 import { AppDispatch } from "@/redux/store";
-import { PatientRecord } from "@prisma/client";
 import axios from "axios";
 
 export const createPatientRecord = async (
@@ -29,6 +28,7 @@ export const createPatientRecord = async (
     refractionAdd?: string;
     refractionPd?: string;
     visualAcuities?: any[];
+    visitType?: string;
   }
 ) => {
   try {
@@ -51,6 +51,7 @@ export const createPatientRecord = async (
       refractionOsX,
       refractionAdd,
       refractionPd,
+      visitType,
     } = data;
 
     const response = await axios.post("/api/records", {
@@ -72,6 +73,7 @@ export const createPatientRecord = async (
       refractionOsX,
       refractionAdd,
       refractionPd,
+      visitType,
     });
 
     return response.data;

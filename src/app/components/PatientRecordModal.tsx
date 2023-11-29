@@ -2,44 +2,27 @@
 
 import CheckboxItem from "@/app/components/CheckboxItem";
 import { Button, Modal, Table } from "flowbite-react";
-import { useEffect, useRef } from "react";
-import sampleDrawing from "../../../public/my-file.png";
-import { PatientRecord } from "@prisma/client";
+import { PatientRecord, Prisma } from "@prisma/client";
 import Link from "next/link";
+import { getValueDisplay } from "@/utils/displayParser";
 
 const PatientRecordModal = ({
   isOpen,
   setIsOpen,
   patientRecord,
 }: {
-  patientRecord: PatientRecord;
+  patientRecord: Prisma.PatientRecordGetPayload<{
+    include: { visualAcuities: true };
+  }>;
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
 }) => {
-  console.log({ patientRecord });
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const contextRef = useRef<CanvasRenderingContext2D | null>(null);
-
-  useEffect(() => {
-    const canvas = canvasRef.current as unknown as HTMLCanvasElement;
-    if (!canvas) {
-      return;
-    }
-    const context = canvas.getContext("2d") as CanvasRenderingContext2D;
-
-    contextRef.current = context;
-    const image = new Image();
-    image.onload = function () {
-      contextRef?.current?.drawImage(
-        image,
-        0,
-        0,
-        canvasRef?.current?.width || 0,
-        canvasRef?.current?.height || 0
-      );
-    };
-    image.src = "/my-file.png";
-  }, []);
+  const visualAcuityOd = patientRecord.visualAcuities.find(
+    (visualAcuity) => visualAcuity.eyeType === "OD"
+  );
+  const visualAcuityOs = patientRecord.visualAcuities.find(
+    (visualAcuity) => visualAcuity.eyeType === "OS"
+  );
 
   return (
     <Modal show={isOpen} size="4xl" onClose={() => setIsOpen(false)}>
@@ -62,24 +45,28 @@ const PatientRecordModal = ({
                 name="missing"
                 isRow
                 items={["OR", "CONS"]}
+                checkedValue={patientRecord.visitType ?? ""}
               />
             </div>
             <div className="my-2">
-              <span className="text-xl font-bold">Reason for Visit: </span>BOV,
-              Redness
+              <span className="text-xl font-bold">Reason for Visit: </span>
+              {patientRecord.reasonForVisit?.toString()}
             </div>
             <div className="my-2">
-              <span className="text-xl font-bold">Previous Medicines: </span>
-              Medicine 1, Medicine 2
+              <p className="text-xl font-bold">Previous Medicines: </p>
+              <textarea disabled cols={40} rows={3}>
+                {patientRecord.previousMedicines}
+              </textarea>
             </div>
             <div className="my-2">
-              <span className="text-xl font-bold">Auto Refraction: </span>
-              OD: 123 OS: 456
+              <p className="text-xl font-bold">Auto Refraction: </p>
+              <b>OD:</b> {getValueDisplay(patientRecord.autoRefractionOD)}{" "}
+              <b>OS:</b> {getValueDisplay(patientRecord.autoRefractionOs)}
             </div>
             <p>
               <span className="text-xl font-bold">Visual Acuity: </span>
             </p>
-            <Table hoverable>
+            <Table hoverable className="w-full">
               <Table.Head>
                 <Table.HeadCell>EYE</Table.HeadCell>
                 <Table.HeadCell>SC</Table.HeadCell>
@@ -93,21 +80,25 @@ const PatientRecordModal = ({
                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                     OD
                   </Table.Cell>
-                  <Table.Cell className="p-0">data</Table.Cell>
-                  <Table.Cell className="p-0">data</Table.Cell>
-                  <Table.Cell className="p-0">data</Table.Cell>
-                  <Table.Cell className="p-0">data</Table.Cell>
-                  <Table.Cell className="p-0">data</Table.Cell>
+                  <Table.Cell>{getValueDisplay(visualAcuityOd?.sc)}</Table.Cell>
+                  <Table.Cell>{getValueDisplay(visualAcuityOd?.ph)}</Table.Cell>
+                  <Table.Cell>{getValueDisplay(visualAcuityOd?.cc)}</Table.Cell>
+                  <Table.Cell>
+                    {getValueDisplay(visualAcuityOd?.ncc)}
+                  </Table.Cell>
+                  <Table.Cell>{getValueDisplay(visualAcuityOd?.j)}</Table.Cell>
                 </Table.Row>
                 <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800 text-black">
                   <Table.Cell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
                     OS
                   </Table.Cell>
-                  <Table.Cell className="p-0">data</Table.Cell>
-                  <Table.Cell className="p-0">data</Table.Cell>
-                  <Table.Cell className="p-0">data</Table.Cell>
-                  <Table.Cell className="p-0">data</Table.Cell>
-                  <Table.Cell className="p-0">data</Table.Cell>
+                  <Table.Cell>{getValueDisplay(visualAcuityOs?.sc)}</Table.Cell>
+                  <Table.Cell>{getValueDisplay(visualAcuityOs?.ph)}</Table.Cell>
+                  <Table.Cell>{getValueDisplay(visualAcuityOs?.cc)}</Table.Cell>
+                  <Table.Cell>
+                    {getValueDisplay(visualAcuityOs?.ncc)}
+                  </Table.Cell>
+                  <Table.Cell>{getValueDisplay(visualAcuityOs?.j)}</Table.Cell>
                 </Table.Row>
               </Table.Body>
             </Table>
@@ -115,39 +106,39 @@ const PatientRecordModal = ({
             <div className="flex mb-5 gap-3">
               <div className="flex items-end gap-3">
                 <p className="font-bold">OD:</p>
-                data
+                {getValueDisplay(patientRecord.refractionOd)}
               </div>
               <div className="flex items-end gap-3">
                 <p className="font-bold">D(-)</p>
-                data
+                {getValueDisplay(patientRecord.refractionOdNegative)}
               </div>
               <div className="flex items-end gap-3">
                 <p className="font-bold">Dx</p>
-                data
+                {getValueDisplay(patientRecord.refractionOdX)}
               </div>
             </div>
             <div className="flex mb-5 gap-3">
               <div className="flex items-end gap-3">
                 <p className="font-bold">OS:</p>
-                data
+                {getValueDisplay(patientRecord.refractionOs)}
               </div>
               <div className="flex items-end gap-3">
                 <p className="font-bold">D(-)</p>
-                data
+                {getValueDisplay(patientRecord.refractionOsNegative)}
               </div>
               <div className="flex items-end gap-3">
                 <p className="font-bold">Dx</p>
-                data
+                {getValueDisplay(patientRecord.refractionOsX)}
               </div>
             </div>
             <div className="flex mb-5 gap-3">
               <div className="flex items-end gap-3">
                 <p className="font-bold">Add:(J.)</p>
-                data
+                {getValueDisplay(patientRecord.refractionAdd)}
               </div>
               <div className="flex items-end gap-3">
                 <p className="font-bold">PD</p>
-                data
+                {getValueDisplay(patientRecord.refractionPd)}
                 <span>mm</span>
               </div>
             </div>
@@ -155,28 +146,20 @@ const PatientRecordModal = ({
             <div className="flex gap-3 mb-5">
               <div className="flex items-end gap-3">
                 <p className="font-bold">Time:</p>
-                data
+                {getValueDisplay(patientRecord.appointmentTime)}
               </div>
               <div className="flex items-end gap-3">
                 <p className="font-bold">OD:</p>
-                data
+                {getValueDisplay(patientRecord.intraOcularPressureOD)}
               </div>
               <div className="flex items-end gap-3">
                 <p className="font-bold">OS:</p>
-                data
+                {getValueDisplay(patientRecord.intraOcularPressureOS)}
               </div>
             </div>
             <div>
               <span className="mb-3 mt-8 font-bold text-xl">MD: </span>
-              <span>Lorem Ipsum</span>
-            </div>
-            <div>
-              <canvas
-                ref={canvasRef}
-                className="border border-black"
-                width="700"
-                height="500"
-              />
+              <span>{getValueDisplay(patientRecord.medicalDoctor)}</span>
             </div>
           </div>
         </div>

@@ -13,6 +13,7 @@ export type VisualAcuity = {
 type RecordInputType = {
   id?: number;
   recordNo?: string;
+  visitType?: string;
   patientInformationId?: number;
   reasonForVisit?: string[];
   previousMedicines?: string;
@@ -39,6 +40,7 @@ type RecordInputType = {
 type RecordType = {
   id: number;
   recordNo: string;
+  visitType: string;
   patientInformationId: number;
   reasonForVisit: string[];
   previousMedicines: string;

@@ -5,7 +5,7 @@ import {
   getPatientRecordList,
 } from "@/utils/dataFetchers";
 import { convertToReadableDate } from "@/utils/displayParser";
-import { PatientRecord } from "@prisma/client";
+import { PatientRecord, Prisma } from "@prisma/client";
 import { Button } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -27,15 +27,6 @@ const PatientRecordHistory = (props: PatientRecordHistoryProps) => {
   );
   const dispatch = useDispatch<AppDispatch>();
 
-  // useEffect(() => {
-  //   getPatientRecordList(dispatch, {
-  //     patientInformationId,
-  //     sortOrder,
-  //     page: currentPage,
-  //     limit: 3,
-  //   });
-  // }, []);
-
   useEffect(() => {
     getPatientRecordList(dispatch, {
       patientInformationId,
@@ -46,8 +37,6 @@ const PatientRecordHistory = (props: PatientRecordHistoryProps) => {
   }, [sortOrder]);
 
   useEffect(() => {
-    console.log("total records update:", recordList?.totalRecords);
-
     setCurrentPage(1);
   }, [recordList?.totalRecords]);
 
@@ -72,7 +61,11 @@ const PatientRecordHistory = (props: PatientRecordHistoryProps) => {
     <div className="mt-4">
       {isPatientRecordModalOpen && patientRecord && (
         <PatientRecordModal
-          patientRecord={patientRecord}
+          patientRecord={
+            patientRecord as Prisma.PatientRecordGetPayload<{
+              include: { visualAcuities: true };
+            }>
+          }
           isOpen={isPatientRecordModalOpen}
           setIsOpen={setIsPatientRecordModalOpen}
         />

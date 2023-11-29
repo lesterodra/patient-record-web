@@ -27,7 +27,7 @@ export async function GET(request: NextRequest) {
       orderBy: {
         id: orderBy,
       } as any,
-      include: { patientInformation: true },
+      include: { patientInformation: true, visualAcuities: true },
     });
 
     return new NextResponse(
@@ -70,6 +70,7 @@ export async function POST(request: Request) {
       refractionOsX,
       refractionAdd,
       refractionPd,
+      visitType,
     } = await request.json();
 
     await prisma.$transaction(async (tx) => {
@@ -92,6 +93,7 @@ export async function POST(request: Request) {
           refractionOsX,
           refractionAdd,
           refractionPd,
+          visitType,
         },
         select: { id: true },
       });
