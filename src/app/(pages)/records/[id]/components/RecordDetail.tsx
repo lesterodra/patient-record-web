@@ -4,11 +4,7 @@ import CheckboxItem from "@/app/components/CheckboxItem";
 import { Prisma } from "@prisma/client";
 import { Table } from "flowbite-react";
 import DrawingModal from "./DrawingModal";
-import Image from "next/image";
-import { AiFillDelete } from "react-icons/ai";
-import { deleteDrawing } from "@/utils/dataFetchers";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
+import DrawingList from "./DrawingList";
 
 type RecordDetailType = {
   recordDetail: Prisma.PatientRecordGetPayload<{ include: { drawings: true } }>;
@@ -16,7 +12,6 @@ type RecordDetailType = {
 
 const RecordDetail = (props: RecordDetailType) => {
   const { recordDetail } = props;
-  const dispatch = useDispatch<AppDispatch>();
 
   return (
     <div>
@@ -145,29 +140,7 @@ const RecordDetail = (props: RecordDetailType) => {
       </div>
       <div className="mt-8">
         <span className="mb-3 mt-8 font-bold text-xl">Diagnosis: </span>
-        <div className="flex gap-3 flex-wrap">
-          {recordDetail.drawings.map((drawing, index) => (
-            <div
-              key={`image-${index}`}
-              className="border border-black relative p-2"
-            >
-              <div
-                className="absolute p-2 right-2 border border-black rounded-xl bg-lime-100 hover:bg-lime-300 cursor-pointer"
-                onClick={async () => {
-                  deleteDrawing(dispatch, drawing.id);
-                }}
-              >
-                <AiFillDelete />
-              </div>
-              <Image
-                src={drawing.data as string}
-                alt=""
-                width={500}
-                height={400}
-              />
-            </div>
-          ))}
-        </div>
+        <DrawingList patientRecordId={recordDetail.id} />
       </div>
     </div>
   );

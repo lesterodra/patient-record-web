@@ -1,6 +1,6 @@
 import DrawingCanvas from "@/app/components/DrawingCanvas";
 import { AppDispatch, useAppSelector } from "@/redux/store";
-import { saveDrawing } from "@/utils/dataFetchers";
+import { fetchDrawings, saveDrawing } from "@/utils/dataFetchers";
 import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
@@ -22,6 +22,8 @@ const DrawingModal = (props: DrawingModalProps) => {
       patientRecordId,
       dataUrl: drawingDataUrl ?? "",
     });
+    await fetchDrawings(dispatch, patientRecordId);
+    setIsOpen(false);
   };
 
   return (

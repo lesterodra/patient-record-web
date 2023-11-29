@@ -1,5 +1,9 @@
 import { fetchPatients } from "@/redux/features/patient-slice";
-import { fetchRecords, appendRecords } from "@/redux/features/record-slice";
+import {
+  fetchRecords,
+  appendRecords,
+  setDrawingList,
+} from "@/redux/features/record-slice";
 import { AppDispatch } from "@/redux/store";
 import { PatientRecord } from "@prisma/client";
 import axios from "axios";
@@ -160,6 +164,22 @@ export const deleteDrawing = async (dispatch: AppDispatch, id: number) => {
     const response = await axios.delete(`/api/drawings/${id}`);
 
     return response.data;
+  } catch (error) {
+    console.log({ error });
+  }
+};
+
+export const fetchDrawings = async (
+  dispatch: AppDispatch,
+  patientRecordId: number
+) => {
+  try {
+    const response = await axios.get("/api/drawings", {
+      params: { patientRecordId },
+    });
+
+    dispatch(setDrawingList(response.data));
+    return;
   } catch (error) {
     console.log({ error });
   }

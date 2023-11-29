@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { Pagination, Table } from "flowbite-react";
-import PatientRecordModal from "@/app/components/PatientRecordModal";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { getPatientRecordList } from "@/utils/dataFetchers";

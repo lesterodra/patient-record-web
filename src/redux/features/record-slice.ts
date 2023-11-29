@@ -1,4 +1,4 @@
-import { PatientInformation, PatientRecord } from "@prisma/client";
+import { Drawing, PatientInformation, PatientRecord } from "@prisma/client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type VisualAcuity = {
@@ -75,6 +75,7 @@ type InitialState = {
     recordList?: RecordListResponse;
     patientRecordInput?: RecordInputType;
     drawingDataUrl?: string;
+    drawingList?: Drawing[];
   };
 };
 
@@ -83,6 +84,7 @@ const initialState: InitialState = {
     recordList: undefined,
     patientRecordInput: {},
     drawingDataUrl: "",
+    drawingList: undefined,
   },
 };
 
@@ -141,6 +143,14 @@ export const record = createSlice({
         },
       };
     },
+    setDrawingList: (state, action: PayloadAction<Drawing[]>) => {
+      return {
+        value: {
+          ...state.value,
+          drawingList: action.payload,
+        },
+      };
+    },
   },
 });
 
@@ -150,5 +160,6 @@ export const {
   appendRecords,
   clearRecordInput,
   setDrawingDataUrl,
+  setDrawingList,
 } = record.actions;
 export default record.reducer;
