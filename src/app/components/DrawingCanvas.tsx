@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 const DrawingCanvas = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const contextRef = useRef<CanvasRenderingContext2D | null>(null);
+  const sectionRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch<AppDispatch>();
 
   const [isDrawing, setIsDrawing] = useState<boolean>(false);
@@ -17,7 +18,7 @@ const DrawingCanvas = () => {
       return;
     }
 
-    canvas.width = 800;
+    canvas.width = sectionRef.current?.clientWidth ?? 0;
     canvas.height = 300;
 
     const context = canvas.getContext("2d") as CanvasRenderingContext2D;
@@ -97,7 +98,7 @@ const DrawingCanvas = () => {
   };
 
   return (
-    <div className="border border-black">
+    <div ref={sectionRef} className="border border-black w-full">
       <canvas
         className="canvas-container"
         ref={canvasRef}

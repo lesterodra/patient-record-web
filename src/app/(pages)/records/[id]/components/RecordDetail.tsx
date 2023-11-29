@@ -138,9 +138,9 @@ const RecordDetail = (props: RecordDetailType) => {
         <span className="mb-3 mt-8 font-bold text-xl">MD: </span>
         <span>{recordDetail.medicalDoctor}</span>
       </div>
-      <div>
+      <div className="mt-8">
         <span className="mb-3 mt-8 font-bold text-xl">Diagnosis: </span>
-        <div className="flex gap-3">
+        <div className="flex gap-3 flex-wrap">
           {recordDetail.drawings.map((drawing, index) => (
             <div key={`image-${index}`} className="border border-black">
               <Image
