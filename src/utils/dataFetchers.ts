@@ -154,3 +154,13 @@ export const saveDrawing = async (
     console.log({ error });
   }
 };
+
+export const deleteDrawing = async (dispatch: AppDispatch, id: number) => {
+  try {
+    const response = await axios.delete(`/api/drawings/${id}`);
+
+    return response.data;
+  } catch (error) {
+    console.log({ error });
+  }
+};
