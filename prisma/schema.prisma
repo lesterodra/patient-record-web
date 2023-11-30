@@ -95,3 +95,29 @@ model Drawing {
 
   @@map("drawings")
 }
+
+model Department {
+  id        Int       @id @default(autoincrement())
+  name      String
+  users     User[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime? @updatedAt
+
+  @@map("departments")
+}
+
+model User {
+  id           Int        @id @default(autoincrement())
+  username     String?    @unique
+  password     String?
+  email        String?
+  firstName    String?
+  lastName     String?
+  middleName   String?
+  departmentId Int
+  department   Department @relation(fields: [departmentId], references: [id])
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime?  @updatedAt
+
+  @@map("users")
+}

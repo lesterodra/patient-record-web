@@ -4,6 +4,7 @@ import {
   appendRecords,
   setDrawingList,
 } from "@/redux/features/record-slice";
+import { fetchUsers } from "@/redux/features/user-slice";
 import { AppDispatch } from "@/redux/store";
 import axios from "axios";
 
@@ -182,6 +183,49 @@ export const fetchDrawings = async (
 
     dispatch(setDrawingList(response.data));
     return;
+  } catch (error) {
+    console.log({ error });
+  }
+};
+
+export const saveUser = async (
+  dispatch: AppDispatch,
+  data: {
+    firstName?: string;
+    lastName?: string;
+    middleName?: string;
+    email?: string;
+    departmentId?: number;
+  }
+) => {
+  try {
+    const { firstName, lastName, middleName, email, departmentId } = data;
+
+    const response = await axios.post("/api/users", {
+      firstName,
+      lastName,
+      middleName,
+      email,
+      departmentId,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log({ error });
+  }
+};
+
+export const getUserList = async (
+  dispatch: AppDispatch,
+  data?: { page?: number; limit?: number }
+) => {
+  try {
+    const { page = 1, limit = 5 } = data ?? {};
+    const response = await axios.get("/api/users", {
+      params: { page, limit },
+    });
+
+    dispatch(fetchUsers(response.data));
   } catch (error) {
     console.log({ error });
   }
