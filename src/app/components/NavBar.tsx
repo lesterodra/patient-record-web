@@ -1,12 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, redirect, useRouter } from "next/navigation";
 import Image from "next/image";
 
 const NavBar = () => {
   const [isToggled, setIsToggled] = useState<boolean>(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   const isActive = (pagePath: string): string =>
     pathname.split("/").includes(pagePath) ||
@@ -59,7 +60,7 @@ const NavBar = () => {
             <div className="flex items-center">
               <div className="flex items-center ml-3">
                 <div>
-                  <button
+                  {/* <button
                     type="button"
                     className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
                     aria-expanded="false"
@@ -73,6 +74,13 @@ const NavBar = () => {
                       height="60"
                       className="w-8 h-8 rounded-full"
                     />
+                  </button> */}
+                  <button
+                    onClick={() => {
+                      router.push("/api/auth/signout");
+                    }}
+                  >
+                    Logout
                   </button>
                 </div>
                 <div
