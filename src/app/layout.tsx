@@ -22,14 +22,15 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthProvider>
           <ReduxProvider>
-            <div>
+            {/* <div>
               <NavBar />
               <div className="p-4 sm:ml-64">
                 <div className="p-0 rounded-lg dark:border-gray-700 mt-14">
                   {children}
                 </div>
               </div>
-            </div>
+            </div> */}
+            {children}
           </ReduxProvider>
         </AuthProvider>
       </body>

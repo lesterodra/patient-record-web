@@ -9,7 +9,6 @@ import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { getPatientList } from "@/utils/dataFetchers";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
-import { useSession } from "next-auth/react";
 
 const PatientList = () => {
   const [isUpdatePatientModalOpen, setIsUpdatePatientModalOpen] =
@@ -21,8 +20,6 @@ const PatientList = () => {
   useEffect(() => {
     getPatientList(dispatch, { page: currentPage, limit: 5 });
   }, [currentPage]);
-  const session = useSession();
-  console.log({ session });
 
   return (
     <>

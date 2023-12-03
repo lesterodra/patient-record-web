@@ -10,13 +10,13 @@ const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
+        console.log({ credentials });
         if (typeof credentials !== "undefined") {
           const user = { id: "1", username: "test", name: "john doe" };
           //   const res = await authenticate(
           //     credentials.email,
           //     credentials.password
           //   );
-          console.log({ credentials });
           //   if (typeof res !== "undefined") {
           //     return { ...res.user, apiToken: res.token };
           //   } else {
@@ -36,7 +36,7 @@ const authOptions: NextAuthOptions = {
     maxAge: 60 * 60,
   },
   pages: {
-    // signIn: "/login",
+    signIn: "/login",
   },
 };
 
