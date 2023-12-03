@@ -24,18 +24,20 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
-      <div className="flex flex-col border rounded-lg bg-white p-5">
+    <div className="flex justify-center items-center h-screen bg-neutral-200">
+      <div className="flex flex-col border rounded-lg bg-white p-10">
         <p>Username</p>
         <input type="text" className="rounded" />
-        <p>Password</p>
+        <p className="mt-2">Password</p>
         <input type="password" className="rounded" />
-        <button
-          onClick={onLoginClick}
-          className="border w-fit mt-3 py-1 px-2 bg-blue-700 rounded text-white"
-        >
-          Sign in
-        </button>
+        <div className="flex justify-center mt-5">
+          <button
+            onClick={onLoginClick}
+            className="border w-fit py-1 px-2 bg-blue-700 rounded text-white"
+          >
+            Sign in
+          </button>
+        </div>
       </div>
     </div>
   );
