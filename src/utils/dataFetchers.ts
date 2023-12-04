@@ -1,3 +1,4 @@
+import prisma from "@/db";
 import { fetchPatients } from "@/redux/features/patient-slice";
 import {
   fetchRecords,
@@ -226,6 +227,20 @@ export const getUserList = async (
     });
 
     dispatch(fetchUsers(response.data));
+  } catch (error) {
+    console.log({ error });
+  }
+};
+
+export const getUserByEmailAddress = async (email: string) => {
+  try {
+    const response = await axios.get("/api/users", {
+      params: { email },
+    });
+
+    console.log({ response });
+
+    return response.data;
   } catch (error) {
     console.log({ error });
   }

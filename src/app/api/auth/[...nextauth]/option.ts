@@ -23,7 +23,10 @@ const authOptions: NextAuthOptions = {
           //     return null;
           //   }
 
-          return user;
+          return credentials?.username === "admin" &&
+            credentials?.password === "admin"
+            ? user
+            : null;
         } else {
           return null;
         }
