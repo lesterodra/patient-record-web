@@ -1,6 +1,6 @@
 "use client";
 
-import { getUserByEmailAddress } from "@/utils/dataFetchers";
+import { getUserByEmailAddress, registerUser } from "@/utils/dataFetchers";
 import { User } from "@prisma/client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -27,7 +27,7 @@ const Register = () => {
     setUser(users.data[0]);
   };
 
-  const onCreateAccountClick = () => {
+  const onCreateAccountClick = async () => {
     if (!username) {
       setCreateAccountErrorMessage("Username is required.");
       return;
@@ -45,8 +45,7 @@ const Register = () => {
 
     setCreateAccountErrorMessage("");
 
-    // save user account
-
+    await registerUser(user?.id as number, username, password);
     router.push("/login");
   };
 

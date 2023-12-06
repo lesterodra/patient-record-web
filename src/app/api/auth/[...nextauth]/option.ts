@@ -1,5 +1,7 @@
+import prisma from "@/db";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import bcrypt from "bcrypt";
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -10,22 +12,14 @@ const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        console.log({ credentials });
         if (typeof credentials !== "undefined") {
-          const user = { id: "1", username: "test", name: "john doe" };
-          //   const res = await authenticate(
-          //     credentials.email,
-          //     credentials.password
-          //   );
-          //   if (typeof res !== "undefined") {
-          //     return { ...res.user, apiToken: res.token };
-          //   } else {
-          //     return null;
-          //   }
+          const user = await prisma.user.findFirst({
+            where: { username: credentials.username },
+          });
 
-          return credentials?.username === "admin" &&
-            credentials?.password === "admin"
-            ? user
+          return user &&
+            bcrypt.compareSync(credentials?.password, user.password ?? "")
+            ? { id: user.id.toString(), username: user.username }
             : null;
         } else {
           return null;

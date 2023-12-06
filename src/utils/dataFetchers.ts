@@ -245,3 +245,20 @@ export const getUserByEmailAddress = async (email: string) => {
     console.log({ error });
   }
 };
+
+export const registerUser = async (
+  userId: number,
+  username: string,
+  password: string
+) => {
+  try {
+    const response = await axios.patch(`/api/users/${userId}`, {
+      body: { username, password },
+    });
+
+    console.log({ response });
+  } catch (error) {
+    console.error({ error });
+    throw new Error("Register user error.");
+  }
+};
