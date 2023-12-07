@@ -197,10 +197,12 @@ export const saveUser = async (
     middleName?: string;
     email?: string;
     departmentId?: number;
+    status?: string;
   }
 ) => {
   try {
-    const { firstName, lastName, middleName, email, departmentId } = data;
+    const { firstName, lastName, middleName, email, departmentId, status } =
+      data;
 
     const response = await axios.post("/api/users", {
       firstName,
@@ -208,11 +210,13 @@ export const saveUser = async (
       middleName,
       email,
       departmentId,
+      status,
     });
 
     return response.data;
   } catch (error) {
     console.log({ error });
+    throw error;
   }
 };
 
@@ -260,5 +264,17 @@ export const registerUser = async (
   } catch (error) {
     console.error({ error });
     throw new Error("Register user error.");
+  }
+};
+
+export const getDepartmentList = async () => {
+  try {
+    const response = await axios.get(`/api/departments`);
+
+    console.log({ response });
+    return response.data;
+  } catch (error) {
+    console.error({ error });
+    throw new Error("Fetch department error.");
   }
 };

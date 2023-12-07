@@ -21,6 +21,7 @@ export async function GET(request: NextRequest) {
         firstName: true,
         department: true,
         email: true,
+        status: true,
       },
       skip,
       take: limit,
@@ -50,8 +51,15 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: Request) {
   try {
-    const { firstName, lastName, middleName, email, departmentId, username } =
-      await request.json();
+    const {
+      firstName,
+      lastName,
+      middleName,
+      email,
+      departmentId,
+      username,
+      status,
+    } = await request.json();
 
     const user = await prisma.user.create({
       data: {
@@ -61,6 +69,7 @@ export async function POST(request: Request) {
         middleName,
         email,
         departmentId,
+        status,
       },
       select: { id: true },
     });

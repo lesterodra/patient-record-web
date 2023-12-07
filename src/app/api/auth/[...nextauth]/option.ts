@@ -18,6 +18,7 @@ const authOptions: NextAuthOptions = {
           });
 
           return user &&
+            user.status === "Active" &&
             bcrypt.compareSync(credentials?.password, user.password ?? "")
             ? { id: user.id.toString(), username: user.username }
             : null;
@@ -30,7 +31,7 @@ const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
     //  maxAge: 24 * 60 * 60 = 1day
-    maxAge: 60 * 60,
+    maxAge: 60 * 60, // 1hr
   },
   pages: {
     signIn: "/login",

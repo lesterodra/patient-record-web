@@ -4,16 +4,27 @@ import Dropdown from "@/app/components/Dropdown";
 import LabeledInput from "@/app/components/LabeledInput";
 import { clearUserInput, updateUserInput } from "@/redux/features/user-slice";
 import { AppDispatch, useAppSelector } from "@/redux/store";
-import { getUserList, saveUser } from "@/utils/dataFetchers";
+import { getDepartmentList, getUserList, saveUser } from "@/utils/dataFetchers";
+import { Department } from "@prisma/client";
 import { Button, Modal } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 const CreateUserModal = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [departments, setDepartments] = useState<Department[]>([]);
   const dispatch = useDispatch<AppDispatch>();
-
   const { userInput } = useAppSelector((state) => state.userReducer.value);
+
+  useEffect(() => {
+    async function setDepartmentList() {
+      const departmentList = await getDepartmentList();
+
+      setDepartments(departmentList);
+    }
+
+    setDepartmentList();
+  }, []);
 
   const onCreateUserClick = async () => {
     await saveUser(dispatch, userInput ?? {});
@@ -29,7 +40,7 @@ const CreateUserModal = () => {
         <Modal.Header>Create User Information</Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
-            <div className="flex gap-10">
+            <div className="flex gap-10 flex-wrap">
               <LabeledInput
                 label="First Name"
                 onChange={(e) => {
@@ -49,18 +60,44 @@ const CreateUserModal = () => {
                 }}
               />
             </div>
-            <div className="flex gap-10">
+            <div className="flex gap-10 flex-wrap">
               <LabeledInput
                 label="Email"
                 onChange={(e) => {
                   dispatch(updateUserInput({ email: e.target.value }));
                 }}
               />
-              <Dropdown
+              {/* <Dropdown
                 label="Department"
                 options={["Admin", "Doctor"]}
                 onChange={(e) => {
                   dispatch(updateUserInput({ departmentId: 1 }));
+                }}
+              /> */}
+              <div>
+                <p>Department</p>
+                <select
+                  className="rounded-md"
+                  name="department"
+                  onChange={(e) => {
+                    dispatch(
+                      updateUserInput({ departmentId: Number(e.target.value) })
+                    );
+                  }}
+                >
+                  <option value=""></option>
+                  {departments.map((department, index) => (
+                    <option key={`department-${index}`} value={department.id}>
+                      {department.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <Dropdown
+                label="Status"
+                options={["Active", "Inactive"]}
+                onChange={(e) => {
+                  dispatch(updateUserInput({ status: e.target.value }));
                 }}
               />
             </div>

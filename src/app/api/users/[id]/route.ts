@@ -11,6 +11,14 @@ export async function PATCH(
     const { password, username } = body;
     const id = Number(params.id);
 
+    const user = await prisma.user.findFirst({ where: { id } });
+
+    if (!user || user?.username !== null) {
+      return new NextResponse(JSON.stringify({ message: "Invalid user." }), {
+        status: 400,
+      });
+    }
+
     await prisma.user.update({
       data: {
         username,

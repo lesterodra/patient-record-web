@@ -3,7 +3,7 @@ import { ChangeEventHandler } from "react";
 type DropdownProps = {
   label: string;
   width?: string;
-  options: string[];
+  options: (string | null)[];
   onChange?: ChangeEventHandler<HTMLSelectElement>;
 };
 

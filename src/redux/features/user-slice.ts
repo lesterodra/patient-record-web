@@ -7,6 +7,7 @@ type UserType = {
   lastName?: string;
   middleName?: string;
   email?: string;
+  status?: string;
   departmentId?: number;
   department?: { name: string };
 };

@@ -114,6 +114,7 @@ model User {
   firstName    String?
   lastName     String?
   middleName   String?
+  status       String?
   departmentId Int
   department   Department @relation(fields: [departmentId], references: [id])
   createdAt    DateTime   @default(now())

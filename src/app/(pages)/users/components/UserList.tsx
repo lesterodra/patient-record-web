@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { getUserList } from "@/utils/dataFetchers";
 import { getValueDisplay } from "@/utils/displayParser";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 const sampleUsers = [
   {
@@ -47,6 +48,7 @@ const UserList = () => {
             <Table.HeadCell className="w-52">Name</Table.HeadCell>
             <Table.HeadCell>Email</Table.HeadCell>
             <Table.HeadCell className="w-52">Department</Table.HeadCell>
+            <Table.HeadCell className="w-52">Status</Table.HeadCell>
             <Table.HeadCell className="w-3">
               <span className="sr-only">Edit</span>
             </Table.HeadCell>
@@ -67,6 +69,7 @@ const UserList = () => {
                 <Table.Cell>
                   {getValueDisplay(user?.department?.name)}
                 </Table.Cell>
+                <Table.Cell>{getValueDisplay(user?.status)}</Table.Cell>
                 <Table.Cell>
                   <p
                     className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
@@ -91,6 +94,18 @@ const UserList = () => {
                 </Table.Cell>
               </Table.Row>
             ))}
+            {userList?.totalRecords === 0 && (
+              <Table.Row>
+                <Table.Cell colSpan={5}>No Records found!</Table.Cell>
+              </Table.Row>
+            )}
+            {!userList && (
+              <Table.Row>
+                <Table.Cell colSpan={5}>
+                  <LoadingSpinner />
+                </Table.Cell>
+              </Table.Row>
+            )}
           </Table.Body>
         </Table>
         <div className="flex justify-between items-center">
