@@ -41,7 +41,17 @@ const PatientDetail = ({
           <b>Patient no: </b> {getValueDisplay(patientDetail.patientNo)}
         </p>
         <p className="text-sm">
-          <b>Address:</b> {getValueDisplay(patientDetail.address)}
+          <b>Address Line 1:</b> {getValueDisplay(patientDetail.address)}
+        </p>
+        <p className="text-sm">
+          <b>Province:</b> {getValueDisplay(patientDetail.province)}
+        </p>
+        <p className="text-sm">
+          <b>City / Municipality:</b>{" "}
+          {getValueDisplay(patientDetail.municipality)}
+        </p>
+        <p className="text-sm">
+          <b>Barangay:</b> {getValueDisplay(patientDetail.barangay)}
         </p>
         <p className="text-sm">
           <b>Birth date:</b>{" "}

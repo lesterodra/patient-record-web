@@ -6,10 +6,18 @@ import DatePicker from "@/app/components/DatePicker";
 import Dropdown from "@/app/components/Dropdown";
 import GenderSelect from "@/app/components/GenderSelect";
 import LabeledInput from "@/app/components/LabeledInput";
-import { MEDICAL_HISTORY, PREVIOUS_SURGERIES } from "@/utils/constants";
+import {
+  MEDICAL_HISTORY,
+  NATIONALITY_LIST,
+  PREVIOUS_SURGERIES,
+} from "@/utils/constants";
+import AddressInput from "@/app/components/AddressInput";
+import { useCallback } from "react";
 
 const PersonalInformationInput = () => {
   const dispatch = useDispatch<AppDispatch>();
+
+  const addressInputComponent = useCallback(() => <AddressInput />, []);
 
   return (
     <>
@@ -42,6 +50,7 @@ const PersonalInformationInput = () => {
           }}
         />
       </div>
+      <hr className="my-5" />
       <div className="mb-3"></div>
       <div className="content">
         <div className="mb-3">
@@ -88,18 +97,10 @@ const PersonalInformationInput = () => {
             }}
           />
         </div>
-        <div className="flex gap-3 justify-between mb-3">
-          <LabeledInput
-            label="Address"
-            inputClassName="w-96"
-            onChange={(e) => {
-              dispatch(
-                updatePatientInformationInput({
-                  address: e.target.value,
-                })
-              );
-            }}
-          />
+        <hr className="my-5" />
+        <div className="mb-3">{addressInputComponent()}</div>
+        <hr className="my-5" />
+        <div className="flex gap-10 mb-3 flex-wrap">
           <GenderSelect
             onGenderChanged={(value: string) => {
               dispatch(
@@ -119,11 +120,9 @@ const PersonalInformationInput = () => {
               );
             }}
           />
-        </div>
-        <div className="flex gap-2 justify-between mb-3">
           <Dropdown
             label="Nationality"
-            options={["Filipino", "Others"]}
+            options={["Others", ...NATIONALITY_LIST]}
             onChange={(e) => {
               dispatch(
                 updatePatientInformationInput({
@@ -134,7 +133,7 @@ const PersonalInformationInput = () => {
           />
           <Dropdown
             label="Civil Status"
-            options={["Single", "Married"]}
+            options={["Single", "Married", "Divorced", "Widowed"]}
             onChange={(e) => {
               dispatch(
                 updatePatientInformationInput({
@@ -143,6 +142,8 @@ const PersonalInformationInput = () => {
               );
             }}
           />
+        </div>
+        <div className="flex gap-10 mb-3">
           <LabeledInput
             label="Mobile Number"
             onChange={(e) => {
@@ -153,7 +154,7 @@ const PersonalInformationInput = () => {
               );
             }}
           />
-          <div className="flex gap-3">
+          <div className="flex gap-10">
             <LabeledInput
               label="Height"
               inputClassName="w-14"
@@ -179,6 +180,7 @@ const PersonalInformationInput = () => {
           </div>
         </div>
       </div>
+      <hr className="my-5" />
       <p className="mb-3 mt-8 font-bold text-xl">Known Allergies</p>
       <div className="flex gap-10">
         <CheckboxItem

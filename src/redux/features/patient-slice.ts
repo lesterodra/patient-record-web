@@ -11,6 +11,9 @@ type PatientType = {
   weight?: string;
   birthDate?: string;
   address?: string;
+  province?: string;
+  municipality?: string;
+  barangay?: string;
   gender?: string;
   nationality?: string;
   civilStatus?: string;

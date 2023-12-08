@@ -22,6 +22,9 @@ model PatientInformation {
   weight                   String?
   birthDate                String?
   address                  String?
+  province                 String?
+  municipality             String?
+  barangay                 String?
   gender                   String?
   nationality              String?
   civilStatus              String?
