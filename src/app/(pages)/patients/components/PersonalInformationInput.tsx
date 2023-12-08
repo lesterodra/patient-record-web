@@ -196,6 +196,10 @@ const PersonalInformationInput = () => {
           }}
         />
       </div>
+      <div className="mt-4">
+        <p className="text-xs italic">Notes</p>
+        <textarea className="rounded w-full h-28" />
+      </div>
       <p className="mb-3 mt-8 font-bold text-xl">
         How did you know of our institution?
       </p>
@@ -220,6 +224,10 @@ const PersonalInformationInput = () => {
           }}
         />
       </div>
+      <div className="mt-4">
+        <p className="text-xs italic">Notes</p>
+        <textarea className="rounded w-full h-28" />
+      </div>
       <p className="mb-3 mt-8 font-bold text-xl">Personal Medical History</p>
       <div className="flex gap-10">
         <CheckboxItem
@@ -235,6 +243,10 @@ const PersonalInformationInput = () => {
           }}
         />
       </div>
+      <div className="mt-4">
+        <p className="text-xs italic">Notes</p>
+        <textarea className="rounded w-full h-28" />
+      </div>
       <p className="mb-3 mt-8 font-bold text-xl">Previous Laser/Surgery</p>
       <div className="flex gap-10">
         <CheckboxItem
@@ -249,6 +261,10 @@ const PersonalInformationInput = () => {
             );
           }}
         />
+      </div>
+      <div className="mt-4">
+        <p className="text-xs italic">Notes</p>
+        <textarea className="rounded w-full h-28" />
       </div>
     </>
   );

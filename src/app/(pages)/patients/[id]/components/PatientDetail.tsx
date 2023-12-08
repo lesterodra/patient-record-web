@@ -82,17 +82,33 @@ const PatientDetail = ({
           <b>Known Allergy: </b>{" "}
           {getValueDisplay(patientDetail?.knownAllergies?.toString())}
         </p>
+        <div>
+          <p className="text-xs italic">Notes</p>
+          <textarea disabled className="rounded w-full h-28" />
+        </div>
         <p>
           <b>Referral From: </b> {patientDetail.sourceOfReferral}
         </p>
+        <div>
+          <p className="text-xs italic">Notes</p>
+          <textarea disabled className="rounded w-full h-28" />
+        </div>
         <p>
           <b>Personal Medical History: </b>{" "}
           {getValueDisplay(patientDetail.personalMedicalHistories?.toString())}
         </p>
+        <div>
+          <p className="text-xs italic">Notes</p>
+          <textarea disabled className="rounded w-full h-28" />
+        </div>
         <p>
           <b>Previous Laser/Surgery: </b>{" "}
           {getValueDisplay(patientDetail.previousSurgeries?.toString())}
         </p>
+        <div>
+          <p className="text-xs italic">Notes</p>
+          <textarea disabled className="rounded w-full h-28" />
+        </div>
         <PatientRecordHistory patientInformationId={patientDetail.id} />
       </div>
     </div>

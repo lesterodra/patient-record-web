@@ -75,11 +75,13 @@ const MedicalInformationInput = () => {
           }}
         />
       </div>
+      <div className="mt-4">
+        <p className="text-xs italic">Notes</p>
+        <textarea className="rounded w-full h-28" />
+      </div>
       <p className="mb-3 mt-8 font-bold text-xl">Previous Meds</p>
       <textarea
-        cols={40}
-        rows={3}
-        className="rounded-md"
+        className="rounded-md w-full h-28"
         onChange={(e) => {
           dispatch(
             updatePatientRecordInput({
