@@ -12,32 +12,35 @@ datasource db {
 }
 
 model PatientInformation {
-  id                       Int             @id @default(autoincrement())
-  patientNo                String?         @unique
-  firstName                String?
-  lastName                 String?
-  middleName               String?
-  philHealthNo             String?
-  height                   String?
-  weight                   String?
-  birthDate                String?
-  address                  String?
-  province                 String?
-  municipality             String?
-  barangay                 String?
-  gender                   String?
-  nationality              String?
-  civilStatus              String?
-  contactNo                String?
-  knownAllergies           Json?
-  personalMedicalHistories Json?
-  previousSurgeries        Json?
-  appointmentType          String?
-  dilateType               String?
-  sourceOfReferral         String?
-  patientRecords           PatientRecord[]
-  createdAt                DateTime        @default(now())
-  updatedAt                DateTime?       @updatedAt
+  id                            Int             @id @default(autoincrement())
+  patientNo                     String?         @unique
+  firstName                     String?
+  lastName                      String?
+  middleName                    String?
+  philHealthNo                  String?
+  height                        String?
+  weight                        String?
+  birthDate                     String?
+  address                       String?
+  province                      String?
+  municipality                  String?
+  barangay                      String?
+  gender                        String?
+  nationality                   String?
+  civilStatus                   String?
+  contactNo                     String?
+  knownAllergies                Json?
+  knownAllergiesNotes           String?         @db.Text
+  personalMedicalHistories      Json?
+  personalMedicalHistoriesNotes String?         @db.Text
+  previousSurgeries             Json?
+  previousSurgeriesNotes        String?         @db.Text
+  appointmentType               String?
+  dilateType                    String?
+  sourceOfReferral              String?
+  patientRecords                PatientRecord[]
+  createdAt                     DateTime        @default(now())
+  updatedAt                     DateTime?       @updatedAt
 
   @@map("patient_informations")
 }
@@ -46,6 +49,7 @@ model PatientRecord {
   id                    Int                 @id @default(autoincrement())
   recordNo              String?             @unique
   reasonForVisit        Json?
+  reasonForVisitNotes   String?             @db.Text
   visitType             String?
   previousMedicines     String?             @db.Text
   autoRefractionOD      String?

@@ -13,6 +13,7 @@ import {
 } from "@/utils/constants";
 import AddressInput from "@/app/components/AddressInput";
 import { useCallback } from "react";
+import Notes from "@/app/components/Notes";
 
 const PersonalInformationInput = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -181,25 +182,6 @@ const PersonalInformationInput = () => {
         </div>
       </div>
       <hr className="my-5" />
-      <p className="mb-3 mt-8 font-bold text-xl">Known Allergies</p>
-      <div className="flex gap-10">
-        <CheckboxItem
-          name="knownAllergies"
-          items={["Dust", "Seafood", "Medication", "Others"]}
-          isRow
-          onSelectedItemsChanged={(selectedItems) => {
-            dispatch(
-              updatePatientInformationInput({
-                knownAllergies: selectedItems,
-              })
-            );
-          }}
-        />
-      </div>
-      <div className="mt-4">
-        <p className="text-xs italic">Notes</p>
-        <textarea className="rounded w-full h-28" />
-      </div>
       <p className="mb-3 mt-8 font-bold text-xl">
         How did you know of our institution?
       </p>
@@ -224,10 +206,30 @@ const PersonalInformationInput = () => {
           }}
         />
       </div>
-      <div className="mt-4">
-        <p className="text-xs italic">Notes</p>
-        <textarea className="rounded w-full h-28" />
+      <p className="mb-3 mt-8 font-bold text-xl">Known Allergies</p>
+      <div className="flex gap-10">
+        <CheckboxItem
+          name="knownAllergies"
+          items={["Dust", "Seafood", "Medication", "Others"]}
+          isRow
+          onSelectedItemsChanged={(selectedItems) => {
+            dispatch(
+              updatePatientInformationInput({
+                knownAllergies: selectedItems,
+              })
+            );
+          }}
+        />
       </div>
+      <Notes
+        onBlur={(e) => {
+          dispatch(
+            updatePatientInformationInput({
+              knownAllergiesNotes: e.target.value,
+            })
+          );
+        }}
+      />
       <p className="mb-3 mt-8 font-bold text-xl">Personal Medical History</p>
       <div className="flex gap-10">
         <CheckboxItem
@@ -243,10 +245,15 @@ const PersonalInformationInput = () => {
           }}
         />
       </div>
-      <div className="mt-4">
-        <p className="text-xs italic">Notes</p>
-        <textarea className="rounded w-full h-28" />
-      </div>
+      <Notes
+        onBlur={(e) => {
+          dispatch(
+            updatePatientInformationInput({
+              personalMedicalHistoriesNotes: e.target.value,
+            })
+          );
+        }}
+      />
       <p className="mb-3 mt-8 font-bold text-xl">Previous Laser/Surgery</p>
       <div className="flex gap-10">
         <CheckboxItem
@@ -262,10 +269,15 @@ const PersonalInformationInput = () => {
           }}
         />
       </div>
-      <div className="mt-4">
-        <p className="text-xs italic">Notes</p>
-        <textarea className="rounded w-full h-28" />
-      </div>
+      <Notes
+        onBlur={(e) => {
+          dispatch(
+            updatePatientInformationInput({
+              previousSurgeriesNotes: e.target.value,
+            })
+          );
+        }}
+      />
     </>
   );
 };

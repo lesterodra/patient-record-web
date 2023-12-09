@@ -1,3 +1,4 @@
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 import PatientRecordModal from "@/app/components/PatientRecordModal";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import {
@@ -75,6 +76,7 @@ const PatientRecordHistory = (props: PatientRecordHistoryProps) => {
         <div>
           <span>Order by: </span>
           <select
+            className="rounded"
             onChange={(e) => {
               setSortOrder(e.target.value);
             }}
@@ -87,7 +89,7 @@ const PatientRecordHistory = (props: PatientRecordHistoryProps) => {
       {recordList?.data.map((record, index) => (
         <div
           key={`record-${index}`}
-          className="mt-4 border border-black-100 cursor-pointer hover:bg-gray-100 p-2 rounded"
+          className="mt-4 border border-black-100 cursor-pointer hover:bg-gray-200 p-2 rounded bg-slate-100"
           onClick={() => {
             openPatientRecordModal(record.id || 0);
           }}
@@ -98,6 +100,14 @@ const PatientRecordHistory = (props: PatientRecordHistoryProps) => {
           </div>
         </div>
       ))}
+      {recordList?.totalRecords === 0 && (
+        <p className="mt-4">No Records found!</p>
+      )}
+      {!recordList && (
+        <div className="mt-3">
+          <LoadingSpinner />
+        </div>
+      )}
       {recordList &&
         recordList?.data.length !== 0 &&
         recordList.totalPage > currentPage && (

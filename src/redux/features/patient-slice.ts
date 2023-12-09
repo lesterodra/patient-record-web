@@ -19,8 +19,11 @@ type PatientType = {
   civilStatus?: string;
   contactNo?: string;
   knownAllergies?: string[];
+  knownAllergiesNotes?: string;
   personalMedicalHistories?: string[];
+  personalMedicalHistoriesNotes?: string;
   previousSurgeries?: string[];
+  previousSurgeriesNotes?: string;
   appointmentType?: string;
   dilateType?: string;
   sourceOfReferral?: string;

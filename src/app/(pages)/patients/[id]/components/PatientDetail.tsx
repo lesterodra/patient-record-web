@@ -79,36 +79,50 @@ const PatientDetail = ({
           <b>Weight:</b> {getValueDisplay(patientDetail.weight)}
         </p>
         <p>
+          <b>Referral From: </b> {patientDetail.sourceOfReferral}
+        </p>
+        <p>
           <b>Known Allergy: </b>{" "}
           {getValueDisplay(patientDetail?.knownAllergies?.toString())}
         </p>
-        <div>
-          <p className="text-xs italic">Notes</p>
-          <textarea disabled className="rounded w-full h-28" />
-        </div>
-        <p>
-          <b>Referral From: </b> {patientDetail.sourceOfReferral}
-        </p>
-        <div>
-          <p className="text-xs italic">Notes</p>
-          <textarea disabled className="rounded w-full h-28" />
-        </div>
+        {patientDetail?.knownAllergiesNotes && (
+          <div>
+            <p className="text-xs italic">Notes</p>
+            <textarea
+              value={patientDetail.knownAllergiesNotes}
+              disabled
+              className="rounded w-full h-28"
+            />
+          </div>
+        )}
         <p>
           <b>Personal Medical History: </b>{" "}
           {getValueDisplay(patientDetail.personalMedicalHistories?.toString())}
         </p>
-        <div>
-          <p className="text-xs italic">Notes</p>
-          <textarea disabled className="rounded w-full h-28" />
-        </div>
+        {patientDetail?.personalMedicalHistoriesNotes && (
+          <div>
+            <p className="text-xs italic">Notes</p>
+            <textarea
+              value={patientDetail.personalMedicalHistoriesNotes}
+              disabled
+              className="rounded w-full h-28"
+            />
+          </div>
+        )}
         <p>
           <b>Previous Laser/Surgery: </b>{" "}
           {getValueDisplay(patientDetail.previousSurgeries?.toString())}
         </p>
-        <div>
-          <p className="text-xs italic">Notes</p>
-          <textarea disabled className="rounded w-full h-28" />
-        </div>
+        {patientDetail?.previousSurgeriesNotes && (
+          <div>
+            <p className="text-xs italic">Notes</p>
+            <textarea
+              value={patientDetail.previousSurgeriesNotes}
+              disabled
+              className="rounded w-full h-28"
+            />
+          </div>
+        )}
         <PatientRecordHistory patientInformationId={patientDetail.id} />
       </div>
     </div>

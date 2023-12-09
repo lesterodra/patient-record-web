@@ -14,6 +14,7 @@ export const createPatientRecord = async (
   data: {
     patientInformationId: number;
     reasonForVisit?: string[];
+    reasonForVisitNotes?: string;
     previousMedicines?: string;
     autoRefractionOD?: string;
     autoRefractionOs?: string;
@@ -37,6 +38,7 @@ export const createPatientRecord = async (
     const {
       patientInformationId,
       reasonForVisit,
+      reasonForVisitNotes,
       previousMedicines,
       autoRefractionOD,
       autoRefractionOs,
@@ -59,6 +61,7 @@ export const createPatientRecord = async (
     const response = await axios.post("/api/records", {
       patientInformationId,
       reasonForVisit,
+      reasonForVisitNotes,
       previousMedicines,
       autoRefractionOD,
       autoRefractionOs,

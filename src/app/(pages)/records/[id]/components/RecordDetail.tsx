@@ -36,9 +36,23 @@ const RecordDetail = (props: RecordDetailType) => {
         <span className="text-xl font-bold">Reason for Visit:</span>
         <span>{recordDetail.reasonForVisit?.toString()}</span>
       </div>
+      {recordDetail?.reasonForVisitNotes && (
+        <div>
+          <p className="text-xs italic">Notes</p>
+          <textarea
+            value={recordDetail.reasonForVisitNotes}
+            disabled
+            className="rounded w-full h-28"
+          />
+        </div>
+      )}
       <div className="my-2">
         <span className="text-xl font-bold">Previous Medicines: </span>
-        <span>{recordDetail.previousMedicines}</span>
+        <textarea
+          value={recordDetail.previousMedicines ?? ""}
+          disabled
+          className="rounded w-full h-28"
+        />
       </div>
       <div className="my-2">
         <span className="text-xl font-bold">Auto Refraction: </span>

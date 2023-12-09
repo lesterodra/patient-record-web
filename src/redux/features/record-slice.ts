@@ -16,6 +16,7 @@ type RecordInputType = {
   visitType?: string;
   patientInformationId?: number;
   reasonForVisit?: string[];
+  reasonForVisitNotes?: string;
   previousMedicines?: string;
   autoRefractionOD?: string;
   autoRefractionOs?: string;
@@ -43,6 +44,7 @@ type RecordType = {
   visitType: string;
   patientInformationId: number;
   reasonForVisit: string[];
+  reasonForVisitNotes: string;
   previousMedicines: string;
   autoRefractionOD: string;
   autoRefractionOs: string;

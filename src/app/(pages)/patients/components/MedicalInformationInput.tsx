@@ -1,5 +1,6 @@
 import CheckboxItem from "@/app/components/CheckboxItem";
 import Dropdown from "@/app/components/Dropdown";
+import Notes from "@/app/components/Notes";
 import {
   VisualAcuity,
   updatePatientRecordInput,
@@ -75,10 +76,15 @@ const MedicalInformationInput = () => {
           }}
         />
       </div>
-      <div className="mt-4">
-        <p className="text-xs italic">Notes</p>
-        <textarea className="rounded w-full h-28" />
-      </div>
+      <Notes
+        onBlur={(e) => {
+          dispatch(
+            updatePatientRecordInput({
+              reasonForVisitNotes: e.target.value,
+            })
+          );
+        }}
+      />
       <p className="mb-3 mt-8 font-bold text-xl">Previous Meds</p>
       <textarea
         className="rounded-md w-full h-28"

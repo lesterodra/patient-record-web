@@ -7,7 +7,6 @@ const getPatientDetails = (id: number): Promise<any> =>
 
 const PatientDetailPage = async ({ params }: { params: { id: string } }) => {
   const patientDetail = await getPatientDetails(Number(params.id));
-
   return (
     <PageHeading pageTitle="Patient Details">
       <PatientDetail patientDetail={patientDetail} />

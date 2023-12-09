@@ -54,6 +54,7 @@ export async function POST(request: Request) {
     const {
       patientInformationId,
       reasonForVisit,
+      reasonForVisitNotes,
       previousMedicines,
       autoRefractionOD,
       autoRefractionOs,
@@ -78,6 +79,7 @@ export async function POST(request: Request) {
         data: {
           patientInformationId,
           reasonForVisit,
+          reasonForVisitNotes,
           previousMedicines,
           autoRefractionOD,
           autoRefractionOs,
