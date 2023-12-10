@@ -131,12 +131,39 @@ export const appendPatientRecordList = async (
 
 export const getPatientList = async (
   dispatch: AppDispatch,
-  data?: { page?: number; limit?: number }
+  data?: {
+    page?: number;
+    limit?: number;
+    quickSearchInput?: string;
+    patientNo?: string;
+    lastName?: string;
+    firstName?: string;
+    middleName?: string;
+    birthDate?: string;
+  }
 ) => {
   try {
-    const { page = 1, limit = 5 } = data ?? {};
+    const {
+      quickSearchInput,
+      patientNo,
+      lastName,
+      firstName,
+      middleName,
+      birthDate,
+      page = 1,
+      limit = 5,
+    } = data ?? {};
     const response = await axios.get("/api/patients", {
-      params: { page, limit },
+      params: {
+        quickSearchInput,
+        patientNo,
+        lastName,
+        firstName,
+        middleName,
+        birthDate,
+        page,
+        limit,
+      },
     });
 
     dispatch(fetchPatients(response.data));

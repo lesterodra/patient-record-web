@@ -6,7 +6,7 @@ type AccountSettingProps = {
 
 const AccountSettingsForm = (props: AccountSettingProps) => {
   const { session } = props;
-  const { user } = session;
+  const { user } = session ?? {};
 
   return (
     <div className="mt-5">

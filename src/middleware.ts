@@ -10,5 +10,6 @@ export const config = {
     "/records/:path*",
     "/users",
     "/users/:path*",
+    "/settings",
   ],
 };

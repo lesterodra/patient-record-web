@@ -97,7 +97,7 @@ const PatientList = () => {
               </p>
             </div>
             <Pagination
-              currentPage={currentPage}
+              currentPage={patientList?.page}
               onPageChange={(page) => {
                 setCurrentPage(page);
               }}
