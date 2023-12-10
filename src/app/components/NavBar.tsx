@@ -15,7 +15,6 @@ const NavBar = () => {
   const [isToggled, setIsToggled] = useState<boolean>(false);
   const [accountToggled, setAccountToggled] = useState<boolean>(false);
   const pathname = usePathname();
-  const router = useRouter();
 
   const isActive = (pagePath: string): string =>
     pathname.split("/").includes(pagePath) ||
@@ -219,11 +218,14 @@ const NavBar = () => {
               </button>
               <ul
                 id="account-dropdown"
-                className={`${!accountToggled && "hidden"} py-2 space-y-2`}
+                className={`${
+                  !accountToggled ||
+                  (!pathname.includes("settings") && "hidden")
+                } py-2 space-y-2`}
               >
-                <li>
+                <li className={isActive("settings")}>
                   <a
-                    href="#"
+                    href="/settings"
                     className="flex items-center w-full p-2 text-gray-900 transition duration-75 rounded-lg pl-11 group hover:bg-gray-100 dark:text-white dark:hover:bg-gray-700"
                   >
                     Settings

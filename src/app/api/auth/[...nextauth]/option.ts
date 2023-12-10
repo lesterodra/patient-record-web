@@ -20,7 +20,13 @@ const authOptions: NextAuthOptions = {
           return user &&
             user.status === "Active" &&
             bcrypt.compareSync(credentials?.password, user.password ?? "")
-            ? { id: user.id.toString(), username: user.username }
+            ? {
+                id: user.id.toString(),
+                username: user.username,
+                name: `${user.firstName ?? ""} ${user.lastName ?? ""}`,
+                email: "",
+                image: null,
+              }
             : null;
         } else {
           return null;
@@ -35,6 +41,20 @@ const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/login",
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      const user = token.user as { id: string; username: string };
+      session.user = user;
+
+      return session;
+    },
   },
 };
 
