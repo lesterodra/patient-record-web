@@ -219,8 +219,7 @@ const NavBar = () => {
               <ul
                 id="account-dropdown"
                 className={`${
-                  !accountToggled ||
-                  (!pathname.includes("settings") && "hidden")
+                  !accountToggled && !pathname.includes("settings") && "hidden"
                 } py-2 space-y-2`}
               >
                 <li className={isActive("settings")}>
