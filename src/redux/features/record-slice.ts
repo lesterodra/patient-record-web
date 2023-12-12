@@ -74,12 +74,25 @@ type RecordListResponse = {
   totalRecords: number;
 };
 
+type PatientRecordListQueryParameters = {
+  quickSearchInput?: string;
+  recordNo?: string;
+  patientNo?: string;
+  lastName?: string;
+  firstName?: string;
+  middleName?: string;
+  birthDate?: string;
+  dateFrom?: string;
+  dateTo?: string;
+};
+
 type InitialState = {
   value: {
     recordList?: RecordListResponse;
     patientRecordInput?: RecordInputType;
     drawingDataUrl?: string;
     drawingList?: Drawing[];
+    patientRecordListQueryParameters: PatientRecordListQueryParameters;
   };
 };
 
@@ -89,6 +102,7 @@ const initialState: InitialState = {
     patientRecordInput: {},
     drawingDataUrl: "",
     drawingList: undefined,
+    patientRecordListQueryParameters: {},
   },
 };
 
@@ -155,6 +169,21 @@ export const record = createSlice({
         },
       };
     },
+    updatePatientRecordListQueryParameters: (
+      state,
+      action: PayloadAction<PatientRecordListQueryParameters>
+    ) => ({
+      value: {
+        ...state.value,
+        patientRecordListQueryParameters: {
+          ...state.value.patientRecordListQueryParameters,
+          ...action.payload,
+        },
+      },
+    }),
+    clearPatientRecordListQueryParameters: (state) => ({
+      value: { ...state.value, patientRecordListQueryParameters: {} },
+    }),
   },
 });
 
@@ -165,5 +194,7 @@ export const {
   clearRecordInput,
   setDrawingDataUrl,
   setDrawingList,
+  updatePatientRecordListQueryParameters,
+  clearPatientRecordListQueryParameters,
 } = record.actions;
 export default record.reducer;

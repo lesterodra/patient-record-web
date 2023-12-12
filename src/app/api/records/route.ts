@@ -9,6 +9,27 @@ export async function GET(request: NextRequest) {
     const requestPatientInformationId = request.nextUrl.searchParams.get(
       "patientInformationId"
     );
+    const requestQuickSearchInput =
+      request.nextUrl.searchParams.get("quickSearchInput");
+
+    const requestRecordNo = request.nextUrl.searchParams.get("recordNo");
+    const requestPatientNo = request.nextUrl.searchParams.get("patientNo");
+    const requestLastName = request.nextUrl.searchParams.get("lastName");
+    const requestFirstName = request.nextUrl.searchParams.get("firstName");
+    const requestMiddleName = request.nextUrl.searchParams.get("middleName");
+    const requestBirthDate = request.nextUrl.searchParams.get("birthDate");
+    const requestDateFrom = request.nextUrl.searchParams.get("dateFrom");
+    const requestDateTo = request.nextUrl.searchParams.get("dateTo");
+
+    const dateFrom = requestDateFrom || undefined;
+    const dateTo = requestDateTo || undefined;
+    const quickSearchInput = requestQuickSearchInput || undefined;
+    const recordNo = requestRecordNo || undefined;
+    const patientNo = requestPatientNo || undefined;
+    const firstName = requestFirstName || undefined;
+    const lastName = requestLastName || undefined;
+    const middleName = requestMiddleName || undefined;
+    const birthDate = requestBirthDate || undefined;
     const page = requestPage ? parseInt(requestPage, 10) : 1;
     const limit = requestLimit ? parseInt(requestLimit, 10) : 10;
     const patientInformationId = requestPatientInformationId
@@ -16,12 +37,42 @@ export async function GET(request: NextRequest) {
       : undefined;
     const skip = (page - 1) * limit;
     const orderBy = requestOrder ?? "desc";
+    const dateToObject = dateTo && new Date(dateTo);
+
+    if (dateToObject) {
+      dateToObject.setDate(dateToObject.getDate() + 1);
+    }
+
+    const whereCondition = {
+      ...(quickSearchInput
+        ? {
+            OR: [
+              {
+                recordNo: { contains: quickSearchInput },
+              },
+            ],
+          }
+        : {}),
+      recordNo,
+      patientInformationId,
+      createdAt: {
+        gte: dateFrom && new Date(dateFrom),
+        lte: dateToObject,
+      },
+      patientInformation: {
+        patientNo,
+        lastName,
+        firstName,
+        middleName,
+        birthDate,
+      },
+    };
 
     const totalRecordCount = await prisma.patientRecord.count({
-      where: { patientInformationId },
+      where: whereCondition,
     });
     const records = await prisma.patientRecord.findMany({
-      where: { patientInformationId },
+      where: whereCondition,
       skip,
       take: limit,
       orderBy: {

@@ -6,16 +6,26 @@ import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import { getPatientRecordList } from "@/utils/dataFetchers";
 import Link from "next/link";
-import { getValueDisplay } from "@/utils/displayParser";
+import {
+  displayDateAndTime,
+  displayFullName,
+  getValueDisplay,
+} from "@/utils/displayParser";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 const PatientRecords = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const { recordList } = useAppSelector((state) => state.recordReducer.value);
+  const { recordList, patientRecordListQueryParameters } = useAppSelector(
+    (state) => state.recordReducer.value
+  );
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    getPatientRecordList(dispatch, { page: currentPage, limit: 5 });
+    getPatientRecordList(dispatch, {
+      ...patientRecordListQueryParameters,
+      page: currentPage,
+      limit: 5,
+    });
   }, [currentPage]);
 
   return (
@@ -24,8 +34,7 @@ const PatientRecords = () => {
         <Table hoverable>
           <Table.Head>
             <Table.HeadCell className="w-52">Record No.</Table.HeadCell>
-            <Table.HeadCell className="w-52">Patient No.</Table.HeadCell>
-            <Table.HeadCell className="w-52">Patient name</Table.HeadCell>
+            <Table.HeadCell className="w-52">Patient Details</Table.HeadCell>
             <Table.HeadCell className="w-60">Record date</Table.HeadCell>
             <Table.HeadCell className="w-60">Status</Table.HeadCell>
             <Table.HeadCell className="w-3">
@@ -46,16 +55,24 @@ const PatientRecords = () => {
                     {getValueDisplay(patientRecord.recordNo)}
                   </Link>
                 </Table.Cell>
-                <Table.Cell>
-                  {patientRecord.patientInformation?.patientNo}
+                <Table.Cell className="text-black text-xs">
+                  <div>
+                    <p>
+                      <b>{patientRecord.patientInformation?.patientNo}</b>
+                    </p>
+                    <p>
+                      {displayFullName(
+                        patientRecord.patientInformation?.lastName,
+                        patientRecord.patientInformation?.firstName,
+                        patientRecord.patientInformation?.middleName
+                      )}
+                    </p>
+                  </div>
                 </Table.Cell>
-                <Table.Cell className="text-black font-bold">
-                  {patientRecord.patientInformation?.lastName},{" "}
-                  {patientRecord.patientInformation?.firstName}{" "}
-                  {patientRecord.patientInformation?.middleName}
-                </Table.Cell>
                 <Table.Cell>
-                  {patientRecord.createdAt as unknown as string}
+                  {displayDateAndTime(
+                    patientRecord.createdAt as unknown as string
+                  )}
                 </Table.Cell>
                 <Table.Cell>For Doctors checkup</Table.Cell>
                 <Table.Cell>

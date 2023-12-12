@@ -2,8 +2,17 @@
 
 import { Button } from "flowbite-react";
 import PatientRecordAdvanceSearchModal from "./PatientRecordAdvanceSearchModal";
+import { useDispatch } from "react-redux";
+import { AppDispatch, useAppSelector } from "@/redux/store";
+import { getPatientRecordList } from "@/utils/dataFetchers";
+import { updatePatientRecordListQueryParameters } from "@/redux/features/record-slice";
 
 const PatientRecordSearch = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { patientRecordListQueryParameters } = useAppSelector(
+    (state) => state.recordReducer.value
+  );
+
   return (
     <div className="mt-6">
       <div className="flex gap-2">
@@ -11,8 +20,26 @@ const PatientRecordSearch = () => {
           type="text"
           className="rounded-md"
           placeholder="Quick Search..."
+          onChange={(e) => {
+            dispatch(
+              updatePatientRecordListQueryParameters({
+                quickSearchInput: e.target.value,
+              })
+            );
+          }}
         />
-        <Button onClick={() => {}}>GO</Button>
+        <Button
+          onClick={async () => {
+            await getPatientRecordList(dispatch, {
+              quickSearchInput:
+                patientRecordListQueryParameters?.quickSearchInput,
+              page: 1,
+              limit: 5,
+            });
+          }}
+        >
+          GO
+        </Button>
         <PatientRecordAdvanceSearchModal />
       </div>
     </div>

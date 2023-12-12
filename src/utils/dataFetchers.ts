@@ -94,12 +94,49 @@ export const getPatientRecordList = async (
     page?: number;
     limit?: number;
     sortOrder?: string;
+    quickSearchInput?: string;
+    recordNo?: string;
+    patientNo?: string;
+    lastName?: string;
+    firstName?: string;
+    middleName?: string;
+    birthDate?: string;
+    dateFrom?: string;
+    dateTo?: string;
   }
 ) => {
   try {
-    const { patientInformationId, sortOrder, page = 1, limit = 5 } = data ?? {};
+    const {
+      patientInformationId,
+      quickSearchInput,
+      recordNo,
+      patientNo,
+      lastName,
+      firstName,
+      middleName,
+      birthDate,
+      sortOrder,
+      dateFrom,
+      dateTo,
+      page = 1,
+      limit = 5,
+    } = data ?? {};
     const response = await axios.get("/api/records", {
-      params: { page, limit, sortOrder, patientInformationId },
+      params: {
+        page,
+        limit,
+        sortOrder,
+        patientInformationId,
+        quickSearchInput,
+        recordNo,
+        patientNo,
+        lastName,
+        firstName,
+        middleName,
+        birthDate,
+        dateFrom,
+        dateTo,
+      },
     });
 
     dispatch(fetchRecords(response.data));
