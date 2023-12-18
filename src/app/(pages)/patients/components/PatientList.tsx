@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Pagination, Table } from "flowbite-react";
 import Link from "next/link";
 import UpdatePatientModal from "./UpdatePatientModal";
-import { getValueDisplay } from "@/utils/displayParser";
+import { convertToReadableDate, getValueDisplay } from "@/utils/displayParser";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { getPatientList } from "@/utils/dataFetchers";
@@ -58,7 +58,9 @@ const PatientList = () => {
                   }`}
                 </Table.Cell>
                 <Table.Cell>{getValueDisplay(patient.gender)}</Table.Cell>
-                <Table.Cell>{getValueDisplay(patient.birthDate)}</Table.Cell>
+                <Table.Cell>
+                  {convertToReadableDate(patient.birthDate ?? "")}
+                </Table.Cell>
                 <Table.Cell>
                   <p
                     className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"

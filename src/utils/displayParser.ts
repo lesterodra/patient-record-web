@@ -14,11 +14,13 @@ export const convertToReadableDate = (date: string | null | Date): string => {
 };
 
 export const displayDateAndTime = (date: string) => {
-  return Intl.DateTimeFormat("en-US", {
-    timeZone: "Asia/Manila",
-    dateStyle: "long",
-    timeStyle: "short",
-  }).format(new Date(date));
+  return date
+    ? Intl.DateTimeFormat("en-US", {
+        timeZone: "Asia/Manila",
+        dateStyle: "long",
+        timeStyle: "short",
+      }).format(new Date(date))
+    : "-";
 };
 
 export const displayFullName = (

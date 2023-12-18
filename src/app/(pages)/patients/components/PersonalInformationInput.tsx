@@ -1,12 +1,14 @@
 import { useDispatch } from "react-redux";
+import { FormState, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { updatePatientInformationInput } from "@/redux/features/patient-slice";
 import { AppDispatch } from "@/redux/store";
 import CheckboxItem from "@/app/components/CheckboxItem";
 import DatePicker from "@/app/components/DatePicker";
 import Dropdown from "@/app/components/Dropdown";
-import GenderSelect from "@/app/components/GenderSelect";
+import FormGenderSelect from "@/app/components/FormGenderSelect";
 import LabeledInput from "@/app/components/LabeledInput";
 import {
+  ERROR_MESSAGE,
   MEDICAL_HISTORY,
   NATIONALITY_LIST,
   PREVIOUS_SURGERIES,
@@ -14,169 +16,174 @@ import {
 import AddressInput from "@/app/components/AddressInput";
 import { useCallback } from "react";
 import Notes from "@/app/components/Notes";
+import FormInput from "@/app/components/FormInput";
+import FormDropdown from "@/app/components/FormDropdown";
+import FormDatePicker from "@/app/components/FormDatePicker";
+import FormCheckboxItem from "@/app/components/FormCheckboxItem";
+import FormNotes from "@/app/components/FormNotes";
 
-const PersonalInformationInput = () => {
+type PersonalInformationInputProps = {
+  formRegister: UseFormRegister<any>;
+  formState: FormState<any>;
+  formSetValue: UseFormSetValue<any>;
+};
+
+const PersonalInformationInput = (props: PersonalInformationInputProps) => {
+  const { formRegister, formState, formSetValue } = props;
+  const { errors } = formState;
   const dispatch = useDispatch<AppDispatch>();
+  const addressInputComponent = useCallback(
+    () => (
+      <AddressInput
+        formRegister={formRegister}
+        formState={formState}
+        formSetValue={formSetValue}
+      />
+    ),
+    [formState]
+  );
 
-  const addressInputComponent = useCallback(() => <AddressInput />, []);
+  const appointmentTypeErrorMessage =
+    errors?.appointmentType?.message?.toString();
+  const dilateTypeMessage = errors?.dilateType?.message?.toString();
 
   return (
     <>
       <p className="mb-3 font-bold text-xl">Personal Information</p>
       <div className=" flex justify-between  mb-3">
-        <CheckboxItem
-          name="patientType"
-          isRow
-          items={["W/IN", "PVT"]}
-          isSingleSelection
-          onSelectedItemsChanged={(selectedItems) => {
-            dispatch(
-              updatePatientInformationInput({
-                appointmentType: selectedItems[0],
-              })
-            );
-          }}
-        />
-        <CheckboxItem
-          name="dilateType"
-          isRow
-          items={["OD", "OS", "OU"]}
-          isSingleSelection
-          onSelectedItemsChanged={(selectedItems) => {
-            dispatch(
-              updatePatientInformationInput({
-                dilateType: selectedItems[0],
-              })
-            );
-          }}
-        />
+        <div>
+          <FormCheckboxItem
+            name="appointmentType"
+            isRow
+            items={["W/IN", "PVT"]}
+            formRegister={formRegister("appointmentType", {
+              required: ERROR_MESSAGE.REQUIRED,
+              onChange: (e) => {
+                formSetValue(
+                  "appointmentType",
+                  e.target.checked ? e.target.value : null,
+                  {
+                    shouldValidate: true,
+                  }
+                );
+              },
+            })}
+          />
+          {appointmentTypeErrorMessage && (
+            <p className="text-xs text-red-500">
+              {appointmentTypeErrorMessage}
+            </p>
+          )}
+        </div>
+        <div>
+          <FormCheckboxItem
+            name="dilateType"
+            isRow
+            items={["OD", "OS", "OU"]}
+            formRegister={formRegister("dilateType", {
+              required: ERROR_MESSAGE.REQUIRED,
+              onChange: (e) => {
+                formSetValue(
+                  "dilateType",
+                  e.target.checked ? e.target.value : null,
+                  {
+                    shouldValidate: true,
+                  }
+                );
+              },
+            })}
+          />
+          {dilateTypeMessage && (
+            <p className="text-xs text-red-500">{dilateTypeMessage}</p>
+          )}
+        </div>
       </div>
       <hr className="my-5" />
       <div className="mb-3"></div>
       <div className="content">
         <div className="mb-3">
-          <LabeledInput
+          <FormInput
             label="PHIC"
-            onChange={(e) => {
-              dispatch(
-                updatePatientInformationInput({
-                  philHealthNo: e.target.value,
-                })
-              );
-            }}
+            formRegister={formRegister("philHealthNo", { value: null })}
+            errorMessage={errors?.philHealthNo?.message?.toString()}
           />
         </div>
         <div className="flex gap-2 flex-wrap justify-between mb-3">
-          <LabeledInput
+          <FormInput
             label="First Name"
-            onChange={(e) => {
-              dispatch(
-                updatePatientInformationInput({
-                  firstName: e.target.value,
-                })
-              );
-            }}
+            formRegister={formRegister("firstName", {
+              value: null,
+              required: ERROR_MESSAGE.REQUIRED,
+            })}
+            errorMessage={errors?.firstName?.message?.toString()}
           />
-          <LabeledInput
+          <FormInput
             label="Last Name"
-            onChange={(e) => {
-              dispatch(
-                updatePatientInformationInput({
-                  lastName: e.target.value,
-                })
-              );
-            }}
+            formRegister={formRegister("lastName", {
+              value: null,
+              required: ERROR_MESSAGE.REQUIRED,
+            })}
+            errorMessage={errors?.lastName?.message?.toString()}
           />
-          <LabeledInput
+          <FormInput
             label="Middle Name"
-            onChange={(e) => {
-              dispatch(
-                updatePatientInformationInput({
-                  middleName: e.target.value,
-                })
-              );
-            }}
+            formRegister={formRegister("middleName", {
+              value: null,
+              required: ERROR_MESSAGE.REQUIRED,
+            })}
+            errorMessage={errors?.middleName?.message?.toString()}
           />
         </div>
         <hr className="my-5" />
         <div className="mb-3">{addressInputComponent()}</div>
         <hr className="my-5" />
         <div className="flex gap-10 mb-3 flex-wrap">
-          <GenderSelect
-            onGenderChanged={(value: string) => {
-              dispatch(
-                updatePatientInformationInput({
-                  gender: value,
-                })
-              );
-            }}
+          <FormGenderSelect
+            formRegister={formRegister}
+            errorMessage={errors?.gender?.message?.toString()}
           />
-          <DatePicker
+          <FormDatePicker
             label="Birth Date"
-            onChange={(e) => {
-              dispatch(
-                updatePatientInformationInput({
-                  birthDate: e.target.value,
-                })
-              );
-            }}
+            formRegister={formRegister("birthDate", {
+              required: ERROR_MESSAGE.REQUIRED,
+            })}
+            errorMessage={errors?.birthDate?.message?.toString()}
           />
-          <Dropdown
+          <FormDropdown
             label="Nationality"
             options={["Others", ...NATIONALITY_LIST]}
-            onChange={(e) => {
-              dispatch(
-                updatePatientInformationInput({
-                  nationality: e.target.value,
-                })
-              );
-            }}
+            formRegister={formRegister("nationality", {
+              required: ERROR_MESSAGE.REQUIRED,
+            })}
+            errorMessage={errors?.nationality?.message?.toString()}
           />
-          <Dropdown
+          <FormDropdown
             label="Civil Status"
             options={["Single", "Married", "Divorced", "Widowed"]}
-            onChange={(e) => {
-              dispatch(
-                updatePatientInformationInput({
-                  civilStatus: e.target.value,
-                })
-              );
-            }}
+            formRegister={formRegister("civilStatus", {
+              required: ERROR_MESSAGE.REQUIRED,
+            })}
+            errorMessage={errors?.civilStatus?.message?.toString()}
           />
         </div>
         <div className="flex gap-10 mb-3">
-          <LabeledInput
+          <FormInput
             label="Mobile Number"
-            onChange={(e) => {
-              dispatch(
-                updatePatientInformationInput({
-                  contactNo: e.target.value,
-                })
-              );
-            }}
+            formRegister={formRegister("contactNo", { value: null })}
+            errorMessage={errors?.contactNo?.message?.toString()}
           />
           <div className="flex gap-10">
-            <LabeledInput
+            <FormInput
               label="Height"
               inputClassName="w-14"
-              onChange={(e) => {
-                dispatch(
-                  updatePatientInformationInput({
-                    height: e.target.value,
-                  })
-                );
-              }}
+              formRegister={formRegister("height", { value: null })}
+              errorMessage={errors?.height?.message?.toString()}
             />
-            <LabeledInput
+            <FormInput
               label="Weight"
               inputClassName="w-14"
-              onChange={(e) => {
-                dispatch(
-                  updatePatientInformationInput({
-                    weight: e.target.value,
-                  })
-                );
-              }}
+              formRegister={formRegister("weight", { value: null })}
+              errorMessage={errors?.weight?.message?.toString()}
             />
           </div>
         </div>
@@ -186,10 +193,9 @@ const PersonalInformationInput = () => {
         How did you know of our institution?
       </p>
       <div className="flex gap-10">
-        <CheckboxItem
+        <FormCheckboxItem
           name="sourceOfReferral"
           isRow
-          isSingleSelection
           items={[
             "Referral from MD",
             "Relatives",
@@ -197,87 +203,51 @@ const PersonalInformationInput = () => {
             "Social Media",
             "Others",
           ]}
-          onSelectedItemsChanged={(selectedItems) => {
-            dispatch(
-              updatePatientInformationInput({
-                sourceOfReferral: selectedItems[0],
-              })
-            );
-          }}
+          formRegister={formRegister("sourceOfReferral", {
+            onChange: (e) => {
+              formSetValue(
+                "sourceOfReferral",
+                e.target.checked ? e.target.value : null,
+                {
+                  shouldValidate: true,
+                }
+              );
+            },
+          })}
         />
       </div>
       <p className="mb-3 mt-8 font-bold text-xl">Known Allergies</p>
       <div className="flex gap-10">
-        <CheckboxItem
+        <FormCheckboxItem
           name="knownAllergies"
           items={["Dust", "Seafood", "Medication", "Others"]}
           isRow
-          onSelectedItemsChanged={(selectedItems) => {
-            dispatch(
-              updatePatientInformationInput({
-                knownAllergies: selectedItems,
-              })
-            );
-          }}
+          formRegister={formRegister("knownAllergies", {})}
         />
       </div>
-      <Notes
-        onBlur={(e) => {
-          dispatch(
-            updatePatientInformationInput({
-              knownAllergiesNotes: e.target.value,
-            })
-          );
-        }}
-      />
+      <FormNotes formRegister={formRegister("knownAllergiesNotes", {})} />
       <p className="mb-3 mt-8 font-bold text-xl">Personal Medical History</p>
       <div className="flex gap-10">
-        <CheckboxItem
-          name="medicalHistory"
+        <FormCheckboxItem
+          name="personalMedicalHistories"
           items={MEDICAL_HISTORY}
           itemPerColumn={3}
-          onSelectedItemsChanged={(selectedItems) => {
-            dispatch(
-              updatePatientInformationInput({
-                personalMedicalHistories: selectedItems,
-              })
-            );
-          }}
+          formRegister={formRegister("personalMedicalHistories", {})}
         />
       </div>
-      <Notes
-        onBlur={(e) => {
-          dispatch(
-            updatePatientInformationInput({
-              personalMedicalHistoriesNotes: e.target.value,
-            })
-          );
-        }}
+      <FormNotes
+        formRegister={formRegister("personalMedicalHistoriesNotes", {})}
       />
       <p className="mb-3 mt-8 font-bold text-xl">Previous Laser/Surgery</p>
       <div className="flex gap-10">
-        <CheckboxItem
-          name="previousLaserSurgeries"
+        <FormCheckboxItem
+          name="previousSurgeries"
           items={PREVIOUS_SURGERIES}
           itemPerColumn={5}
-          onSelectedItemsChanged={(selectedItems) => {
-            dispatch(
-              updatePatientInformationInput({
-                previousSurgeries: selectedItems,
-              })
-            );
-          }}
+          formRegister={formRegister("previousSurgeries", {})}
         />
       </div>
-      <Notes
-        onBlur={(e) => {
-          dispatch(
-            updatePatientInformationInput({
-              previousSurgeriesNotes: e.target.value,
-            })
-          );
-        }}
-      />
+      <FormNotes formRegister={formRegister("previousSurgeriesNotes", {})} />
     </>
   );
 };

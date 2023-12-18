@@ -39,6 +39,7 @@ export const PREVIOUS_SURGERIES = [
   "YAG-CAP",
   "YAG-LI",
   "ANTI-VEGF",
+  "Others",
 ];
 
 export const MONTHS = {
@@ -54,6 +55,10 @@ export const MONTHS = {
   "9": "October",
   "10": "November",
   "11": "December",
+};
+
+export const ERROR_MESSAGE = {
+  REQUIRED: "Field is required",
 };
 
 export const NATIONALITY_LIST = [

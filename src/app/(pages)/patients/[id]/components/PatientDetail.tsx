@@ -41,6 +41,13 @@ const PatientDetail = ({
           <b>Patient no: </b> {getValueDisplay(patientDetail.patientNo)}
         </p>
         <p className="text-sm">
+          <b>Appointment Type:</b>{" "}
+          {getValueDisplay(patientDetail.appointmentType)}
+        </p>
+        <p className="text-sm">
+          <b>Dilate Type:</b> {getValueDisplay(patientDetail.dilateType)}
+        </p>
+        <p className="text-sm">
           <b>Address Line 1:</b> {getValueDisplay(patientDetail.address)}
         </p>
         <p className="text-sm">
@@ -56,9 +63,6 @@ const PatientDetail = ({
         <p className="text-sm">
           <b>Birth date:</b>{" "}
           {getValueDisplay(convertToReadableDate(patientDetail.birthDate))}
-        </p>
-        <p className="text-sm">
-          <b>Age:</b> 19
         </p>
         <p className="text-sm">
           <b>Gender:</b> {getValueDisplay(patientDetail.gender)}

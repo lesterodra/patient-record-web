@@ -1,14 +1,26 @@
-import { updatePatientInformationInput } from "@/redux/features/patient-slice";
 import { AppDispatch } from "@/redux/store";
 import phProvinceCityBarangay from "@/utils/phProvinceCityBarangay";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import FormDropdown from "./FormDropdown";
+import { FormState, UseFormRegister, UseFormSetValue } from "react-hook-form";
+import { ERROR_MESSAGE } from "@/utils/constants";
 
-const AddressInput = () => {
+type AddressInputProps = {
+  formRegister: UseFormRegister<any>;
+  formState: FormState<any>;
+  formSetValue: UseFormSetValue<any>;
+};
+
+const AddressInput = (props: AddressInputProps) => {
+  const {
+    formRegister,
+    formSetValue,
+    formState: { errors },
+  } = props;
   const [cityMunicipalityList, setCityMunicipalityList] = useState<any[]>([]);
   const [barangayList, setBarangayList] = useState<any[]>([]);
   const list: { [key: string]: any } = phProvinceCityBarangay;
-  const dispatch = useDispatch<AppDispatch>();
 
   const provinces: any[] = [];
   Object.keys(phProvinceCityBarangay).forEach((key) => {
@@ -30,36 +42,24 @@ const AddressInput = () => {
   });
 
   const onSelectedProvinceChange = (e: any) => {
-    dispatch(
-      updatePatientInformationInput({
-        province: e.target.value,
-      })
-    );
+    formSetValue("province", e.target.value, { shouldValidate: true });
     setCityMunicipalityList(
-      provinces.find((province) => province.name === e.target.value)
-        .municipalities
+      e.target.value
+        ? provinces.find((province) => province.name === e.target.value)
+            .municipalities
+        : []
     );
     setBarangayList([]);
   };
 
   const onSelectedMunicipalityChange = (e: any) => {
-    dispatch(
-      updatePatientInformationInput({
-        municipality: e.target.value,
-      })
-    );
+    formSetValue("municipality", e.target.value, { shouldValidate: true });
     setBarangayList(
-      cityMunicipalityList.find(
-        (cityMunicipality) => cityMunicipality.name === e.target.value
-      ).barangayList
-    );
-  };
-
-  const onSelectedBarangayChange = (e: any) => {
-    dispatch(
-      updatePatientInformationInput({
-        barangay: e.target.value,
-      })
+      e.target.value
+        ? cityMunicipalityList.find(
+            (cityMunicipality) => cityMunicipality.name === e.target.value
+          ).barangayList
+        : []
     );
   };
 
@@ -68,55 +68,42 @@ const AddressInput = () => {
   return (
     <div className="flex gap-x-10 gap-y-3 flex-wrap">
       <div>
-        <p>Province</p>
-        <select className="rounded w-60" onChange={onSelectedProvinceChange}>
-          <option></option>
-          {provinces.map((province) => (
-            <option key={province.name} value={province.name}>
-              {province.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <p>City/Municipality</p>
-        <select
-          className="rounded w-60"
-          onChange={onSelectedMunicipalityChange}
-        >
-          <option>Select City/Municipality</option>
-          {cityMunicipalityList.map((cityMunicipality) => (
-            <option key={cityMunicipality.name} value={cityMunicipality.name}>
-              {cityMunicipality.name}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
-        <p>Barangay</p>
-        <select className="rounded w-60" onChange={onSelectedBarangayChange}>
-          <option>Select Barangay</option>
-          {barangayList.map((barangay) => (
-            <option key={barangay} value={barangay}>
-              {barangay}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div>
         <p>Address line 1</p>
         <input
           type="text"
           className="rounded"
-          onBlur={(e) => {
-            dispatch(
-              updatePatientInformationInput({
-                address: e.target.value,
-              })
-            );
-          }}
+          {...formRegister("address", {})}
         />
       </div>
+      <FormDropdown
+        label="Province"
+        width="w-60"
+        onChange={onSelectedProvinceChange}
+        options={provinces.map((province) => province.name)}
+        formRegister={formRegister("province", {
+          required: ERROR_MESSAGE.REQUIRED,
+        })}
+        errorMessage={errors?.province?.message?.toString()}
+      />
+      <FormDropdown
+        label="City/Municipality"
+        width="w-60"
+        onChange={onSelectedMunicipalityChange}
+        options={cityMunicipalityList.map((municipality) => municipality.name)}
+        formRegister={formRegister("municipality", {
+          required: ERROR_MESSAGE.REQUIRED,
+        })}
+        errorMessage={errors?.municipality?.message?.toString()}
+      />
+      <FormDropdown
+        label="Barangay"
+        width="w-60"
+        options={barangayList.map((barangay) => barangay)}
+        formRegister={formRegister("barangay", {
+          required: ERROR_MESSAGE.REQUIRED,
+        })}
+        errorMessage={errors?.barangay?.message?.toString()}
+      />
     </div>
   );
 };

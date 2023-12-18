@@ -57,7 +57,7 @@ export async function GET(request: NextRequest) {
       patientInformationId,
       createdAt: {
         gte: dateFrom && new Date(dateFrom),
-        lte: dateToObject,
+        lt: dateToObject,
       },
       patientInformation: {
         patientNo,
