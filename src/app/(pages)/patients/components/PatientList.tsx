@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { getPatientList } from "@/utils/dataFetchers";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
+import { PatientInformation } from "@prisma/client";
+import { PatientType } from "@/redux/features/patient-slice";
 
 const PatientList = () => {
   const [isUpdatePatientModalOpen, setIsUpdatePatientModalOpen] =
@@ -16,6 +18,7 @@ const PatientList = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const dispatch = useDispatch<AppDispatch>();
   const { patientList } = useAppSelector((state) => state.patientReducer.value);
+  const [patientDetails, setPatientDetails] = useState<PatientType>();
 
   useEffect(() => {
     getPatientList(dispatch, { page: currentPage, limit: 5 });
@@ -26,6 +29,7 @@ const PatientList = () => {
       <UpdatePatientModal
         isOpen={isUpdatePatientModalOpen}
         setIsOpen={setIsUpdatePatientModalOpen}
+        patientDetails={patientDetails}
       />
       <div className="mt-5" style={{ overflowX: "auto" }}>
         <Table hoverable>
@@ -66,6 +70,7 @@ const PatientList = () => {
                     className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
                     onClick={() => {
                       setIsUpdatePatientModalOpen(true);
+                      setPatientDetails(patient);
                     }}
                   >
                     Edit

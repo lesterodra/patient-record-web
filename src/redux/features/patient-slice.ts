@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type PatientType = {
+export type PatientType = {
   id?: string;
   patientNo?: string;
   lastName?: string;

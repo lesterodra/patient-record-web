@@ -23,6 +23,8 @@ const AddressInput = (props: AddressInputProps) => {
   const list: { [key: string]: any } = phProvinceCityBarangay;
 
   const provinces: any[] = [];
+  const municipalities: any[] = [];
+  const barangays: any[] = [];
   Object.keys(phProvinceCityBarangay).forEach((key) => {
     const regionProvinces = Object.keys(list[key].province_list).map(
       (provinceKey) => ({
@@ -42,7 +44,8 @@ const AddressInput = (props: AddressInputProps) => {
   });
 
   const onSelectedProvinceChange = (e: any) => {
-    formSetValue("province", e.target.value, { shouldValidate: true });
+    formSetValue("municipality", "", { shouldValidate: true });
+
     setCityMunicipalityList(
       e.target.value
         ? provinces.find((province) => province.name === e.target.value)
@@ -53,7 +56,7 @@ const AddressInput = (props: AddressInputProps) => {
   };
 
   const onSelectedMunicipalityChange = (e: any) => {
-    formSetValue("municipality", e.target.value, { shouldValidate: true });
+    formSetValue("barangay", "", { shouldValidate: true });
     setBarangayList(
       e.target.value
         ? cityMunicipalityList.find(
@@ -78,20 +81,20 @@ const AddressInput = (props: AddressInputProps) => {
       <FormDropdown
         label="Province"
         width="w-60"
-        onChange={onSelectedProvinceChange}
         options={provinces.map((province) => province.name)}
         formRegister={formRegister("province", {
           required: ERROR_MESSAGE.REQUIRED,
+          onChange: onSelectedProvinceChange,
         })}
         errorMessage={errors?.province?.message?.toString()}
       />
       <FormDropdown
         label="City/Municipality"
         width="w-60"
-        onChange={onSelectedMunicipalityChange}
         options={cityMunicipalityList.map((municipality) => municipality.name)}
         formRegister={formRegister("municipality", {
           required: ERROR_MESSAGE.REQUIRED,
+          onChange: onSelectedMunicipalityChange,
         })}
         errorMessage={errors?.municipality?.message?.toString()}
       />
