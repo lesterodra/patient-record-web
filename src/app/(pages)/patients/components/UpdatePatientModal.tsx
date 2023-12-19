@@ -4,6 +4,12 @@ import { Button, Modal, Table } from "flowbite-react";
 import PersonalInformationInput from "./PersonalInformationInput";
 import { useForm } from "react-hook-form";
 import { PatientType } from "@/redux/features/patient-slice";
+import { useEffect } from "react";
+import {
+  getPatientDetailsById,
+  updatePatientDetails,
+} from "@/utils/dataFetchers";
+import LoaderButton from "@/app/components/LoaderButton";
 
 const UpdatePatientModal = ({
   isOpen,
@@ -15,6 +21,7 @@ const UpdatePatientModal = ({
   patientDetails?: PatientType;
 }) => {
   const {
+    id,
     firstName,
     lastName,
     middleName,
@@ -40,35 +47,54 @@ const UpdatePatientModal = ({
     previousSurgeries,
     previousSurgeriesNotes,
   } = patientDetails ?? {};
-  const { register, handleSubmit, formState, getValues, reset, setValue } =
-    useForm({
-      values: {
-        appointmentType,
-        dilateType,
-        philHealthNo,
-        firstName,
-        lastName,
-        middleName,
-        address,
-        province,
-        municipality,
-        barangay,
-        gender,
-        birthDate,
-        nationality,
-        civilStatus,
-        contactNo,
-        height,
-        weight,
-        sourceOfReferral,
-        knownAllergies,
-        knownAllergiesNotes,
-        personalMedicalHistories,
-        personalMedicalHistoriesNotes,
-        previousSurgeries,
-        previousSurgeriesNotes,
-      },
+  const { register, handleSubmit, formState, getValues, setValue } = useForm({
+    values: {
+      philHealthNo,
+      firstName,
+      lastName,
+      middleName,
+      address,
+      province,
+      municipality,
+      barangay,
+      gender,
+      birthDate,
+      nationality,
+      civilStatus,
+      contactNo,
+      height,
+      weight,
+      knownAllergies,
+      knownAllergiesNotes,
+      personalMedicalHistories,
+      personalMedicalHistoriesNotes,
+      previousSurgeries,
+      previousSurgeriesNotes,
+      appointmentType: [appointmentType],
+      dilateType: [dilateType],
+      sourceOfReferral: [sourceOfReferral],
+    },
+  });
+
+  const onUpdateRecordClick = async () => {
+    const updatedPatientDetails = getValues();
+
+    await updatePatientDetails(Number(id), {
+      ...updatedPatientDetails,
+      dilateType:
+        updatedPatientDetails?.dilateType &&
+        updatedPatientDetails?.dilateType[0],
+      sourceOfReferral:
+        updatedPatientDetails?.sourceOfReferral &&
+        updatedPatientDetails?.sourceOfReferral[0],
+      appointmentType:
+        updatedPatientDetails?.appointmentType &&
+        updatedPatientDetails?.appointmentType[0],
     });
+
+    setIsOpen(false);
+  };
+
   return (
     <Modal show={isOpen} size="4xl" onClose={() => setIsOpen(false)}>
       <Modal.Header>Update Patient Information</Modal.Header>
@@ -79,12 +105,18 @@ const UpdatePatientModal = ({
               formRegister={register}
               formSetValue={setValue}
               formState={formState}
+              addressDetails={{ province, municipality, barangay }}
             />
           </div>
         </div>
       </Modal.Body>
       <Modal.Footer className="flex justify-end">
-        <Button onClick={() => {}}>Update Record</Button>
+        <Button
+          disabled={formState.isSubmitting}
+          onClick={handleSubmit(onUpdateRecordClick)}
+        >
+          Update Record
+        </Button>
         <Button color="red" onClick={() => setIsOpen(false)}>
           Cancel
         </Button>

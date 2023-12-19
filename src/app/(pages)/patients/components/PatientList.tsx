@@ -7,9 +7,8 @@ import UpdatePatientModal from "./UpdatePatientModal";
 import { convertToReadableDate, getValueDisplay } from "@/utils/displayParser";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
-import { getPatientList } from "@/utils/dataFetchers";
+import { getPatientDetailsById, getPatientList } from "@/utils/dataFetchers";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
-import { PatientInformation } from "@prisma/client";
 import { PatientType } from "@/redux/features/patient-slice";
 
 const PatientList = () => {
@@ -17,7 +16,9 @@ const PatientList = () => {
     useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const dispatch = useDispatch<AppDispatch>();
-  const { patientList } = useAppSelector((state) => state.patientReducer.value);
+  const { patientList, patientInformation } = useAppSelector(
+    (state) => state.patientReducer.value
+  );
   const [patientDetails, setPatientDetails] = useState<PatientType>();
 
   useEffect(() => {
@@ -26,11 +27,13 @@ const PatientList = () => {
 
   return (
     <>
-      <UpdatePatientModal
-        isOpen={isUpdatePatientModalOpen}
-        setIsOpen={setIsUpdatePatientModalOpen}
-        patientDetails={patientDetails}
-      />
+      {isUpdatePatientModalOpen && (
+        <UpdatePatientModal
+          isOpen={isUpdatePatientModalOpen}
+          setIsOpen={setIsUpdatePatientModalOpen}
+          patientDetails={patientInformation}
+        />
+      )}
       <div className="mt-5" style={{ overflowX: "auto" }}>
         <Table hoverable>
           <Table.Head>
@@ -68,9 +71,10 @@ const PatientList = () => {
                 <Table.Cell>
                   <p
                     className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
-                    onClick={() => {
+                    onClick={async () => {
+                      await getPatientDetailsById(dispatch, patient.id ?? "");
                       setIsUpdatePatientModalOpen(true);
-                      setPatientDetails(patient);
+                      setPatientDetails(patientInformation);
                     }}
                   >
                     Edit

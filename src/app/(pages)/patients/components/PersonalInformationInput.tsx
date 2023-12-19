@@ -26,10 +26,15 @@ type PersonalInformationInputProps = {
   formRegister: UseFormRegister<any>;
   formState: FormState<any>;
   formSetValue: UseFormSetValue<any>;
+  addressDetails?: {
+    province?: string;
+    municipality?: string;
+    barangay?: string;
+  };
 };
 
 const PersonalInformationInput = (props: PersonalInformationInputProps) => {
-  const { formRegister, formState, formSetValue } = props;
+  const { formRegister, formState, formSetValue, addressDetails } = props;
   const { errors } = formState;
   const dispatch = useDispatch<AppDispatch>();
   const addressInputComponent = useCallback(
@@ -38,6 +43,7 @@ const PersonalInformationInput = (props: PersonalInformationInputProps) => {
         formRegister={formRegister}
         formState={formState}
         formSetValue={formSetValue}
+        addressDetails={addressDetails}
       />
     ),
     [formState]

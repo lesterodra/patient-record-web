@@ -1,5 +1,9 @@
 import prisma from "@/db";
-import { fetchPatients } from "@/redux/features/patient-slice";
+import {
+  PatientType,
+  fetchPatients,
+  setPatientInformation,
+} from "@/redux/features/patient-slice";
 import {
   fetchRecords,
   appendRecords,
@@ -343,5 +347,29 @@ export const getDepartmentList = async () => {
   } catch (error) {
     console.error({ error });
     throw new Error("Fetch department error.");
+  }
+};
+
+export const updatePatientDetails = async (id: number, data: PatientType) => {
+  try {
+    await axios.patch(`/api/patients/${id}`, data);
+  } catch (error) {
+    console.error({ error });
+    throw new Error("Update patient error.");
+  }
+};
+
+export const getPatientDetailsById = async (
+  dispatch: AppDispatch,
+  id: string
+) => {
+  try {
+    const response = await axios.get(`/api/patients/${id}`);
+
+    console.log({ patientDetails: response.data });
+    dispatch(setPatientInformation(response.data.data));
+  } catch (error) {
+    console.error({ error });
+    throw new Error("Get patient error.");
   }
 };

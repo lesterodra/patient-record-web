@@ -10,21 +10,25 @@ type AddressInputProps = {
   formRegister: UseFormRegister<any>;
   formState: FormState<any>;
   formSetValue: UseFormSetValue<any>;
+  addressDetails?: {
+    province?: string;
+    municipality?: string;
+    barangay?: string;
+  };
 };
 
 const AddressInput = (props: AddressInputProps) => {
   const {
+    addressDetails,
     formRegister,
     formSetValue,
     formState: { errors },
   } = props;
-  const [cityMunicipalityList, setCityMunicipalityList] = useState<any[]>([]);
-  const [barangayList, setBarangayList] = useState<any[]>([]);
+  const { province, municipality, barangay } = addressDetails ?? {};
   const list: { [key: string]: any } = phProvinceCityBarangay;
 
   const provinces: any[] = [];
-  const municipalities: any[] = [];
-  const barangays: any[] = [];
+
   Object.keys(phProvinceCityBarangay).forEach((key) => {
     const regionProvinces = Object.keys(list[key].province_list).map(
       (provinceKey) => ({
@@ -43,27 +47,42 @@ const AddressInput = (props: AddressInputProps) => {
     provinces.push(...regionProvinces);
   });
 
-  const onSelectedProvinceChange = (e: any) => {
-    formSetValue("municipality", "", { shouldValidate: true });
+  const municipalities: any[] = province
+    ? provinces.find((data) => data.name === province)?.municipalities
+    : [];
+  const barangays: any[] = municipality
+    ? municipalities.find(
+        (cityMunicipality) => cityMunicipality.name === municipality
+      )?.barangayList
+    : [];
 
+  const [cityMunicipalityList, setCityMunicipalityList] =
+    useState<any[]>(municipalities);
+  const [barangayList, setBarangayList] = useState<any[]>(barangays);
+
+  const onSelectedProvinceChange = (e: any) => {
     setCityMunicipalityList(
       e.target.value
-        ? provinces.find((province) => province.name === e.target.value)
-            .municipalities
+        ? provinces.find((data) => data.name === e.target.value).municipalities
         : []
     );
     setBarangayList([]);
+
+    formSetValue("province", e.target.value, { shouldValidate: true });
+    formSetValue("municipality", null);
+    formSetValue("barangay", null);
   };
 
   const onSelectedMunicipalityChange = (e: any) => {
-    formSetValue("barangay", "", { shouldValidate: true });
     setBarangayList(
       e.target.value
         ? cityMunicipalityList.find(
             (cityMunicipality) => cityMunicipality.name === e.target.value
-          ).barangayList
+          )?.barangayList
         : []
     );
+    formSetValue("municipality", e.target.value, { shouldValidate: true });
+    formSetValue("barangay", null);
   };
 
   provinces.sort((a, b) => a.name.localeCompare(b.name));
@@ -81,20 +100,20 @@ const AddressInput = (props: AddressInputProps) => {
       <FormDropdown
         label="Province"
         width="w-60"
+        onChange={onSelectedProvinceChange}
         options={provinces.map((province) => province.name)}
         formRegister={formRegister("province", {
           required: ERROR_MESSAGE.REQUIRED,
-          onChange: onSelectedProvinceChange,
         })}
         errorMessage={errors?.province?.message?.toString()}
       />
       <FormDropdown
         label="City/Municipality"
         width="w-60"
-        options={cityMunicipalityList.map((municipality) => municipality.name)}
+        onChange={onSelectedMunicipalityChange}
+        options={cityMunicipalityList?.map((municipality) => municipality.name)}
         formRegister={formRegister("municipality", {
           required: ERROR_MESSAGE.REQUIRED,
-          onChange: onSelectedMunicipalityChange,
         })}
         errorMessage={errors?.municipality?.message?.toString()}
       />
