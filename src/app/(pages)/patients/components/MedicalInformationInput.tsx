@@ -1,128 +1,91 @@
-import CheckboxItem from "@/app/components/CheckboxItem";
 import Dropdown from "@/app/components/Dropdown";
-import Notes from "@/app/components/Notes";
-import {
-  VisualAcuity,
-  updatePatientRecordInput,
-} from "@/redux/features/record-slice";
+import FormCheckboxItem from "@/app/components/FormCheckboxItem";
+import FormDropdown from "@/app/components/FormDropdown";
+import FormInput from "@/app/components/FormInput";
+import FormNotes from "@/app/components/FormNotes";
+import { updatePatientRecordInput } from "@/redux/features/record-slice";
 import { AppDispatch } from "@/redux/store";
-import { REASON_FOR_VISIT } from "@/utils/constants";
+import { ERROR_MESSAGE, REASON_FOR_VISIT } from "@/utils/constants";
 import { Table } from "flowbite-react";
-import { useEffect, useState } from "react";
+import { FormState, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
-const initialOdValue = {
-  eyeType: "OD",
-  sc: "",
-  ph: "",
-  cc: "",
-  ncc: "",
-  j: "",
+type MedicalInformationInputProps = {
+  formRegister: UseFormRegister<any>;
+  formState: FormState<any>;
+  formSetValue: UseFormSetValue<any>;
 };
 
-const initialOsValue = {
-  eyeType: "OS",
-  sc: "",
-  ph: "",
-  cc: "",
-  ncc: "",
-  j: "",
-};
-
-const MedicalInformationInput = () => {
+const MedicalInformationInput = (props: MedicalInformationInputProps) => {
+  const { formRegister, formState, formSetValue } = props;
   const dispatch = useDispatch<AppDispatch>();
-  const [odObjectInput, setOdObjectInput] =
-    useState<VisualAcuity>(initialOdValue);
-  const [osObjectInput, setOsObjectInput] =
-    useState<VisualAcuity>(initialOsValue);
 
-  useEffect(() => {
-    dispatch(
-      updatePatientRecordInput({
-        visualAcuities: [odObjectInput, osObjectInput],
-      })
-    );
-  }, [odObjectInput, osObjectInput]);
+  const { errors } = formState ?? {};
+  const visitTypeErrorMessage = errors?.visitType?.message?.toString();
+  const reasonForVisitErrorMessage =
+    errors?.reasonForVisit?.message?.toString();
 
   return (
     <>
       <div className=" flex justify-between mb-5">
-        <CheckboxItem
-          name="visitType"
-          isRow
-          items={["OR", "CONS"]}
-          isSingleSelection
-          onSelectedItemsChanged={(selectedItems) => {
-            dispatch(
-              updatePatientRecordInput({
-                visitType: selectedItems[0],
-              })
-            );
-          }}
-        />
+        <div>
+          <FormCheckboxItem
+            name="visitType"
+            isRow
+            items={["OR", "CONS"]}
+            formRegister={formRegister("visitType", {
+              required: ERROR_MESSAGE.REQUIRED,
+              onChange: (e) => {
+                formSetValue(
+                  "visitType",
+                  e.target.checked ? e.target.value : null,
+                  {
+                    shouldValidate: true,
+                  }
+                );
+              },
+            })}
+          />
+          {visitTypeErrorMessage && (
+            <p className="text-xs text-red-500">{visitTypeErrorMessage}</p>
+          )}
+        </div>
       </div>
       <p className="mb-3 font-bold text-xl">Reason for your Visit/Complaints</p>
+      {reasonForVisitErrorMessage && (
+        <p className="text-xs text-red-500">{reasonForVisitErrorMessage}</p>
+      )}
       <div className="flex gap-10">
-        <CheckboxItem
-          name="reason"
-          items={REASON_FOR_VISIT}
+        <FormCheckboxItem
+          name="reasonForVisit"
           itemPerColumn={6}
-          onSelectedItemsChanged={(selectedItems) => {
-            dispatch(
-              updatePatientRecordInput({
-                reasonForVisit: selectedItems,
-              })
-            );
-          }}
+          items={REASON_FOR_VISIT}
+          formRegister={formRegister("reasonForVisit", {
+            required: ERROR_MESSAGE.REQUIRED,
+          })}
         />
       </div>
-      <Notes
-        onBlur={(e) => {
-          dispatch(
-            updatePatientRecordInput({
-              reasonForVisitNotes: e.target.value,
-            })
-          );
-        }}
-      />
+      <FormNotes formRegister={formRegister("reasonForVisitNotes")} />
       <p className="mb-3 mt-8 font-bold text-xl">Previous Meds</p>
-      <textarea
-        className="rounded-md w-full h-28"
-        onChange={(e) => {
-          dispatch(
-            updatePatientRecordInput({
-              previousMedicines: e.target.value,
-            })
-          );
-        }}
+      <FormNotes
+        withLabel={false}
+        formRegister={formRegister("previousMedicines")}
       />
       <p className="mb-3 mt-8 font-bold text-xl">Auto Refraction</p>
       <div className="flex items-end gap-3">
         <p>OD:</p>
-        <input
-          type="text"
-          className="border-t-0 border-l-0 border-r-0"
-          onChange={(e) => {
-            dispatch(
-              updatePatientRecordInput({
-                autoRefractionOD: e.target.value,
-              })
-            );
-          }}
+        <FormInput
+          label=""
+          inputClassName="w-40 border-t-0 border-l-0 border-r-0 rounded-none"
+          formRegister={formRegister("autoRefractionOD")}
         />
       </div>
       <div className="flex items-end gap-3">
         <p>OS:</p>
-        <input
-          type="text"
-          className="border-t-0 border-l-0 border-r-0"
-          onChange={(e) => {
-            dispatch(
-              updatePatientRecordInput({
-                autoRefractionOs: e.target.value,
-              })
-            );
-          }}
+        <FormInput
+          label=""
+          inputClassName="w-40 border-t-0 border-l-0 border-r-0 rounded-none"
+          formRegister={formRegister("autoRefractionOs")}
         />
       </div>
       <p className="mb-3 mt-8 font-bold text-xl">Visual Acuity</p>
@@ -141,48 +104,38 @@ const MedicalInformationInput = () => {
               OD
             </Table.Cell>
             <Table.Cell className="p-0">
-              <input
-                type="text"
-                className="rounded-md w-20"
-                onChange={(e) =>
-                  setOdObjectInput((prev) => ({ ...prev, sc: e.target.value }))
-                }
+              <FormInput
+                label=""
+                inputClassName="w-20"
+                formRegister={formRegister("visualAcuityOdSc")}
               />
             </Table.Cell>
             <Table.Cell className="p-0">
-              <input
-                type="text"
-                className="rounded-md w-20"
-                onChange={(e) =>
-                  setOdObjectInput((prev) => ({ ...prev, ph: e.target.value }))
-                }
+              <FormInput
+                label=""
+                inputClassName="w-20"
+                formRegister={formRegister("visualAcuityOdPh")}
               />
             </Table.Cell>
             <Table.Cell className="p-0">
-              <input
-                type="text"
-                className="rounded-md w-20"
-                onChange={(e) =>
-                  setOdObjectInput((prev) => ({ ...prev, cc: e.target.value }))
-                }
+              <FormInput
+                label=""
+                inputClassName="w-20"
+                formRegister={formRegister("visualAcuityOdCc")}
               />
             </Table.Cell>
             <Table.Cell className="p-0">
-              <input
-                type="text"
-                className="rounded-md w-20"
-                onChange={(e) =>
-                  setOdObjectInput((prev) => ({ ...prev, ncc: e.target.value }))
-                }
+              <FormInput
+                label=""
+                inputClassName="w-20"
+                formRegister={formRegister("visualAcuityOdNcc")}
               />
             </Table.Cell>
             <Table.Cell className="p-0">
-              <input
-                type="text"
-                className="rounded-md w-20"
-                onChange={(e) =>
-                  setOdObjectInput((prev) => ({ ...prev, j: e.target.value }))
-                }
+              <FormInput
+                label=""
+                inputClassName="w-20"
+                formRegister={formRegister("visualAcuityOdj")}
               />
             </Table.Cell>
           </Table.Row>
@@ -191,48 +144,38 @@ const MedicalInformationInput = () => {
               OS
             </Table.Cell>
             <Table.Cell className="p-0">
-              <input
-                type="text"
-                className="rounded-md w-20"
-                onChange={(e) =>
-                  setOsObjectInput((prev) => ({ ...prev, sc: e.target.value }))
-                }
+              <FormInput
+                label=""
+                inputClassName="w-20"
+                formRegister={formRegister("visualAcuityOsSc")}
               />
             </Table.Cell>
             <Table.Cell className="p-0">
-              <input
-                type="text"
-                className="rounded-md w-20"
-                onChange={(e) =>
-                  setOsObjectInput((prev) => ({ ...prev, ph: e.target.value }))
-                }
+              <FormInput
+                label=""
+                inputClassName="w-20"
+                formRegister={formRegister("visualAcuityOsPh")}
               />
             </Table.Cell>
             <Table.Cell className="p-0">
-              <input
-                type="text"
-                className="rounded-md w-20"
-                onChange={(e) =>
-                  setOsObjectInput((prev) => ({ ...prev, cc: e.target.value }))
-                }
+              <FormInput
+                label=""
+                inputClassName="w-20"
+                formRegister={formRegister("visualAcuityOsCc")}
               />
             </Table.Cell>
             <Table.Cell className="p-0">
-              <input
-                type="text"
-                className="rounded-md w-20"
-                onChange={(e) =>
-                  setOsObjectInput((prev) => ({ ...prev, ncc: e.target.value }))
-                }
+              <FormInput
+                label=""
+                inputClassName="w-20"
+                formRegister={formRegister("visualAcuityOsNcc")}
               />
             </Table.Cell>
             <Table.Cell className="p-0">
-              <input
-                type="text"
-                className="rounded-md w-20"
-                onChange={(e) =>
-                  setOsObjectInput((prev) => ({ ...prev, j: e.target.value }))
-                }
+              <FormInput
+                label=""
+                inputClassName="w-20"
+                formRegister={formRegister("visualAcuityOsJ")}
               />
             </Table.Cell>
           </Table.Row>
@@ -242,118 +185,70 @@ const MedicalInformationInput = () => {
       <div className="flex mb-5">
         <div className="flex items-end gap-3">
           <p>OD:</p>
-          <input
-            type="text"
-            className="border-t-0 border-l-0 border-r-0 w-16"
-            onChange={(e) => {
-              dispatch(
-                updatePatientRecordInput({
-                  refractionOd: e.target.value,
-                })
-              );
-            }}
+          <FormInput
+            label=""
+            inputClassName="w-16 border-t-0 border-l-0 border-r-0 rounded-none"
+            formRegister={formRegister("refractionOd")}
           />
         </div>
         <div className="flex items-end gap-3">
           <p>D(-)</p>
-          <input
-            type="text"
-            className="border-t-0 border-l-0 border-r-0 w-16"
-            onChange={(e) => {
-              dispatch(
-                updatePatientRecordInput({
-                  refractionOdNegative: e.target.value,
-                })
-              );
-            }}
+          <FormInput
+            label=""
+            inputClassName="w-16 border-t-0 border-l-0 border-r-0 rounded-none"
+            formRegister={formRegister("refractionOdNegative")}
           />
         </div>
         <div className="flex items-end gap-3">
           <p>Dx</p>
-          <input
-            type="text"
-            className="border-t-0 border-l-0 border-r-0 w-16"
-            onChange={(e) => {
-              dispatch(
-                updatePatientRecordInput({
-                  refractionOdX: e.target.value,
-                })
-              );
-            }}
+          <FormInput
+            label=""
+            inputClassName="w-16 border-t-0 border-l-0 border-r-0 rounded-none"
+            formRegister={formRegister("refractionOdX")}
           />
         </div>
       </div>
       <div className="flex mb-5">
         <div className="flex items-end gap-3">
           <p>OS:</p>
-          <input
-            type="text"
-            className="border-t-0 border-l-0 border-r-0 w-16"
-            onChange={(e) => {
-              dispatch(
-                updatePatientRecordInput({
-                  refractionOs: e.target.value,
-                })
-              );
-            }}
+          <FormInput
+            label=""
+            inputClassName="w-16 border-t-0 border-l-0 border-r-0 rounded-none"
+            formRegister={formRegister("refractionOs")}
           />
         </div>
         <div className="flex items-end gap-3">
           <p>D(-)</p>
-          <input
-            type="text"
-            className="border-t-0 border-l-0 border-r-0 w-16"
-            onChange={(e) => {
-              dispatch(
-                updatePatientRecordInput({
-                  refractionOsNegative: e.target.value,
-                })
-              );
-            }}
+          <FormInput
+            label=""
+            inputClassName="w-16 border-t-0 border-l-0 border-r-0 rounded-none"
+            formRegister={formRegister("refractionOsNegative")}
           />
         </div>
         <div className="flex items-end gap-3">
           <p>Dx</p>
-          <input
-            type="text"
-            className="border-t-0 border-l-0 border-r-0 w-16"
-            onChange={(e) => {
-              dispatch(
-                updatePatientRecordInput({
-                  refractionOsX: e.target.value,
-                })
-              );
-            }}
+          <FormInput
+            label=""
+            inputClassName="w-16 border-t-0 border-l-0 border-r-0 rounded-none"
+            formRegister={formRegister("refractionOsX")}
           />
         </div>
       </div>
       <div className="flex mb-5">
         <div className="flex items-end gap-3">
           <p>Add:(J.)</p>
-          <input
-            type="text"
-            className="border-t-0 border-l-0 border-r-0 w-16"
-            onChange={(e) => {
-              dispatch(
-                updatePatientRecordInput({
-                  refractionAdd: e.target.value,
-                })
-              );
-            }}
+          <FormInput
+            label=""
+            inputClassName="w-16 border-t-0 border-l-0 border-r-0 rounded-none"
+            formRegister={formRegister("refractionAdd")}
           />
         </div>
         <div className="flex items-end gap-3">
           <p>PD</p>
-          <input
-            type="text"
-            className="border-t-0 border-l-0 border-r-0 w-16"
-            onChange={(e) => {
-              dispatch(
-                updatePatientRecordInput({
-                  refractionPd: e.target.value,
-                })
-              );
-            }}
+          <FormInput
+            label=""
+            inputClassName="w-16 border-t-0 border-l-0 border-r-0 rounded-none"
+            formRegister={formRegister("refractionPd")}
           />
           <span>mm</span>
         </div>
@@ -362,59 +257,38 @@ const MedicalInformationInput = () => {
       <div className="flex gap-3 mb-5">
         <div className="flex items-end gap-3">
           <p>Time:</p>
-          <input
-            type="text"
-            className="border-t-0 border-l-0 border-r-0 w-24"
-            onChange={(e) => {
-              dispatch(
-                updatePatientRecordInput({
-                  appointmentTime: e.target.value,
-                })
-              );
-            }}
+          <FormInput
+            label=""
+            inputClassName="w-24 border-t-0 border-l-0 border-r-0 rounded-none"
+            formRegister={formRegister("appointmentTime")}
           />
         </div>
         <div className="flex items-end gap-3">
           <p>OD:</p>
-          <input
-            type="text"
-            className="border-t-0 border-l-0 border-r-0 w-16"
-            onChange={(e) => {
-              dispatch(
-                updatePatientRecordInput({
-                  intraOcularPressureOD: e.target.value,
-                })
-              );
-            }}
+          <FormInput
+            label=""
+            inputClassName="w-16 border-t-0 border-l-0 border-r-0 rounded-none"
+            formRegister={formRegister("intraOcularPressureOD")}
           />
         </div>
         <div className="flex items-end gap-3">
           <p>OS:</p>
-          <input
-            type="text"
-            className="border-t-0 border-l-0 border-r-0 w-16"
-            onChange={(e) => {
-              dispatch(
-                updatePatientRecordInput({
-                  intraOcularPressureOS: e.target.value,
-                })
-              );
-            }}
+          <FormInput
+            label=""
+            inputClassName="w-16 border-t-0 border-l-0 border-r-0 rounded-none"
+            formRegister={formRegister("intraOcularPressureOS")}
           />
         </div>
       </div>
       <div className="flex items-end gap-3">
-        <Dropdown
+        <FormDropdown
           width="w-72"
           label="MD"
           options={["Lorem Ipsum", "John Doe", "Jane Doe"]}
-          onChange={(e) => {
-            dispatch(
-              updatePatientRecordInput({
-                medicalDoctor: e.target.value,
-              })
-            );
-          }}
+          formRegister={formRegister("medicalDoctor", {
+            required: ERROR_MESSAGE.REQUIRED,
+          })}
+          errorMessage={errors?.medicalDoctor?.message?.toString()}
         />
       </div>
     </>

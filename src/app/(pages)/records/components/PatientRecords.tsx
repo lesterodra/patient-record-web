@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import { Pagination, Table } from "flowbite-react";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
-import { getPatientRecordList } from "@/utils/dataFetchers";
+import {
+  getPatientRecordById,
+  getPatientRecordList,
+} from "@/utils/dataFetchers";
 import Link from "next/link";
 import {
   displayDateAndTime,
@@ -12,12 +15,14 @@ import {
   getValueDisplay,
 } from "@/utils/displayParser";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
+import UpdatePatientRecordModal from "./UpdatePatientRecordModal";
 
 const PatientRecords = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const { recordList, patientRecordListQueryParameters } = useAppSelector(
-    (state) => state.recordReducer.value
-  );
+  const [isUpdatePatientRecordModalOpen, setIsUpdatePatientRecordModalOpen] =
+    useState<boolean>(false);
+  const { recordList, patientRecordListQueryParameters, patientRecord } =
+    useAppSelector((state) => state.recordReducer.value);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
@@ -30,6 +35,13 @@ const PatientRecords = () => {
 
   return (
     <>
+      {isUpdatePatientRecordModalOpen && (
+        <UpdatePatientRecordModal
+          isOpen={isUpdatePatientRecordModalOpen}
+          setIsOpen={setIsUpdatePatientRecordModalOpen}
+          patientRecord={patientRecord}
+        />
+      )}
       <div className="mt-5" style={{ overflowX: "auto" }}>
         <Table hoverable>
           <Table.Head>
@@ -78,7 +90,13 @@ const PatientRecords = () => {
                 <Table.Cell>
                   <p
                     className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
-                    onClick={() => {}}
+                    onClick={async () => {
+                      await getPatientRecordById(
+                        dispatch,
+                        patientRecord?.id?.toString()
+                      );
+                      setIsUpdatePatientRecordModalOpen(true);
+                    }}
                   >
                     Edit
                   </p>

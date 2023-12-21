@@ -38,7 +38,7 @@ type RecordInputType = {
   updatedAt?: string;
 };
 
-type RecordType = {
+export type RecordType = {
   id: number;
   recordNo: string;
   visitType: string;
@@ -93,6 +93,7 @@ type InitialState = {
     drawingDataUrl?: string;
     drawingList?: Drawing[];
     patientRecordListQueryParameters: PatientRecordListQueryParameters;
+    patientRecord?: RecordType;
   };
 };
 
@@ -103,6 +104,7 @@ const initialState: InitialState = {
     drawingDataUrl: "",
     drawingList: undefined,
     patientRecordListQueryParameters: {},
+    patientRecord: undefined,
   },
 };
 
@@ -184,6 +186,14 @@ export const record = createSlice({
     clearPatientRecordListQueryParameters: (state) => ({
       value: { ...state.value, patientRecordListQueryParameters: {} },
     }),
+    setPatientRecord: (state, action: PayloadAction<RecordType>) => ({
+      value: {
+        ...state.value,
+        patientRecord: {
+          ...action.payload,
+        },
+      },
+    }),
   },
 });
 
@@ -196,5 +206,6 @@ export const {
   setDrawingList,
   updatePatientRecordListQueryParameters,
   clearPatientRecordListQueryParameters,
+  setPatientRecord,
 } = record.actions;
 export default record.reducer;

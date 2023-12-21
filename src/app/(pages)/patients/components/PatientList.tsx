@@ -19,7 +19,6 @@ const PatientList = () => {
   const { patientList, patientInformation } = useAppSelector(
     (state) => state.patientReducer.value
   );
-  const [patientDetails, setPatientDetails] = useState<PatientType>();
 
   useEffect(() => {
     getPatientList(dispatch, { page: currentPage, limit: 5 });
@@ -74,7 +73,6 @@ const PatientList = () => {
                     onClick={async () => {
                       await getPatientDetailsById(dispatch, patient.id ?? "");
                       setIsUpdatePatientModalOpen(true);
-                      setPatientDetails(patientInformation);
                     }}
                   >
                     Edit

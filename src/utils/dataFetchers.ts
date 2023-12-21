@@ -8,6 +8,7 @@ import {
   fetchRecords,
   appendRecords,
   setDrawingList,
+  setPatientRecord,
 } from "@/redux/features/record-slice";
 import { fetchUsers } from "@/redux/features/user-slice";
 import { AppDispatch } from "@/redux/store";
@@ -18,24 +19,24 @@ export const createPatientRecord = async (
   data: {
     patientInformationId: number;
     reasonForVisit?: string[];
-    reasonForVisitNotes?: string;
-    previousMedicines?: string;
-    autoRefractionOD?: string;
-    autoRefractionOs?: string;
-    appointmentTime?: string;
-    intraOcularPressureOD?: string;
-    intraOcularPressureOS?: string;
-    medicalDoctor?: string;
-    refractionOd?: string;
-    refractionOdNegative?: string;
-    refractionOdX?: string;
-    refractionOs?: string;
-    refractionOsNegative?: string;
-    refractionOsX?: string;
-    refractionAdd?: string;
-    refractionPd?: string;
+    reasonForVisitNotes?: string | null;
+    previousMedicines?: string | null;
+    autoRefractionOD?: string | null;
+    autoRefractionOs?: string | null;
+    appointmentTime?: string | null;
+    intraOcularPressureOD?: string | null;
+    intraOcularPressureOS?: string | null;
+    medicalDoctor?: string | null;
+    refractionOd?: string | null;
+    refractionOdNegative?: string | null;
+    refractionOdX?: string | null;
+    refractionOs?: string | null;
+    refractionOsNegative?: string | null;
+    refractionOsX?: string | null;
+    refractionAdd?: string | null;
+    refractionPd?: string | null;
     visualAcuities?: any[];
-    visitType?: string;
+    visitType?: string | null;
   }
 ) => {
   try {
@@ -368,6 +369,21 @@ export const getPatientDetailsById = async (
 
     console.log({ patientDetails: response.data });
     dispatch(setPatientInformation(response.data.data));
+  } catch (error) {
+    console.error({ error });
+    throw new Error("Get patient error.");
+  }
+};
+
+export const getPatientRecordById = async (
+  dispatch: AppDispatch,
+  id: string
+) => {
+  try {
+    const response = await axios.get(`/api/records/${id}`);
+
+    console.log({ patientRecord: response.data });
+    dispatch(setPatientRecord(response.data.data));
   } catch (error) {
     console.error({ error });
     throw new Error("Get patient error.");

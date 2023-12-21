@@ -3,13 +3,14 @@ import { UseFormRegisterReturn } from "react-hook-form";
 
 type FormNotesProps = {
   formRegister?: UseFormRegisterReturn;
+  withLabel?: boolean;
 };
 
 const FormNotes = (props: FormNotesProps) => {
-  const { formRegister } = props;
+  const { formRegister, withLabel = true } = props;
   return (
     <div className="mt-4">
-      <p className="text-xs italic">Notes</p>
+      {withLabel && <p className="text-xs italic">Notes</p>}
       <textarea className="rounded w-full h-28" {...formRegister} />
     </div>
   );
