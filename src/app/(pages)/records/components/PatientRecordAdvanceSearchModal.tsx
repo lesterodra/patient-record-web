@@ -21,6 +21,7 @@ const PatientRecordAdvanceSearchModal = () => {
   const onSearchButtonClick = async () => {
     await getPatientRecordList(dispatch, {
       ...patientRecordListQueryParameters,
+      quickSearchInput: undefined,
       page: 1,
       limit: 5,
     });

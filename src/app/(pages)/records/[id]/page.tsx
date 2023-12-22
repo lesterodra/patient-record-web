@@ -6,13 +6,15 @@ import { Prisma } from "@prisma/client";
 const getRecordDetails = (id: number): Promise<any> =>
   prisma.patientRecord.findFirst({
     where: { id },
-    include: { drawings: true },
+    include: { drawings: true, visualAcuities: true },
   });
 
 const PatientDetailPage = async ({ params }: { params: { id: string } }) => {
   const recordDetail = (await getRecordDetails(
     Number(params.id)
-  )) as Prisma.PatientRecordGetPayload<{ include: { drawings: true } }>;
+  )) as Prisma.PatientRecordGetPayload<{
+    include: { drawings: true; visualAcuities: true };
+  }>;
 
   return (
     <PageHeading pageTitle="Record Details">

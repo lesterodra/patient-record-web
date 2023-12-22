@@ -5,13 +5,23 @@ import { Prisma } from "@prisma/client";
 import { Table } from "flowbite-react";
 import DrawingModal from "./DrawingModal";
 import DrawingList from "./DrawingList";
+import { getValueDisplay } from "@/utils/displayParser";
 
 type RecordDetailType = {
-  recordDetail: Prisma.PatientRecordGetPayload<{ include: { drawings: true } }>;
+  recordDetail: Prisma.PatientRecordGetPayload<{
+    include: { drawings: true; visualAcuities: true };
+  }>;
 };
 
 const RecordDetail = (props: RecordDetailType) => {
   const { recordDetail } = props;
+
+  const visualAcuityOd = recordDetail.visualAcuities.find(
+    (visualAcuity) => visualAcuity.eyeType === "OD"
+  );
+  const visualAcuityOs = recordDetail.visualAcuities.find(
+    (visualAcuity) => visualAcuity.eyeType === "OS"
+  );
 
   return (
     <div>
@@ -33,7 +43,7 @@ const RecordDetail = (props: RecordDetailType) => {
         />
       </div>
       <div className="my-2">
-        <span className="text-xl font-bold">Reason for Visit:</span>
+        <span className="text-xl font-bold">Reason for Visit: </span>
         <span>{recordDetail.reasonForVisit?.toString()}</span>
       </div>
       {recordDetail?.reasonForVisitNotes && (
@@ -54,42 +64,51 @@ const RecordDetail = (props: RecordDetailType) => {
           className="rounded w-full h-28"
         />
       </div>
-      <div className="my-2">
-        <span className="text-xl font-bold">Auto Refraction: </span>
-        OD: {recordDetail.autoRefractionOD} OS: {recordDetail.autoRefractionOs}
+      <div className="my-4">
+        <p className="text-xl font-bold">Auto Refraction: </p>
+        <div>
+          <div>
+            <span className="font-bold">OD: </span>
+            {getValueDisplay(recordDetail.autoRefractionOD)}
+          </div>
+          <div>
+            <span className="font-bold">OS: </span>
+            {getValueDisplay(recordDetail.autoRefractionOs)}
+          </div>
+        </div>
       </div>
       <p>
         <span className="text-xl font-bold">Visual Acuity: </span>
       </p>
-      <Table hoverable>
+      <Table hoverable className="w-auto">
         <Table.Head>
-          <Table.HeadCell className="w-20">EYE</Table.HeadCell>
-          <Table.HeadCell className="w-20">SC</Table.HeadCell>
-          <Table.HeadCell className="w-20">PH</Table.HeadCell>
-          <Table.HeadCell className="w-20">CC</Table.HeadCell>
-          <Table.HeadCell className="w-20">NCC</Table.HeadCell>
-          <Table.HeadCell className="w-20">J.</Table.HeadCell>
+          <Table.HeadCell>EYE</Table.HeadCell>
+          <Table.HeadCell>SC</Table.HeadCell>
+          <Table.HeadCell>PH</Table.HeadCell>
+          <Table.HeadCell>CC</Table.HeadCell>
+          <Table.HeadCell>NCC</Table.HeadCell>
+          <Table.HeadCell>J.</Table.HeadCell>
         </Table.Head>
         <Table.Body className="divide-y">
           <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800 text-black">
-            <Table.Cell className=" whitespace-nowrap font-medium text-gray-900 dark:text-white">
+            <Table.Cell className=" whitespace-nowrap text-gray-900 font-bold dark:text-white">
               OD
             </Table.Cell>
-            <Table.Cell>data</Table.Cell>
-            <Table.Cell>data</Table.Cell>
-            <Table.Cell>data</Table.Cell>
-            <Table.Cell>data</Table.Cell>
-            <Table.Cell>data</Table.Cell>
+            <Table.Cell>{getValueDisplay(visualAcuityOd?.sc)}</Table.Cell>
+            <Table.Cell>{getValueDisplay(visualAcuityOd?.ph)}</Table.Cell>
+            <Table.Cell>{getValueDisplay(visualAcuityOd?.cc)}</Table.Cell>
+            <Table.Cell>{getValueDisplay(visualAcuityOd?.ncc)}</Table.Cell>
+            <Table.Cell>{getValueDisplay(visualAcuityOd?.j)}</Table.Cell>
           </Table.Row>
           <Table.Row className="bg-white dark:border-gray-700 dark:bg-gray-800 text-black">
-            <Table.Cell className=" whitespace-nowrap font-medium text-gray-900 dark:text-white">
+            <Table.Cell className=" whitespace-nowrap font-bold text-gray-900 dark:text-white">
               OS
             </Table.Cell>
-            <Table.Cell>data</Table.Cell>
-            <Table.Cell>data</Table.Cell>
-            <Table.Cell>data</Table.Cell>
-            <Table.Cell>data</Table.Cell>
-            <Table.Cell>data</Table.Cell>
+            <Table.Cell>{getValueDisplay(visualAcuityOs?.sc)}</Table.Cell>
+            <Table.Cell>{getValueDisplay(visualAcuityOs?.ph)}</Table.Cell>
+            <Table.Cell>{getValueDisplay(visualAcuityOs?.cc)}</Table.Cell>
+            <Table.Cell>{getValueDisplay(visualAcuityOs?.ncc)}</Table.Cell>
+            <Table.Cell>{getValueDisplay(visualAcuityOs?.j)}</Table.Cell>
           </Table.Row>
         </Table.Body>
       </Table>
@@ -97,39 +116,39 @@ const RecordDetail = (props: RecordDetailType) => {
       <div className="flex mb-5 gap-3">
         <div className="flex items-end gap-3">
           <p className="font-bold">OD:</p>
-          data
+          {getValueDisplay(recordDetail.refractionOd)}
         </div>
         <div className="flex items-end gap-3">
           <p className="font-bold">D(-)</p>
-          data
+          {getValueDisplay(recordDetail.refractionOdNegative)}
         </div>
         <div className="flex items-end gap-3">
           <p className="font-bold">Dx</p>
-          data
+          {getValueDisplay(recordDetail.refractionOdX)}
         </div>
       </div>
       <div className="flex mb-5 gap-3">
         <div className="flex items-end gap-3">
           <p className="font-bold">OS:</p>
-          data
+          {getValueDisplay(recordDetail.refractionOs)}
         </div>
         <div className="flex items-end gap-3">
           <p className="font-bold">D(-)</p>
-          data
+          {getValueDisplay(recordDetail.refractionOsNegative)}
         </div>
         <div className="flex items-end gap-3">
           <p className="font-bold">Dx</p>
-          data
+          {getValueDisplay(recordDetail.refractionOsX)}
         </div>
       </div>
       <div className="flex mb-5 gap-3">
         <div className="flex items-end gap-3">
           <p className="font-bold">Add:(J.)</p>
-          data
+          {getValueDisplay(recordDetail.refractionAdd)}
         </div>
         <div className="flex items-end gap-3">
           <p className="font-bold">PD</p>
-          data
+          {getValueDisplay(recordDetail.refractionPd)}
           <span>mm</span>
         </div>
       </div>
@@ -137,15 +156,15 @@ const RecordDetail = (props: RecordDetailType) => {
       <div className="flex gap-3 mb-5">
         <div className="flex items-end gap-3">
           <p className="font-bold">Time:</p>
-          {recordDetail.appointmentTime}
+          {getValueDisplay(recordDetail.appointmentTime)}
         </div>
         <div className="flex items-end gap-3">
           <p className="font-bold">OD:</p>
-          {recordDetail.intraOcularPressureOD}
+          {getValueDisplay(recordDetail.intraOcularPressureOD)}
         </div>
         <div className="flex items-end gap-3">
           <p className="font-bold">OS:</p>
-          {recordDetail.intraOcularPressureOS}
+          {getValueDisplay(recordDetail.intraOcularPressureOS)}
         </div>
       </div>
       <div>

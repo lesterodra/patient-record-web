@@ -5,6 +5,7 @@ import { AiFillDelete } from "react-icons/ai";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
+import LoadingSpinner from "@/app/components/LoadingSpinner";
 
 type DrawingListProps = {
   patientRecordId: number;
@@ -21,23 +22,36 @@ const DrawingList = (props: DrawingListProps) => {
 
   return (
     <div className="flex gap-3 flex-wrap">
-      {drawingList?.map((drawing, index) => (
-        <div
-          key={`image-${index}`}
-          className="border border-black relative p-2"
-        >
+      {drawingList &&
+        drawingList.length > 0 &&
+        drawingList.map((drawing, index) => (
           <div
-            className="absolute p-2 right-2 border border-black rounded-xl bg-lime-100 hover:bg-lime-300 cursor-pointer"
-            onClick={async () => {
-              await deleteDrawing(dispatch, drawing.id);
-              fetchDrawings(dispatch, patientRecordId);
-            }}
+            key={`image-${index}`}
+            className="border border-black relative p-2"
           >
-            <AiFillDelete />
+            <div
+              className="absolute p-2 right-2 border border-black rounded-xl bg-lime-100 hover:bg-lime-300 cursor-pointer"
+              onClick={async () => {
+                await deleteDrawing(dispatch, drawing.id);
+                fetchDrawings(dispatch, patientRecordId);
+              }}
+            >
+              <AiFillDelete />
+            </div>
+            <Image
+              src={drawing.data as string}
+              alt=""
+              width={500}
+              height={400}
+            />
           </div>
-          <Image src={drawing.data as string} alt="" width={500} height={400} />
+        ))}
+      {!drawingList && <LoadingSpinner />}
+      {drawingList?.length === 0 && (
+        <div>
+          <p>No records found!</p>
         </div>
-      ))}
+      )}
     </div>
   );
 };
