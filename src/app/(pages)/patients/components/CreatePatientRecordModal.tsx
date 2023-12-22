@@ -59,7 +59,6 @@ const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
     });
 
   const onCreateRecordClick = async () => {
-    console.log({ values: getValues() });
     const {
       visitType,
       reasonForVisit,

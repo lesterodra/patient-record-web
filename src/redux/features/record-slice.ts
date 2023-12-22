@@ -10,7 +10,7 @@ export type VisualAcuity = {
   j: string;
 };
 
-type RecordInputType = {
+export type RecordInputType = {
   id?: number;
   recordNo?: string;
   visitType?: string;

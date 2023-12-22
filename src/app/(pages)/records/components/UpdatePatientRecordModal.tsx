@@ -2,6 +2,7 @@ import { Button, Modal } from "flowbite-react";
 import { useForm } from "react-hook-form";
 import MedicalInformationInput from "../../patients/components/MedicalInformationInput";
 import { RecordType } from "@/redux/features/record-slice";
+import { updatePatientRecord } from "@/utils/dataFetchers";
 
 type UpdatePatientRecordModalProps = {
   isOpen: boolean;
@@ -71,8 +72,77 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
     },
   });
 
-  const onUpdateRecordClick = () => {
+  const onUpdateRecordClick = async () => {
     console.log({ values: getValues() });
+    const {
+      visitType,
+      reasonForVisit,
+      reasonForVisitNotes,
+      previousMedicines,
+      autoRefractionOD,
+      autoRefractionOs,
+      visualAcuityOdSc,
+      visualAcuityOdPh,
+      visualAcuityOdCc,
+      visualAcuityOdNcc,
+      visualAcuityOdj,
+      visualAcuityOsSc,
+      visualAcuityOsPh,
+      visualAcuityOsCc,
+      visualAcuityOsNcc,
+      visualAcuityOsJ,
+      refractionOd,
+      refractionOdNegative,
+      refractionOdX,
+      refractionOs,
+      refractionOsNegative,
+      refractionOsX,
+      refractionAdd,
+      refractionPd,
+      appointmentTime,
+      intraOcularPressureOD,
+      intraOcularPressureOS,
+      medicalDoctor,
+    } = getValues();
+
+    await updatePatientRecord(patientRecord?.id as number, {
+      reasonForVisit,
+      reasonForVisitNotes,
+      previousMedicines,
+      autoRefractionOD,
+      autoRefractionOs,
+      appointmentTime,
+      intraOcularPressureOD,
+      intraOcularPressureOS,
+      medicalDoctor,
+      visualAcuities: [
+        {
+          eyeType: "OD",
+          sc: visualAcuityOdSc as string,
+          ph: visualAcuityOdPh as string,
+          cc: visualAcuityOdCc as string,
+          ncc: visualAcuityOdNcc as string,
+          j: visualAcuityOdj as string,
+        },
+        {
+          eyeType: "OS",
+          sc: visualAcuityOsSc as string,
+          ph: visualAcuityOsPh as string,
+          cc: visualAcuityOsCc as string,
+          ncc: visualAcuityOsNcc as string,
+          j: visualAcuityOsJ as string,
+        },
+      ],
+      refractionOd,
+      refractionOdNegative,
+      refractionOdX,
+      refractionOs,
+      refractionOsNegative,
+      refractionOsX,
+      refractionAdd,
+      refractionPd,
+      visitType: visitType && visitType[0],
+    });
   };
 
   return (

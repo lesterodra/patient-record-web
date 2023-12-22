@@ -9,6 +9,8 @@ import {
   appendRecords,
   setDrawingList,
   setPatientRecord,
+  RecordType,
+  RecordInputType,
 } from "@/redux/features/record-slice";
 import { fetchUsers } from "@/redux/features/user-slice";
 import { AppDispatch } from "@/redux/store";
@@ -387,5 +389,17 @@ export const getPatientRecordById = async (
   } catch (error) {
     console.error({ error });
     throw new Error("Get patient error.");
+  }
+};
+
+export const updatePatientRecord = async (
+  id: number,
+  data: RecordInputType
+) => {
+  try {
+    await axios.patch(`/api/records/${id}`, data);
+  } catch (error) {
+    console.error({ error });
+    throw new Error("Update patient error.");
   }
 };
