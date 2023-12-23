@@ -13,7 +13,7 @@ export async function PATCH(
 
     const user = await prisma.user.findFirst({ where: { id } });
 
-    if (!user || user?.username !== null) {
+    if (!user) {
       return new NextResponse(JSON.stringify({ message: "Invalid user." }), {
         status: 400,
       });
