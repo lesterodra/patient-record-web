@@ -1,34 +1,39 @@
 "use client";
 
 import { AppDispatch, useAppSelector } from "@/redux/store";
-import { getUserList, saveUser } from "@/utils/dataFetchers";
+import { getUserList, saveUser, updateUser } from "@/utils/dataFetchers";
 import { Button, Modal } from "flowbite-react";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import UserInputForm from "./UserInputForm";
 import { useForm } from "react-hook-form";
+import { UserType } from "@/redux/features/user-slice";
 
-const CreateUserModal = () => {
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+type UpdateUserModalProps = {
+  isOpen: boolean;
+  setIsOpen: (value: boolean) => void;
+  user?: UserType;
+};
+
+const UpdateUserModal = (props: UpdateUserModalProps) => {
+  const { isOpen, setIsOpen, user } = props;
   const dispatch = useDispatch<AppDispatch>();
   const { departments } = useAppSelector((state) => state.userReducer.value);
+  const { register, handleSubmit, formState, getValues, setValue } = useForm({
+    values: {
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      middleName: user?.middleName,
+      email: user?.email,
+      status: user?.status,
+      departmentId: user?.departmentId,
+    },
+  });
 
-  const { register, handleSubmit, formState, getValues, reset, setValue } =
-    useForm({
-      defaultValues: {
-        firstName: null,
-        lastName: null,
-        middleName: null,
-        email: null,
-        status: null,
-        departmentId: null,
-      },
-    });
-
-  const onCreateUserClick = async () => {
+  const onUpdateUserClick = async () => {
     const { firstName, lastName, middleName, departmentId, email, status } =
       getValues();
-    await saveUser(dispatch, {
+    await updateUser(Number(user?.id), {
       firstName,
       lastName,
       middleName,
@@ -37,15 +42,13 @@ const CreateUserModal = () => {
       status,
     });
     setIsOpen(false);
-    reset();
     getUserList(dispatch, {});
   };
 
   return (
     <>
-      <Button onClick={() => setIsOpen(true)}>Create New User</Button>
       <Modal show={isOpen} size="4xl" onClose={() => setIsOpen(false)}>
-        <Modal.Header>Create User Information</Modal.Header>
+        <Modal.Header>Update User Information</Modal.Header>
         <Modal.Body>
           <UserInputForm
             formRegister={register}
@@ -57,9 +60,9 @@ const CreateUserModal = () => {
         <Modal.Footer className="flex justify-end">
           <Button
             disabled={formState.isSubmitting}
-            onClick={handleSubmit(onCreateUserClick)}
+            onClick={handleSubmit(onUpdateUserClick)}
           >
-            Create
+            Update
           </Button>
           <Button color="red" onClick={() => setIsOpen(false)}>
             Cancel
@@ -70,4 +73,4 @@ const CreateUserModal = () => {
   );
 };
 
-export default CreateUserModal;
+export default UpdateUserModal;

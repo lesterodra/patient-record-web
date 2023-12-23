@@ -12,7 +12,7 @@ import {
   RecordType,
   RecordInputType,
 } from "@/redux/features/record-slice";
-import { fetchUsers } from "@/redux/features/user-slice";
+import { fetchUsers, setDepartmentList } from "@/redux/features/user-slice";
 import { AppDispatch } from "@/redux/store";
 import axios from "axios";
 
@@ -266,12 +266,12 @@ export const fetchDrawings = async (
 export const saveUser = async (
   dispatch: AppDispatch,
   data: {
-    firstName?: string;
-    lastName?: string;
-    middleName?: string;
-    email?: string;
-    departmentId?: number;
-    status?: string;
+    firstName?: string | null;
+    lastName?: string | null;
+    middleName?: string | null;
+    email?: string | null;
+    departmentId?: number | null;
+    status?: string | null;
   }
 ) => {
   try {
@@ -279,6 +279,37 @@ export const saveUser = async (
       data;
 
     const response = await axios.post("/api/users", {
+      firstName,
+      lastName,
+      middleName,
+      email,
+      departmentId,
+      status,
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log({ error });
+    throw error;
+  }
+};
+
+export const updateUser = async (
+  id: number,
+  data: {
+    firstName?: string | null;
+    lastName?: string | null;
+    middleName?: string | null;
+    email?: string | null;
+    departmentId?: number | null;
+    status?: string | null;
+  }
+) => {
+  try {
+    const { firstName, lastName, middleName, email, departmentId, status } =
+      data;
+
+    const response = await axios.patch(`/api/users/${id}`, {
       firstName,
       lastName,
       middleName,
@@ -330,7 +361,7 @@ export const registerUser = async (
   password: string
 ) => {
   try {
-    const response = await axios.patch(`/api/users/${userId}`, {
+    const response = await axios.patch(`/api/users/${userId}/register`, {
       body: { username, password },
     });
 
@@ -341,12 +372,11 @@ export const registerUser = async (
   }
 };
 
-export const getDepartmentList = async () => {
+export const getDepartmentList = async (dispatch: AppDispatch) => {
   try {
     const response = await axios.get(`/api/departments`);
 
-    console.log({ response });
-    return response.data;
+    dispatch(setDepartmentList(response.data));
   } catch (error) {
     console.error({ error });
     throw new Error("Fetch department error.");

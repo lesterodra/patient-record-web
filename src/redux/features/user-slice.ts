@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type UserType = {
+export type UserType = {
   id?: string;
   username?: string;
   firstName?: string;
@@ -20,10 +20,16 @@ type UserListResponse = {
   totalRecords: number;
 };
 
+export type DepartmentType = {
+  id: number;
+  name: string;
+};
+
 type InitialState = {
   value: {
     userList?: UserListResponse;
     userInput?: UserType;
+    departments?: DepartmentType[];
   };
 };
 
@@ -31,6 +37,7 @@ const initialState: InitialState = {
   value: {
     userList: undefined,
     userInput: {},
+    departments: undefined,
   },
 };
 
@@ -60,8 +67,21 @@ export const user = createSlice({
     clearUserInput: (state) => ({
       value: { ...state.value, userInput: {} },
     }),
+    setDepartmentList: (state, action: PayloadAction<DepartmentType[]>) => {
+      return {
+        value: {
+          ...state.value,
+          departments: action.payload,
+        },
+      };
+    },
   },
 });
 
-export const { fetchUsers, updateUserInput, clearUserInput } = user.actions;
+export const {
+  fetchUsers,
+  updateUserInput,
+  clearUserInput,
+  setDepartmentList,
+} = user.actions;
 export default user.reducer;

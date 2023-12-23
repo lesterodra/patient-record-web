@@ -7,8 +7,8 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
-    const { firstName, lastName, middleName, departmentId, email, status } =
-      await request.json();
+    const { body } = await request.json();
+    const { password, username } = body;
     const id = Number(params.id);
 
     const user = await prisma.user.findFirst({ where: { id } });
@@ -21,12 +21,8 @@ export async function PATCH(
 
     await prisma.user.update({
       data: {
-        firstName,
-        lastName,
-        middleName,
-        departmentId,
-        email,
-        status,
+        username,
+        password: bcrypt.hashSync(password, 10),
       },
       where: { id },
     });

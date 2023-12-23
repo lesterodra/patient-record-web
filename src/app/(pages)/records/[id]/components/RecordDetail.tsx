@@ -29,15 +29,13 @@ const RecordDetail = (props: RecordDetailType) => {
         <p className="text-2xl font-bold">{recordDetail.recordNo}</p>
         <div className="flex gap-4">
           <DrawingModal patientRecordId={recordDetail.id} />
-          {/* <ViewAttachmentModal />
-          <UploadAttachmentModal /> */}
         </div>
       </div>
       <div className=" flex justify-between  mb-5">
         <CheckboxItem
           disabled
           name="type"
-          checkedValue="OR"
+          checkedValue={recordDetail.visitType ?? ""}
           isRow
           items={["OR", "CONS"]}
         />

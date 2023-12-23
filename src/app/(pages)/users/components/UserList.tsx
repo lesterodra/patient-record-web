@@ -5,34 +5,23 @@ import ConfirmationDialog from "@/app/components/ConfirmationDialog";
 import { Pagination, Table } from "flowbite-react";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
-import { getUserList } from "@/utils/dataFetchers";
+import { getDepartmentList, getUserList } from "@/utils/dataFetchers";
 import { getValueDisplay } from "@/utils/displayParser";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
-
-const sampleUsers = [
-  {
-    id: 1,
-    username: "sampleUser1",
-    firstName: "john",
-    lastName: "doe",
-    email: "john.doe@email.com",
-    role: "admin",
-  },
-  {
-    id: 2,
-    username: "sampleUser2",
-    firstName: "jane",
-    lastName: "doe",
-    email: "jane.doe@email.com",
-    role: "doctor",
-  },
-];
+import UpdateUserModal from "./UpdateUserModal";
+import { UserType } from "@/redux/features/user-slice";
 
 const UserList = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
+  const [isUpdateUserOpen, setIsUpdateUserOpen] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const { userList } = useAppSelector((state) => state.userReducer.value);
+  const [selectedUser, setSelectedUser] = useState<UserType>();
+
+  useEffect(() => {
+    getDepartmentList(dispatch);
+  }, []);
 
   useEffect(() => {
     getUserList(dispatch, { page: currentPage });
@@ -40,6 +29,11 @@ const UserList = () => {
 
   return (
     <>
+      <UpdateUserModal
+        isOpen={isUpdateUserOpen}
+        setIsOpen={setIsUpdateUserOpen}
+        user={selectedUser}
+      />
       <ConfirmationDialog isOpen={isDialogOpen} setIsOpen={setIsDialogOpen} />
       <div className="mt-5">
         <Table hoverable>
@@ -63,7 +57,7 @@ const UserList = () => {
                 <Table.Cell className="text-black">
                   {`${getValueDisplay(user.lastName)}, ${getValueDisplay(
                     user.firstName
-                  )}`}
+                  )} ${getValueDisplay(user.middleName)}`}
                 </Table.Cell>
                 <Table.Cell>{getValueDisplay(user.email)}</Table.Cell>
                 <Table.Cell>
@@ -73,13 +67,10 @@ const UserList = () => {
                 <Table.Cell>
                   <p
                     className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
-                    onClick={() => {}}
-                  >
-                    View
-                  </p>
-                  <p
-                    className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
-                    onClick={() => {}}
+                    onClick={() => {
+                      setSelectedUser(user);
+                      setIsUpdateUserOpen(true);
+                    }}
                   >
                     Edit
                   </p>
