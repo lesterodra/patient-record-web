@@ -36,7 +36,7 @@ const UserList = () => {
         user={selectedUser}
       />
       <ConfirmationDialog isOpen={isDialogOpen} setIsOpen={setIsDialogOpen} />
-      <div className="mt-5">
+      <div className="mt-5" style={{ overflowX: "auto" }}>
         <Table hoverable>
           <Table.Head>
             <Table.HeadCell className="w-52">Username</Table.HeadCell>
