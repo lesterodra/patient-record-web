@@ -64,7 +64,7 @@ const PatientRecordHistory = (props: PatientRecordHistoryProps) => {
         <PatientRecordModal
           patientRecord={
             patientRecord as Prisma.PatientRecordGetPayload<{
-              include: { visualAcuities: true };
+              include: { visualAcuities: true; medicalDoctorUser: true };
             }>
           }
           isOpen={isPatientRecordModalOpen}

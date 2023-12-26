@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import ConfirmationDialog from "@/app/components/ConfirmationDialog";
-import { Pagination, Table } from "flowbite-react";
+import { Table } from "flowbite-react";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { getDepartmentList, getUserList } from "@/utils/dataFetchers";
@@ -10,6 +10,7 @@ import { getValueDisplay } from "@/utils/displayParser";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import UpdateUserModal from "./UpdateUserModal";
 import { UserType } from "@/redux/features/user-slice";
+import PaginationFooter from "@/app/components/PaginationFooter";
 
 const UserList = () => {
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
@@ -99,18 +100,17 @@ const UserList = () => {
             )}
           </Table.Body>
         </Table>
-        <div className="flex justify-between items-center">
-          <div>
-            <p>Showing 10 of 100 Records</p>
-          </div>
-          <Pagination
+        {userList && (
+          <PaginationFooter
             currentPage={currentPage}
+            totalPage={userList?.totalPage}
+            totalRecords={userList.totalRecords}
+            pageSize={userList.limit}
             onPageChange={(page) => {
               setCurrentPage(page);
             }}
-            totalPages={userList?.totalPage ?? 0}
           />
-        </div>
+        )}
       </div>
     </>
   );

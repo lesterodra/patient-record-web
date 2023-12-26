@@ -12,7 +12,7 @@ const PatientRecordModal = ({
   patientRecord,
 }: {
   patientRecord: Prisma.PatientRecordGetPayload<{
-    include: { visualAcuities: true };
+    include: { visualAcuities: true; medicalDoctorUser: true };
   }>;
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
@@ -171,7 +171,13 @@ const PatientRecordModal = ({
             </div>
             <div>
               <span className="mb-3 mt-8 font-bold text-xl">MD: </span>
-              <span>{getValueDisplay(patientRecord.medicalDoctor)}</span>
+              <span>
+                {getValueDisplay(
+                  patientRecord.medicalDoctorUserId
+                    ? `${patientRecord.medicalDoctorUser?.lastName}, ${patientRecord.medicalDoctorUser?.firstName}`
+                    : null
+                )}
+              </span>
             </div>
           </div>
         </div>

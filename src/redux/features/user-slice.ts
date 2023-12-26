@@ -28,6 +28,7 @@ export type DepartmentType = {
 type InitialState = {
   value: {
     userList?: UserListResponse;
+    doctorList?: UserType[];
     userInput?: UserType;
     departments?: DepartmentType[];
   };
@@ -36,6 +37,7 @@ type InitialState = {
 const initialState: InitialState = {
   value: {
     userList: undefined,
+    doctorList: undefined,
     userInput: {},
     departments: undefined,
   },
@@ -50,6 +52,14 @@ export const user = createSlice({
         value: {
           ...state.value,
           userList: action.payload,
+        },
+      };
+    },
+    fetchDoctors: (state, action: PayloadAction<UserType[]>) => {
+      return {
+        value: {
+          ...state.value,
+          doctorList: action.payload,
         },
       };
     },
@@ -83,5 +93,6 @@ export const {
   updateUserInput,
   clearUserInput,
   setDepartmentList,
+  fetchDoctors,
 } = user.actions;
 export default user.reducer;

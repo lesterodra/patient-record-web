@@ -10,6 +10,7 @@ import { AppDispatch, useAppSelector } from "@/redux/store";
 import { getPatientDetailsById, getPatientList } from "@/utils/dataFetchers";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import { PatientType } from "@/redux/features/patient-slice";
+import PaginationFooter from "@/app/components/PaginationFooter";
 
 const PatientList = () => {
   const [isUpdatePatientModalOpen, setIsUpdatePatientModalOpen] =
@@ -98,21 +99,15 @@ const PatientList = () => {
           </Table.Body>
         </Table>
         {patientList && (
-          <div className="flex justify-between items-center">
-            <div>
-              <p>
-                Showing 1 to {patientList.data.length} of {""}
-                {patientList?.totalRecords} Records
-              </p>
-            </div>
-            <Pagination
-              currentPage={patientList?.page}
-              onPageChange={(page) => {
-                setCurrentPage(page);
-              }}
-              totalPages={patientList?.totalPage || 0}
-            />
-          </div>
+          <PaginationFooter
+            currentPage={currentPage}
+            totalPage={patientList?.totalPage}
+            totalRecords={patientList.totalRecords}
+            pageSize={patientList.limit}
+            onPageChange={(page) => {
+              setCurrentPage(page);
+            }}
+          />
         )}
       </div>
     </>

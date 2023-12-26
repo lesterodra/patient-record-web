@@ -58,6 +58,8 @@ model PatientRecord {
   intraOcularPressureOD String?
   intraOcularPressureOS String?
   medicalDoctor         String?
+  medicalDoctorUserId   Int?
+  medicalDoctorUser     User?               @relation(fields: [medicalDoctorUserId], references: [id])
   patientInformation    PatientInformation? @relation(fields: [patientInformationId], references: [id], onDelete: Cascade)
   patientInformationId  Int
   refractionOd          String?
@@ -114,18 +116,19 @@ model Department {
 }
 
 model User {
-  id           Int        @id @default(autoincrement())
-  username     String?    @unique
-  password     String?
-  email        String?    @unique
-  firstName    String?
-  lastName     String?
-  middleName   String?
-  status       String?
-  departmentId Int
-  department   Department @relation(fields: [departmentId], references: [id])
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime?  @updatedAt
+  id            Int             @id @default(autoincrement())
+  username      String?         @unique
+  password      String?
+  email         String?         @unique
+  firstName     String?
+  lastName      String?
+  middleName    String?
+  status        String?
+  departmentId  Int
+  department    Department      @relation(fields: [departmentId], references: [id])
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime?       @updatedAt
+  PatientRecord PatientRecord[]
 
   @@map("users")
 }

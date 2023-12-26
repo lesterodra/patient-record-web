@@ -52,6 +52,7 @@ export type RecordType = {
   intraOcularPressureOD: string;
   intraOcularPressureOS: string;
   medicalDoctor: string;
+  medicalDoctorUserId: number;
   patientInformation: PatientInformation;
   refractionOd: string;
   refractionOdNegative: string;

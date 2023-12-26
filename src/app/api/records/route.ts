@@ -78,7 +78,11 @@ export async function GET(request: NextRequest) {
       orderBy: {
         id: orderBy,
       } as any,
-      include: { patientInformation: true, visualAcuities: true },
+      include: {
+        patientInformation: true,
+        visualAcuities: true,
+        medicalDoctorUser: true,
+      },
     });
 
     return new NextResponse(
@@ -113,6 +117,7 @@ export async function POST(request: Request) {
       intraOcularPressureOD,
       intraOcularPressureOS,
       medicalDoctor,
+      medicalDoctorUserId,
       visualAcuities,
       refractionOd,
       refractionOdNegative,
@@ -138,6 +143,7 @@ export async function POST(request: Request) {
           intraOcularPressureOD,
           intraOcularPressureOS,
           medicalDoctor,
+          medicalDoctorUserId,
           refractionOd,
           refractionOdNegative,
           refractionOdX,

@@ -1,12 +1,14 @@
 import Dropdown from "@/app/components/Dropdown";
 import FormCheckboxItem from "@/app/components/FormCheckboxItem";
 import FormDropdown from "@/app/components/FormDropdown";
+import FormDropdownWithId from "@/app/components/FormDropdownWithId";
 import FormInput from "@/app/components/FormInput";
 import FormNotes from "@/app/components/FormNotes";
-import { updatePatientRecordInput } from "@/redux/features/record-slice";
-import { AppDispatch } from "@/redux/store";
+import { AppDispatch, useAppSelector } from "@/redux/store";
 import { ERROR_MESSAGE, REASON_FOR_VISIT } from "@/utils/constants";
+import { getDoctorList } from "@/utils/dataFetchers";
 import { Table } from "flowbite-react";
+import { useEffect } from "react";
 import { FormState, UseFormRegister, UseFormSetValue } from "react-hook-form";
 import { useDispatch } from "react-redux";
 
@@ -19,11 +21,16 @@ type MedicalInformationInputProps = {
 const MedicalInformationInput = (props: MedicalInformationInputProps) => {
   const { formRegister, formState, formSetValue } = props;
   const dispatch = useDispatch<AppDispatch>();
+  const { doctorList } = useAppSelector((state) => state.userReducer.value);
 
   const { errors } = formState ?? {};
   const visitTypeErrorMessage = errors?.visitType?.message?.toString();
   const reasonForVisitErrorMessage =
     errors?.reasonForVisit?.message?.toString();
+
+  useEffect(() => {
+    getDoctorList(dispatch);
+  }, []);
 
   return (
     <>
@@ -281,14 +288,21 @@ const MedicalInformationInput = (props: MedicalInformationInputProps) => {
         </div>
       </div>
       <div className="flex items-end gap-3">
-        <FormDropdown
-          width="w-72"
+        <FormDropdownWithId
           label="MD"
-          options={["Lorem Ipsum", "John Doe", "Jane Doe"]}
-          formRegister={formRegister("medicalDoctor", {
+          width="w-72"
+          options={
+            doctorList
+              ? doctorList.map((user) => ({
+                  label: `${user.lastName}, ${user.firstName}`,
+                  value: user.id,
+                }))
+              : []
+          }
+          formRegister={formRegister("medicalDoctorUserId", {
             required: ERROR_MESSAGE.REQUIRED,
           })}
-          errorMessage={errors?.medicalDoctor?.message?.toString()}
+          errorMessage={errors?.medicalDoctorUserId?.message?.toString()}
         />
       </div>
     </>

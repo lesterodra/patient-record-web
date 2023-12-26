@@ -16,6 +16,7 @@ import {
 } from "@/utils/displayParser";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import UpdatePatientRecordModal from "./UpdatePatientRecordModal";
+import PaginationFooter from "@/app/components/PaginationFooter";
 
 const PatientRecords = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -121,21 +122,15 @@ const PatientRecords = () => {
           </Table.Body>
         </Table>
         {recordList && (
-          <div className="flex justify-between items-center">
-            <div>
-              <p>
-                Showing 1 to {recordList?.data.length} of{" "}
-                {recordList?.totalRecords} Records
-              </p>
-            </div>
-            <Pagination
-              currentPage={recordList?.page ?? 1}
-              onPageChange={(page) => {
-                setCurrentPage(page);
-              }}
-              totalPages={recordList?.totalPage ?? 0}
-            />
-          </div>
+          <PaginationFooter
+            currentPage={currentPage}
+            totalPage={recordList?.totalPage}
+            totalRecords={recordList.totalRecords}
+            pageSize={recordList.limit}
+            onPageChange={(page) => {
+              setCurrentPage(page);
+            }}
+          />
         )}
       </div>
     </>

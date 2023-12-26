@@ -9,7 +9,12 @@ import { getValueDisplay } from "@/utils/displayParser";
 
 type RecordDetailType = {
   recordDetail: Prisma.PatientRecordGetPayload<{
-    include: { drawings: true; visualAcuities: true };
+    include: {
+      drawings: true;
+      visualAcuities: true;
+      medicalDoctorUser: true;
+      patientInformation: true;
+    };
   }>;
 };
 
@@ -26,7 +31,12 @@ const RecordDetail = (props: RecordDetailType) => {
   return (
     <div>
       <div className="mt-6 mb-6 flex justify-between">
-        <p className="text-2xl font-bold">{recordDetail.recordNo}</p>
+        <div>
+          <p className="text-2xl font-bold">{recordDetail.recordNo}</p>
+          <div>
+            <p>{recordDetail?.patientInformation?.lastName}</p>
+          </div>
+        </div>
         <div className="flex gap-4">
           <DrawingModal patientRecordId={recordDetail.id} />
         </div>
@@ -167,7 +177,13 @@ const RecordDetail = (props: RecordDetailType) => {
       </div>
       <div>
         <span className="mb-3 mt-8 font-bold text-xl">MD: </span>
-        <span>{recordDetail.medicalDoctor}</span>
+        <span>
+          {getValueDisplay(
+            recordDetail.medicalDoctorUserId
+              ? `${recordDetail.medicalDoctorUser?.lastName}, ${recordDetail.medicalDoctorUser?.firstName}`
+              : null
+          )}
+        </span>
       </div>
       <div className="mt-8">
         <span className="mb-3 mt-8 font-bold text-xl">Diagnosis: </span>

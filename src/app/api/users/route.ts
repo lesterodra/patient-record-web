@@ -6,11 +6,16 @@ export async function GET(request: NextRequest) {
     const requestPage = request.nextUrl.searchParams.get("page");
     const requestLimit = request.nextUrl.searchParams.get("limit");
     const requestEmail = request.nextUrl.searchParams.get("email") ?? undefined;
+    const requestDepartmentId =
+      request.nextUrl.searchParams.get("departmentId");
     const page = requestPage ? parseInt(requestPage, 10) : 1;
     const limit = requestLimit ? parseInt(requestLimit, 10) : 10;
     const skip = (page - 1) * limit;
+    const departmentId = requestDepartmentId
+      ? Number(requestDepartmentId)
+      : undefined;
 
-    const whereCondition = { email: requestEmail };
+    const whereCondition = { email: requestEmail, departmentId };
     const totalCount = await prisma.user.count({ where: whereCondition });
     const users = await prisma.user.findMany({
       where: whereCondition,

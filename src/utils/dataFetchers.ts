@@ -12,7 +12,11 @@ import {
   RecordType,
   RecordInputType,
 } from "@/redux/features/record-slice";
-import { fetchUsers, setDepartmentList } from "@/redux/features/user-slice";
+import {
+  fetchDoctors,
+  fetchUsers,
+  setDepartmentList,
+} from "@/redux/features/user-slice";
 import { AppDispatch } from "@/redux/store";
 import axios from "axios";
 
@@ -29,6 +33,7 @@ export const createPatientRecord = async (
     intraOcularPressureOD?: string | null;
     intraOcularPressureOS?: string | null;
     medicalDoctor?: string | null;
+    medicalDoctorUserId?: number | null;
     refractionOd?: string | null;
     refractionOdNegative?: string | null;
     refractionOdX?: string | null;
@@ -53,6 +58,7 @@ export const createPatientRecord = async (
       intraOcularPressureOD,
       intraOcularPressureOS,
       medicalDoctor,
+      medicalDoctorUserId,
       visualAcuities,
       refractionOd,
       refractionOdNegative,
@@ -76,6 +82,7 @@ export const createPatientRecord = async (
       intraOcularPressureOD,
       intraOcularPressureOS,
       medicalDoctor,
+      medicalDoctorUserId,
       visualAcuities,
       refractionOd,
       refractionOdNegative,
@@ -336,6 +343,18 @@ export const getUserList = async (
     });
 
     dispatch(fetchUsers(response.data));
+  } catch (error) {
+    console.log({ error });
+  }
+};
+
+export const getDoctorList = async (dispatch: AppDispatch) => {
+  try {
+    const response = await axios.get("/api/users", {
+      params: { departmentId: 2, page: 1, limit: 10000 },
+    });
+
+    dispatch(fetchDoctors(response.data.data));
   } catch (error) {
     console.log({ error });
   }

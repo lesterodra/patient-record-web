@@ -1,14 +1,13 @@
 "use client";
 
-import { Button, Modal, Table } from "flowbite-react";
+import { Button, Modal } from "flowbite-react";
 import MedicalInformationInput from "./MedicalInformationInput";
 import {
   createPatientRecord,
   getPatientRecordList,
 } from "@/utils/dataFetchers";
 import { useDispatch } from "react-redux";
-import { AppDispatch, useAppSelector } from "@/redux/store";
-import { clearRecordInput } from "@/redux/features/record-slice";
+import { AppDispatch } from "@/redux/store";
 import { useForm } from "react-hook-form";
 
 type CreatePatientRecordModalProps = {
@@ -20,9 +19,6 @@ type CreatePatientRecordModalProps = {
 const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
   const { isOpen, setIsOpen, patientInformationId } = props;
   const dispatch = useDispatch<AppDispatch>();
-  const { patientRecordInput } = useAppSelector(
-    (state) => state.recordReducer.value
-  );
 
   const { register, handleSubmit, formState, getValues, reset, setValue } =
     useForm({
@@ -55,6 +51,7 @@ const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
         intraOcularPressureOD: null,
         intraOcularPressureOS: null,
         medicalDoctor: null,
+        medicalDoctorUserId: null,
       },
     });
 
@@ -88,6 +85,7 @@ const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
       intraOcularPressureOD,
       intraOcularPressureOS,
       medicalDoctor,
+      medicalDoctorUserId,
     } = getValues();
 
     await createPatientRecord(dispatch, {
@@ -101,6 +99,7 @@ const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
       intraOcularPressureOD,
       intraOcularPressureOS,
       medicalDoctor,
+      medicalDoctorUserId: Number(medicalDoctorUserId),
       visualAcuities: [
         {
           eyeType: "OD",
