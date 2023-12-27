@@ -4,13 +4,10 @@ import FormDropdown from "@/app/components/FormDropdown";
 import FormDropdownWithId from "@/app/components/FormDropdownWithId";
 import FormInput from "@/app/components/FormInput";
 import FormNotes from "@/app/components/FormNotes";
-import { AppDispatch, useAppSelector } from "@/redux/store";
+import { useAppSelector } from "@/redux/store";
 import { ERROR_MESSAGE, REASON_FOR_VISIT } from "@/utils/constants";
-import { getDoctorList } from "@/utils/dataFetchers";
 import { Table } from "flowbite-react";
-import { useEffect } from "react";
 import { FormState, UseFormRegister, UseFormSetValue } from "react-hook-form";
-import { useDispatch } from "react-redux";
 
 type MedicalInformationInputProps = {
   formRegister: UseFormRegister<any>;
@@ -20,17 +17,12 @@ type MedicalInformationInputProps = {
 
 const MedicalInformationInput = (props: MedicalInformationInputProps) => {
   const { formRegister, formState, formSetValue } = props;
-  const dispatch = useDispatch<AppDispatch>();
   const { doctorList } = useAppSelector((state) => state.userReducer.value);
 
   const { errors } = formState ?? {};
   const visitTypeErrorMessage = errors?.visitType?.message?.toString();
   const reasonForVisitErrorMessage =
     errors?.reasonForVisit?.message?.toString();
-
-  useEffect(() => {
-    getDoctorList(dispatch);
-  }, []);
 
   return (
     <>

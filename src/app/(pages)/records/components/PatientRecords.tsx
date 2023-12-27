@@ -5,6 +5,7 @@ import { Pagination, Table } from "flowbite-react";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import {
+  getDoctorList,
   getPatientRecordById,
   getPatientRecordList,
 } from "@/utils/dataFetchers";
@@ -25,6 +26,10 @@ const PatientRecords = () => {
   const { recordList, patientRecordListQueryParameters, patientRecord } =
     useAppSelector((state) => state.recordReducer.value);
   const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    getDoctorList(dispatch);
+  }, []);
 
   useEffect(() => {
     getPatientRecordList(dispatch, {

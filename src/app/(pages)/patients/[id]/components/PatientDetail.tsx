@@ -2,18 +2,26 @@
 
 import CreatePatientRecordModal from "../../components/CreatePatientRecordModal";
 import { Button } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PatientInformation } from "@prisma/client";
 import { convertToReadableDate, getValueDisplay } from "@/utils/displayParser";
 import PatientRecordHistory from "./PatientRecordHistory";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
+import { getDoctorList } from "@/utils/dataFetchers";
 
 const PatientDetail = ({
   patientDetail,
 }: {
   patientDetail: PatientInformation;
 }) => {
+  const dispatch = useDispatch<AppDispatch>();
   const [isCreatePatientRecordModalOpen, setIsCreatePatientRecordModalOpen] =
     useState<boolean>(false);
+
+  useEffect(() => {
+    getDoctorList(dispatch);
+  }, []);
 
   return (
     <div>
