@@ -366,8 +366,6 @@ export const getUserByEmailAddress = async (email: string) => {
       params: { email },
     });
 
-    console.log({ response });
-
     return response.data;
   } catch (error) {
     console.log({ error });
@@ -383,8 +381,6 @@ export const registerUser = async (
     const response = await axios.patch(`/api/users/${userId}/register`, {
       body: { username, password },
     });
-
-    console.log({ response });
   } catch (error) {
     console.error({ error });
     throw new Error("Register user error.");
@@ -418,7 +414,6 @@ export const getPatientDetailsById = async (
   try {
     const response = await axios.get(`/api/patients/${id}`);
 
-    console.log({ patientDetails: response.data });
     dispatch(setPatientInformation(response.data.data));
   } catch (error) {
     console.error({ error });
@@ -433,7 +428,6 @@ export const getPatientRecordById = async (
   try {
     const response = await axios.get(`/api/records/${id}`);
 
-    console.log({ patientRecord: response.data });
     dispatch(setPatientRecord(response.data.data));
   } catch (error) {
     console.error({ error });

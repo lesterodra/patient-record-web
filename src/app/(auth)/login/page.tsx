@@ -13,7 +13,6 @@ const Login = () => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  console.log({ searchParams: searchParams.get("error") });
   useEffect(() => {
     if (session.data) {
       router.push("/dashboard");
@@ -26,8 +25,6 @@ const Login = () => {
       password,
       callbackUrl: "/dashboard",
     });
-
-    console.log({ result });
   };
 
   return (

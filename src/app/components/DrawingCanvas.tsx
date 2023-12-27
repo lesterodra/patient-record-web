@@ -29,7 +29,6 @@ const DrawingCanvas = () => {
   }, []);
 
   const startDrawing = ({ nativeEvent }: { nativeEvent: any }) => {
-    console.log({ nativeEvent });
     const bcr = nativeEvent.target.getBoundingClientRect();
 
     let offsetX = nativeEvent.clientX - bcr.x;

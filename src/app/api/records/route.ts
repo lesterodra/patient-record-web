@@ -156,7 +156,6 @@ export async function POST(request: Request) {
         },
         select: { id: true },
       });
-      console.log({ patientRecord });
 
       const dateToday = new Date();
       await tx.patientRecord.update({

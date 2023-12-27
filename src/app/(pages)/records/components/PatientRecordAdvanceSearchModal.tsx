@@ -138,7 +138,6 @@ const PatientRecordAdvanceSearchModal = () => {
           <Button
             color="green"
             onClick={() => {
-              console.log("clear");
               dispatch(clearPatientRecordListQueryParameters());
             }}
           >

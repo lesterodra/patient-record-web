@@ -73,7 +73,6 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
   });
 
   const onUpdateRecordClick = async () => {
-    console.log({ values: getValues() });
     const {
       visitType,
       reasonForVisit,

@@ -122,10 +122,6 @@ export const record = createSlice({
       };
     },
     appendRecords: (state, action: PayloadAction<RecordListResponse>) => {
-      console.log({
-        prev: state.value.recordList?.data,
-        current: action.payload,
-      });
       return {
         value: {
           ...state.value,

@@ -104,7 +104,6 @@ const AdvanceSearchModal = () => {
           <Button
             color="green"
             onClick={() => {
-              console.log("clear");
               dispatch(clearPatientListQueryParameters());
             }}
           >
