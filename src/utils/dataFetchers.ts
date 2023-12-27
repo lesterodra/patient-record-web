@@ -298,11 +298,6 @@ export const saveUser = async (
       status,
     });
 
-    // await new Promise((resolve, reject) => {
-    //   setTimeout(() => {
-    //     reject({});
-    //   }, 5000);
-    // });
     dispatch(setSuccessfulAlert("Success"));
 
     return response.data;
@@ -313,6 +308,7 @@ export const saveUser = async (
 };
 
 export const updateUser = async (
+  dispatch: AppDispatch,
   id: number,
   data: {
     firstName?: string | null;
@@ -336,10 +332,12 @@ export const updateUser = async (
       status,
     });
 
+    dispatch(setSuccessfulAlert("Success"));
+
     return response.data;
   } catch (error) {
     console.log({ error });
-    throw error;
+    dispatch(setErrorAlert("Error"));
   }
 };
 

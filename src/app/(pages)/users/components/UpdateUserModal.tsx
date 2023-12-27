@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 import UserInputForm from "./UserInputForm";
 import { useForm } from "react-hook-form";
 import { UserType } from "@/redux/features/user-slice";
+import ButtonWithSpinner from "@/app/components/ButtonWithSpinner";
 
 type UpdateUserModalProps = {
   isOpen: boolean;
@@ -33,7 +34,7 @@ const UpdateUserModal = (props: UpdateUserModalProps) => {
   const onUpdateUserClick = async () => {
     const { firstName, lastName, middleName, departmentId, email, status } =
       getValues();
-    await updateUser(Number(user?.id), {
+    await updateUser(dispatch, Number(user?.id), {
       firstName,
       lastName,
       middleName,
@@ -58,12 +59,12 @@ const UpdateUserModal = (props: UpdateUserModalProps) => {
           />
         </Modal.Body>
         <Modal.Footer className="flex justify-end">
-          <Button
-            disabled={formState.isSubmitting}
+          <ButtonWithSpinner
+            isLoading={formState.isSubmitting}
             onClick={handleSubmit(onUpdateUserClick)}
           >
             Update
-          </Button>
+          </ButtonWithSpinner>
           <Button color="red" onClick={() => setIsOpen(false)}>
             Cancel
           </Button>
