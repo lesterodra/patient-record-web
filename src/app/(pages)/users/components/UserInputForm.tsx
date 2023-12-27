@@ -3,14 +3,9 @@
 import FormDropdownWithId from "@/app/components/FormDropdownWithId";
 import FormDropdown from "@/app/components/FormDropdown";
 import FormInput from "@/app/components/FormInput";
-import { AppDispatch } from "@/redux/store";
 import { ERROR_MESSAGE } from "@/utils/constants";
-import { getDepartmentList } from "@/utils/dataFetchers";
-import { Department } from "@prisma/client";
-import { useEffect, useState } from "react";
 import { FormState, UseFormRegister, UseFormSetValue } from "react-hook-form";
-import { useDispatch } from "react-redux";
-import { DepartmentType, setDepartmentList } from "@/redux/features/user-slice";
+import { DepartmentType } from "@/redux/features/user-slice";
 
 type UserInputFormProps = {
   formRegister: UseFormRegister<any>;

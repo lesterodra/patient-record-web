@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import UserInputForm from "./UserInputForm";
 import { useForm } from "react-hook-form";
+import ButtonWithSpinner from "@/app/components/ButtonWithSpinner";
 
 const CreateUserModal = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -55,12 +56,13 @@ const CreateUserModal = () => {
           />
         </Modal.Body>
         <Modal.Footer className="flex justify-end">
-          <Button
-            disabled={formState.isSubmitting}
+          <ButtonWithSpinner
+            isLoading={formState.isSubmitting}
             onClick={handleSubmit(onCreateUserClick)}
+            isSuccess
           >
             Create
-          </Button>
+          </ButtonWithSpinner>
           <Button color="red" onClick={() => setIsOpen(false)}>
             Cancel
           </Button>

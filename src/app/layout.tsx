@@ -1,7 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import NavBar from "./components/NavBar";
 import { ReduxProvider } from "@/redux/provider";
 import AuthProvider from "./(context)/AuthProvider";
 

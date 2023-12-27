@@ -1,5 +1,9 @@
 import prisma from "@/db";
 import {
+  setErrorAlert,
+  setSuccessfulAlert,
+} from "@/redux/features/application-slice";
+import {
   PatientType,
   fetchPatients,
   setPatientInformation,
@@ -294,10 +298,17 @@ export const saveUser = async (
       status,
     });
 
+    // await new Promise((resolve, reject) => {
+    //   setTimeout(() => {
+    //     reject({});
+    //   }, 5000);
+    // });
+    dispatch(setSuccessfulAlert("Success"));
+
     return response.data;
   } catch (error) {
     console.log({ error });
-    throw error;
+    dispatch(setErrorAlert("Error"));
   }
 };
 
