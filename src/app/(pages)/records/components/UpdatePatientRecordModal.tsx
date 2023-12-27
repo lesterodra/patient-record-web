@@ -3,6 +3,9 @@ import { useForm } from "react-hook-form";
 import MedicalInformationInput from "../../patients/components/MedicalInformationInput";
 import { RecordType } from "@/redux/features/record-slice";
 import { updatePatientRecord } from "@/utils/dataFetchers";
+import ButtonWithSpinner from "@/app/components/ButtonWithSpinner";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
 
 type UpdatePatientRecordModalProps = {
   isOpen: boolean;
@@ -32,6 +35,7 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
     intraOcularPressureOD,
     intraOcularPressureOS,
     medicalDoctor,
+    medicalDoctorUserId,
   } = patientRecord ?? {};
   const visualAcuityOd = visualAcuities?.find(
     (visualAcuity) => visualAcuity.eyeType === "OD"
@@ -39,6 +43,8 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
   const visualAcuityOs = visualAcuities?.find(
     (visualAcuity) => visualAcuity.eyeType === "OS"
   );
+  const dispatch = useDispatch<AppDispatch>();
+
   const { register, handleSubmit, formState, getValues, setValue } = useForm({
     values: {
       visitType: [visitType],
@@ -69,6 +75,7 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
       intraOcularPressureOD,
       intraOcularPressureOS,
       medicalDoctor,
+      medicalDoctorUserId,
     },
   });
 
@@ -102,9 +109,10 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
       intraOcularPressureOD,
       intraOcularPressureOS,
       medicalDoctor,
+      medicalDoctorUserId,
     } = getValues();
 
-    await updatePatientRecord(patientRecord?.id as number, {
+    await updatePatientRecord(dispatch, patientRecord?.id as number, {
       reasonForVisit,
       reasonForVisitNotes,
       previousMedicines,
@@ -114,6 +122,7 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
       intraOcularPressureOD,
       intraOcularPressureOS,
       medicalDoctor,
+      medicalDoctorUserId: Number(medicalDoctorUserId),
       visualAcuities: [
         {
           eyeType: "OD",
@@ -159,14 +168,14 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
         </div>
       </Modal.Body>
       <Modal.Footer className="flex justify-end">
-        <Button
-          disabled={formState.isSubmitting}
+        <ButtonWithSpinner
+          isLoading={formState.isSubmitting}
           onClick={handleSubmit(onUpdateRecordClick)}
         >
           Update Record
-        </Button>
+        </ButtonWithSpinner>
         <Button color="red" onClick={() => setIsOpen(false)}>
-          Cancel
+          Close
         </Button>
       </Modal.Footer>
     </Modal>

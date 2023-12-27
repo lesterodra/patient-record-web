@@ -9,6 +9,7 @@ import {
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { useForm } from "react-hook-form";
+import ButtonWithSpinner from "@/app/components/ButtonWithSpinner";
 
 type CreatePatientRecordModalProps = {
   isOpen: boolean;
@@ -149,12 +150,12 @@ const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
           </div>
         </Modal.Body>
         <Modal.Footer className="flex justify-end">
-          <Button
-            disabled={formState.isSubmitting}
+          <ButtonWithSpinner
+            isLoading={formState.isSubmitting}
             onClick={handleSubmit(onCreateRecordClick)}
           >
             Create Record
-          </Button>
+          </ButtonWithSpinner>
           <Button color="red" onClick={() => setIsOpen(false)}>
             Close
           </Button>

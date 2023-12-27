@@ -99,9 +99,12 @@ export const createPatientRecord = async (
       visitType,
     });
 
+    dispatch(setSuccessfulAlert("Success"));
+
     return response.data;
   } catch (error) {
     console.log({ error });
+    dispatch(setErrorAlert("Error"));
   }
 };
 
@@ -445,13 +448,17 @@ export const getPatientRecordById = async (
 };
 
 export const updatePatientRecord = async (
+  dispatch: AppDispatch,
   id: number,
   data: RecordInputType
 ) => {
   try {
     await axios.patch(`/api/records/${id}`, data);
+
+    dispatch(setSuccessfulAlert("Success"));
   } catch (error) {
     console.error({ error });
-    throw new Error("Update patient error.");
+
+    dispatch(setErrorAlert("Error"));
   }
 };

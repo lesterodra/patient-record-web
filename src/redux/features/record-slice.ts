@@ -24,6 +24,7 @@ export type RecordInputType = {
   intraOcularPressureOD?: string;
   intraOcularPressureOS?: string;
   medicalDoctor?: string;
+  medicalDoctorUserId?: number;
   patientInformation?: PatientInformation;
   visualAcuities?: VisualAcuity[];
   refractionOd?: string;
