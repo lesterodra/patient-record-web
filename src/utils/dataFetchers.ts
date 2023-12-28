@@ -410,12 +410,19 @@ export const getDepartmentList = async (dispatch: AppDispatch) => {
   }
 };
 
-export const updatePatientDetails = async (id: number, data: PatientType) => {
+export const updatePatientDetails = async (
+  dispatch: AppDispatch,
+  id: number,
+  data: PatientType
+) => {
   try {
     await axios.patch(`/api/patients/${id}`, data);
+
+    dispatch(setSuccessfulAlert("Success"));
   } catch (error) {
     console.error({ error });
-    throw new Error("Update patient error.");
+
+    dispatch(setErrorAlert("Error"));
   }
 };
 

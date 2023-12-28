@@ -8,6 +8,11 @@ import { AppDispatch } from "@/redux/store";
 import { getPatientList } from "@/utils/dataFetchers";
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
+import ButtonWithSpinner from "@/app/components/ButtonWithSpinner";
+import {
+  setErrorAlert,
+  setSuccessfulAlert,
+} from "@/redux/features/application-slice";
 
 const CreatePatientModal = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -42,21 +47,31 @@ const CreatePatientModal = () => {
       },
     });
   const savePatient = async (url: string) => {
-    const patientDetails = getValues();
-    const response = await fetch(url, {
-      method: "POST",
-      body: JSON.stringify({
-        ...patientDetails,
-        dilateType: patientDetails?.dilateType && patientDetails?.dilateType[0],
-        sourceOfReferral:
-          patientDetails?.sourceOfReferral &&
-          patientDetails?.sourceOfReferral[0],
-        appointmentType:
-          patientDetails?.appointmentType && patientDetails?.appointmentType[0],
-      }),
-    });
+    try {
+      const patientDetails = getValues();
+      const response = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          ...patientDetails,
+          dilateType:
+            patientDetails?.dilateType && patientDetails?.dilateType[0],
+          sourceOfReferral:
+            patientDetails?.sourceOfReferral &&
+            patientDetails?.sourceOfReferral[0],
+          appointmentType:
+            patientDetails?.appointmentType &&
+            patientDetails?.appointmentType[0],
+        }),
+      });
 
-    return response.json();
+      dispatch(setSuccessfulAlert("Success"));
+
+      return response.json();
+    } catch (error) {
+      console.log({ error });
+
+      dispatch(setErrorAlert("Error"));
+    }
   };
 
   const { trigger } = useSWRMutation("/api/patients", savePatient);
@@ -84,12 +99,12 @@ const CreatePatientModal = () => {
           </div>
         </Modal.Body>
         <Modal.Footer className="flex justify-end">
-          <Button
-            disabled={formState.isSubmitting}
+          <ButtonWithSpinner
+            isLoading={formState.isSubmitting}
             onClick={handleSubmit(onSavePatientClick)}
           >
             Save
-          </Button>
+          </ButtonWithSpinner>
           <Button color="red" onClick={() => setIsOpen(false)}>
             Cancel
           </Button>

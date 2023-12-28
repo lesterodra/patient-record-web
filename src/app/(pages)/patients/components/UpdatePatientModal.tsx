@@ -10,6 +10,9 @@ import {
   updatePatientDetails,
 } from "@/utils/dataFetchers";
 import LoaderButton from "@/app/components/LoaderButton";
+import ButtonWithSpinner from "@/app/components/ButtonWithSpinner";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
 
 const UpdatePatientModal = ({
   isOpen,
@@ -47,6 +50,7 @@ const UpdatePatientModal = ({
     previousSurgeries,
     previousSurgeriesNotes,
   } = patientDetails ?? {};
+  const dispatch = useDispatch<AppDispatch>();
   const { register, handleSubmit, formState, getValues, setValue } = useForm({
     values: {
       philHealthNo,
@@ -79,7 +83,7 @@ const UpdatePatientModal = ({
   const onUpdateRecordClick = async () => {
     const updatedPatientDetails = getValues();
 
-    await updatePatientDetails(Number(id), {
+    await updatePatientDetails(dispatch, Number(id), {
       ...updatedPatientDetails,
       dilateType:
         updatedPatientDetails?.dilateType &&
@@ -111,12 +115,12 @@ const UpdatePatientModal = ({
         </div>
       </Modal.Body>
       <Modal.Footer className="flex justify-end">
-        <Button
-          disabled={formState.isSubmitting}
+        <ButtonWithSpinner
+          isLoading={formState.isSubmitting}
           onClick={handleSubmit(onUpdateRecordClick)}
         >
-          Update Record
-        </Button>
+          Update Patient
+        </ButtonWithSpinner>
         <Button color="red" onClick={() => setIsOpen(false)}>
           Cancel
         </Button>
