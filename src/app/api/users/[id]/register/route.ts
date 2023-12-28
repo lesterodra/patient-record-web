@@ -19,6 +19,20 @@ export async function PATCH(
       });
     }
 
+    const existingUsernameCount = await prisma.user.count({
+      where: { username },
+    });
+
+    if (existingUsernameCount > 0) {
+      return new NextResponse(
+        JSON.stringify({ message: "Username already in used!" }),
+        {
+          status: 400,
+          headers: { "Content-Type": "application/json" },
+        }
+      );
+    }
+
     await prisma.user.update({
       data: {
         username,
@@ -27,7 +41,7 @@ export async function PATCH(
       where: { id },
     });
 
-    return new NextResponse(JSON.stringify({ data: "Successful" }), {
+    return new NextResponse(JSON.stringify({ message: "Successful" }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });

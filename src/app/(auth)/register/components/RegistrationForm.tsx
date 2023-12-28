@@ -19,34 +19,79 @@ const RegistrationForm = () => {
   const onClickNext = async () => {
     const users = await getUserByEmailAddress(email);
 
-    setErrorMessage(
-      users?.data?.length >= 1
-        ? ""
-        : "Email not found. Please ask your administrator."
-    );
+    if (users?.data?.length === 0) {
+      setErrorMessage(
+        "Email not found. Please ask your administrator for assistance."
+      );
+
+      return;
+    }
+
+    if (users.data[0].username) {
+      setErrorMessage("Email address already registered.");
+
+      return;
+    }
+
     setUser(users.data[0]);
   };
 
   const onCreateAccountClick = async () => {
-    if (!username) {
-      setCreateAccountErrorMessage("Username is required.");
-      return;
+    try {
+      if (!username) {
+        setCreateAccountErrorMessage("Username is required.");
+        return;
+      }
+
+      if (username.length < 6) {
+        setCreateAccountErrorMessage("Username must not less than 6 letters.");
+        return;
+      }
+
+      if (/\s/g.test(username)) {
+        setCreateAccountErrorMessage(
+          "Invalid username format, Please remove white space."
+        );
+        return;
+      }
+
+      if (!password) {
+        setCreateAccountErrorMessage("Password is required.");
+        return;
+      }
+
+      if (password.length < 8) {
+        setCreateAccountErrorMessage("Password must not less than 8 letters.");
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        setCreateAccountErrorMessage("Password does not matched.");
+        return;
+      }
+
+      const response = await registerUser(
+        user?.id as number,
+        username.trim(),
+        password.trim()
+      );
+
+      if (response.status !== 200) {
+        setCreateAccountErrorMessage(response.message);
+        return;
+      }
+
+      if (response.status === 200) {
+        setCreateAccountErrorMessage(
+          "Account successfully created. You will redirected to the login page shortly."
+        );
+        setTimeout(() => {
+          router.push("/login");
+        }, 3000);
+      }
+    } catch (error) {
+      // console.log({ error });
     }
-
-    if (!password) {
-      setCreateAccountErrorMessage("Password is required.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      setCreateAccountErrorMessage("Password does not matched.");
-      return;
-    }
-
-    setCreateAccountErrorMessage("");
-
-    await registerUser(user?.id as number, username, password);
-    router.push("/login");
   };
 
   return (
@@ -80,7 +125,7 @@ const RegistrationForm = () => {
           </div>
         )}
         {user && (
-          <div className="mt-5 border border-black p-6 rounded">
+          <div className="mt-5 border border-black p-6 rounded w-96">
             <p className="text-xl font-bold">Setup your account.</p>
             <p className="text-xs mt-4 text-amber-700 font-bold italic">
               Hello {user.firstName}
@@ -120,7 +165,7 @@ const RegistrationForm = () => {
                 Create account
               </button>
             </div>
-            <p className="mt-2 text-xs text-red-500">
+            <p className="mt-2 text-xs text-red-500 ">
               {createAccountErrorMessage}
             </p>
           </div>

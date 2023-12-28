@@ -22,7 +22,7 @@ import {
   setDepartmentList,
 } from "@/redux/features/user-slice";
 import { AppDispatch } from "@/redux/store";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 export const createPatientRecord = async (
   dispatch: AppDispatch,
@@ -393,9 +393,16 @@ export const registerUser = async (
     const response = await axios.patch(`/api/users/${userId}/register`, {
       body: { username, password },
     });
+    return { status: response.status, message: response.data.message };
   } catch (error) {
-    console.error({ error });
-    throw new Error("Register user error.");
+    if (error instanceof AxiosError) {
+      return {
+        status: error.response?.status,
+        message: error.response?.data.message,
+      };
+    }
+
+    throw error;
   }
 };
 
