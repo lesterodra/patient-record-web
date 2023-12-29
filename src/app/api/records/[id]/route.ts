@@ -51,6 +51,7 @@ export async function PATCH(
       refractionAdd,
       refractionPd,
       visitType,
+      dilateType,
     } = await request.json();
 
     const id = Number(params.id);
@@ -95,6 +96,7 @@ export async function PATCH(
         refractionAdd,
         refractionPd,
         visitType,
+        dilateType,
       },
       where: { id },
     });

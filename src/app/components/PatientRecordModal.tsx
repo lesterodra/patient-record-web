@@ -47,6 +47,13 @@ const PatientRecordModal = ({
                 items={["OR", "CONS"]}
                 checkedValue={patientRecord.visitType ?? ""}
               />
+              <CheckboxItem
+                disabled
+                name="dilateType"
+                isRow
+                items={["OD", "OS", "OU"]}
+                checkedValue={patientRecord.dilateType ?? ""}
+              />
             </div>
             <div className="my-2">
               <span className="text-xl font-bold">Reason for Visit: </span>

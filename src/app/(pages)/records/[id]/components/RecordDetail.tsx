@@ -69,6 +69,13 @@ const RecordDetail = (props: RecordDetailType) => {
           isRow
           items={["OR", "CONS"]}
         />
+        <CheckboxItem
+          disabled
+          name="dilateType"
+          checkedValue={recordDetail.dilateType ?? ""}
+          isRow
+          items={["OD", "OS", "OU"]}
+        />
       </div>
       <div className="my-2">
         <span className="text-xl font-bold">Reason for Visit: </span>

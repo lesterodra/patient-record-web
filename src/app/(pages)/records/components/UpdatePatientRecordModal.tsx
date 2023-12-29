@@ -36,6 +36,7 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
     intraOcularPressureOS,
     medicalDoctor,
     medicalDoctorUserId,
+    dilateType,
   } = patientRecord ?? {};
   const visualAcuityOd = visualAcuities?.find(
     (visualAcuity) => visualAcuity.eyeType === "OD"
@@ -48,6 +49,7 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
   const { register, handleSubmit, formState, getValues, setValue } = useForm({
     values: {
       visitType: [visitType],
+      dilateType: [dilateType],
       reasonForVisit,
       reasonForVisitNotes,
       previousMedicines,
@@ -110,6 +112,7 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
       intraOcularPressureOS,
       medicalDoctor,
       medicalDoctorUserId,
+      dilateType,
     } = getValues();
 
     await updatePatientRecord(dispatch, patientRecord?.id as number, {
@@ -150,6 +153,7 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
       refractionAdd,
       refractionPd,
       visitType: visitType && visitType[0],
+      dilateType: dilateType && dilateType[0],
     });
   };
 

@@ -52,9 +52,9 @@ const PatientDetail = ({
           <b>Appointment Type:</b>{" "}
           {getValueDisplay(patientDetail.appointmentType)}
         </p>
-        <p className="text-sm">
+        {/* <p className="text-sm">
           <b>Dilate Type:</b> {getValueDisplay(patientDetail.dilateType)}
-        </p>
+        </p> */}
         <p className="text-sm">
           <b>Address Line 1:</b> {getValueDisplay(patientDetail.address)}
         </p>

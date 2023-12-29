@@ -1,15 +1,10 @@
 "use client";
 
-import { Button, Modal, Table } from "flowbite-react";
+import { Button, Modal } from "flowbite-react";
 import PersonalInformationInput from "./PersonalInformationInput";
 import { useForm } from "react-hook-form";
 import { PatientType } from "@/redux/features/patient-slice";
-import { useEffect } from "react";
-import {
-  getPatientDetailsById,
-  updatePatientDetails,
-} from "@/utils/dataFetchers";
-import LoaderButton from "@/app/components/LoaderButton";
+import { updatePatientDetails } from "@/utils/dataFetchers";
 import ButtonWithSpinner from "@/app/components/ButtonWithSpinner";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
@@ -32,7 +27,6 @@ const UpdatePatientModal = ({
     municipality,
     barangay,
     appointmentType,
-    dilateType,
     philHealthNo,
     address,
     gender,
@@ -75,7 +69,6 @@ const UpdatePatientModal = ({
       previousSurgeries,
       previousSurgeriesNotes,
       appointmentType: [appointmentType],
-      dilateType: [dilateType],
       sourceOfReferral: [sourceOfReferral],
     },
   });
@@ -85,9 +78,6 @@ const UpdatePatientModal = ({
 
     await updatePatientDetails(dispatch, Number(id), {
       ...updatedPatientDetails,
-      dilateType:
-        updatedPatientDetails?.dilateType &&
-        updatedPatientDetails?.dilateType[0],
       sourceOfReferral:
         updatedPatientDetails?.sourceOfReferral &&
         updatedPatientDetails?.sourceOfReferral[0],

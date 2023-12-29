@@ -29,6 +29,7 @@ export const createPatientRecord = async (
   data: {
     patientInformationId: number;
     reasonForVisit?: string[];
+    dilateType?: string;
     reasonForVisitNotes?: string | null;
     previousMedicines?: string | null;
     autoRefractionOD?: string | null;
@@ -73,6 +74,7 @@ export const createPatientRecord = async (
       refractionAdd,
       refractionPd,
       visitType,
+      dilateType,
     } = data;
 
     const response = await axios.post("/api/records", {
@@ -97,6 +99,7 @@ export const createPatientRecord = async (
       refractionAdd,
       refractionPd,
       visitType,
+      dilateType,
     });
 
     dispatch(setSuccessfulAlert("Success"));

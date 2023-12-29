@@ -23,6 +23,7 @@ const MedicalInformationInput = (props: MedicalInformationInputProps) => {
   const visitTypeErrorMessage = errors?.visitType?.message?.toString();
   const reasonForVisitErrorMessage =
     errors?.reasonForVisit?.message?.toString();
+  const dilateTypeMessage = errors?.dilateType?.message?.toString();
 
   return (
     <>
@@ -47,6 +48,28 @@ const MedicalInformationInput = (props: MedicalInformationInputProps) => {
           />
           {visitTypeErrorMessage && (
             <p className="text-xs text-red-500">{visitTypeErrorMessage}</p>
+          )}
+        </div>
+        <div>
+          <FormCheckboxItem
+            name="dilateType"
+            isRow
+            items={["OD", "OS", "OU"]}
+            formRegister={formRegister("dilateType", {
+              required: ERROR_MESSAGE.REQUIRED,
+              onChange: (e) => {
+                formSetValue(
+                  "dilateType",
+                  e.target.checked ? e.target.value : null,
+                  {
+                    shouldValidate: true,
+                  }
+                );
+              },
+            })}
+          />
+          {dilateTypeMessage && (
+            <p className="text-xs text-red-500">{dilateTypeMessage}</p>
           )}
         </div>
       </div>

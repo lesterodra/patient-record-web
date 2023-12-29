@@ -39,7 +39,6 @@ const CreatePatientModal = () => {
         personalMedicalHistoriesNotes: null,
         previousSurgeriesNotes: null,
         appointmentType: [],
-        dilateType: [],
         sourceOfReferral: [],
         knownAllergies: [],
         previousSurgeries: [],
@@ -53,8 +52,6 @@ const CreatePatientModal = () => {
         method: "POST",
         body: JSON.stringify({
           ...patientDetails,
-          dilateType:
-            patientDetails?.dilateType && patientDetails?.dilateType[0],
           sourceOfReferral:
             patientDetails?.sourceOfReferral &&
             patientDetails?.sourceOfReferral[0],

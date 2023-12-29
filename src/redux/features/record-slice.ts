@@ -14,6 +14,7 @@ export type RecordInputType = {
   id?: number;
   recordNo?: string;
   visitType?: string;
+  dilateType?: string;
   patientInformationId?: number;
   reasonForVisit?: string[];
   reasonForVisitNotes?: string;
@@ -42,6 +43,7 @@ export type RecordInputType = {
 export type RecordType = {
   id: number;
   status: string;
+  dilateType: string;
   recordNo: string;
   visitType: string;
   patientInformationId: number;

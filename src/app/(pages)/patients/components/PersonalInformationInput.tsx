@@ -51,7 +51,6 @@ const PersonalInformationInput = (props: PersonalInformationInputProps) => {
 
   const appointmentTypeErrorMessage =
     errors?.appointmentType?.message?.toString();
-  const dilateTypeMessage = errors?.dilateType?.message?.toString();
 
   return (
     <>
@@ -79,28 +78,6 @@ const PersonalInformationInput = (props: PersonalInformationInputProps) => {
             <p className="text-xs text-red-500">
               {appointmentTypeErrorMessage}
             </p>
-          )}
-        </div>
-        <div>
-          <FormCheckboxItem
-            name="dilateType"
-            isRow
-            items={["OD", "OS", "OU"]}
-            formRegister={formRegister("dilateType", {
-              required: ERROR_MESSAGE.REQUIRED,
-              onChange: (e) => {
-                formSetValue(
-                  "dilateType",
-                  e.target.checked ? e.target.value : null,
-                  {
-                    shouldValidate: true,
-                  }
-                );
-              },
-            })}
-          />
-          {dilateTypeMessage && (
-            <p className="text-xs text-red-500">{dilateTypeMessage}</p>
           )}
         </div>
       </div>
