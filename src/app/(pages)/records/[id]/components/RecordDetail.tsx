@@ -7,6 +7,7 @@ import DrawingModal from "./DrawingModal";
 import DrawingList from "./DrawingList";
 import { getDisplayStatus, getValueDisplay } from "@/utils/displayParser";
 import ChangeStatusModal from "./ChangeStatusModal";
+import { useState } from "react";
 
 type RecordDetailType = {
   recordDetail: Prisma.PatientRecordGetPayload<{
@@ -21,6 +22,7 @@ type RecordDetailType = {
 
 const RecordDetail = (props: RecordDetailType) => {
   const { recordDetail } = props;
+  const [status, setStatus] = useState<string>(recordDetail.status ?? "");
 
   const visualAcuityOd = recordDetail.visualAcuities.find(
     (visualAcuity) => visualAcuity.eyeType === "OD"
@@ -36,7 +38,7 @@ const RecordDetail = (props: RecordDetailType) => {
           <div>
             <span className="text-2xl font-bold">{recordDetail.recordNo}</span>
             <span className="text-sm text-blue-900 font-bold">
-              ({getDisplayStatus(recordDetail.status ?? "")})
+              ({getDisplayStatus(status)})
             </span>
           </div>
           <div>
@@ -51,6 +53,10 @@ const RecordDetail = (props: RecordDetailType) => {
           <ChangeStatusModal
             currentStatus={recordDetail.status as string}
             patientRecordId={recordDetail.id}
+            onStatusChange={(status) => {
+              console.log({ status });
+              setStatus(status);
+            }}
           />
           <DrawingModal patientRecordId={recordDetail.id} />
         </div>

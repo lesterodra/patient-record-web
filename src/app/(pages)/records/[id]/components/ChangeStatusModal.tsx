@@ -12,10 +12,11 @@ import { useDispatch } from "react-redux";
 type ChangeStatusModalProps = {
   currentStatus: string;
   patientRecordId: number;
+  onStatusChange?: (status: string) => void;
 };
 
 const ChangeStatusModal = (props: ChangeStatusModalProps) => {
-  const { currentStatus, patientRecordId } = props;
+  const { currentStatus, patientRecordId, onStatusChange } = props;
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const { register, handleSubmit, formState, getValues } = useForm({
@@ -27,6 +28,9 @@ const ChangeStatusModal = (props: ChangeStatusModalProps) => {
     const { status } = getValues();
 
     await updateRecordStatus(dispatch, patientRecordId, status);
+    if (onStatusChange) {
+      onStatusChange(status);
+    }
   };
 
   return (
