@@ -70,6 +70,7 @@ model PatientRecord {
   refractionOsX         String?
   refractionAdd         String?
   refractionPd          String?
+  status                String?
   visualAcuities        VisualAcuity[]
   drawings              Drawing[]
   createdAt             DateTime            @default(now())

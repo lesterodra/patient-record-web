@@ -1,6 +1,10 @@
-import { MONTHS } from "./constants";
+import { MONTHS, RECORD_STATUSES } from "./constants";
 
 export const getValueDisplay = (value: any): string => value || "-";
+
+export const getDisplayStatus = (status: string): string =>
+  RECORD_STATUSES.find((recordStatus) => recordStatus.value === status)
+    ?.label ?? "-";
 
 export const convertToReadableDate = (date: string | null | Date): string => {
   const parsedDate = new Date(date ?? "");

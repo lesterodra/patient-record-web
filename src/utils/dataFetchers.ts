@@ -406,6 +406,22 @@ export const registerUser = async (
   }
 };
 
+export const updateRecordStatus = async (
+  dispatch: AppDispatch,
+  patientRecordId: number,
+  status: string
+) => {
+  try {
+    await axios.patch(`/api/records/${patientRecordId}/status`, {
+      body: { status },
+    });
+
+    dispatch(setSuccessfulAlert("Success"));
+  } catch (error) {
+    dispatch(setErrorAlert("Error"));
+  }
+};
+
 export const updateUserSettings = async (
   dispatch: AppDispatch,
   data: {

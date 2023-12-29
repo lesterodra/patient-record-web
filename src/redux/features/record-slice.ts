@@ -41,6 +41,7 @@ export type RecordInputType = {
 
 export type RecordType = {
   id: number;
+  status: string;
   recordNo: string;
   visitType: string;
   patientInformationId: number;

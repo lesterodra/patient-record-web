@@ -5,7 +5,8 @@ import { Prisma } from "@prisma/client";
 import { Table } from "flowbite-react";
 import DrawingModal from "./DrawingModal";
 import DrawingList from "./DrawingList";
-import { getValueDisplay } from "@/utils/displayParser";
+import { getDisplayStatus, getValueDisplay } from "@/utils/displayParser";
+import ChangeStatusModal from "./ChangeStatusModal";
 
 type RecordDetailType = {
   recordDetail: Prisma.PatientRecordGetPayload<{
@@ -32,12 +33,25 @@ const RecordDetail = (props: RecordDetailType) => {
     <div>
       <div className="mt-6 mb-6 flex justify-between">
         <div>
-          <p className="text-2xl font-bold">{recordDetail.recordNo}</p>
           <div>
-            <p>{recordDetail?.patientInformation?.lastName}</p>
+            <span className="text-2xl font-bold">{recordDetail.recordNo}</span>
+            <span className="text-sm text-blue-900 font-bold">
+              ({getDisplayStatus(recordDetail.status ?? "")})
+            </span>
+          </div>
+          <div>
+            <p>{recordDetail?.patientInformation?.patientNo}</p>
+            <p>
+              {recordDetail?.patientInformation?.lastName},{" "}
+              {recordDetail?.patientInformation?.firstName}
+            </p>
           </div>
         </div>
         <div className="flex gap-4">
+          <ChangeStatusModal
+            currentStatus={recordDetail.status as string}
+            patientRecordId={recordDetail.id}
+          />
           <DrawingModal patientRecordId={recordDetail.id} />
         </div>
       </div>

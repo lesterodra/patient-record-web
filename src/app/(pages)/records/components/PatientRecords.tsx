@@ -13,6 +13,7 @@ import Link from "next/link";
 import {
   displayDateAndTime,
   displayFullName,
+  getDisplayStatus,
   getValueDisplay,
 } from "@/utils/displayParser";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
@@ -92,7 +93,9 @@ const PatientRecords = () => {
                     patientRecord.createdAt as unknown as string
                   )}
                 </Table.Cell>
-                <Table.Cell>For Doctors checkup</Table.Cell>
+                <Table.Cell>
+                  {getDisplayStatus(patientRecord.status)}
+                </Table.Cell>
                 <Table.Cell>
                   <p
                     className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"

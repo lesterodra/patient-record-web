@@ -153,6 +153,7 @@ export async function POST(request: Request) {
           refractionAdd,
           refractionPd,
           visitType,
+          status: "1",
         },
         select: { id: true },
       });

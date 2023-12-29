@@ -61,6 +61,21 @@ export const ERROR_MESSAGE = {
   REQUIRED: "Field is required",
 };
 
+export const RECORD_STATUSES = [
+  {
+    label: "For Doctors checkup",
+    value: "1",
+  },
+  {
+    label: "Cancelled",
+    value: "2",
+  },
+  {
+    label: "Done",
+    value: "3",
+  },
+];
+
 export const NATIONALITY_LIST = [
   "Filipino",
   "Afghan",
