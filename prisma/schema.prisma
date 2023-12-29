@@ -51,6 +51,7 @@ model PatientRecord {
   reasonForVisit        Json?
   reasonForVisitNotes   String?             @db.Text
   visitType             String?
+  dilateType            String?
   previousMedicines     String?             @db.Text
   autoRefractionOD      String?
   autoRefractionOs      String?
@@ -60,7 +61,7 @@ model PatientRecord {
   medicalDoctor         String?
   medicalDoctorUserId   Int?
   medicalDoctorUser     User?               @relation(fields: [medicalDoctorUserId], references: [id])
-  patientInformation    PatientInformation? @relation(fields: [patientInformationId], references: [id], onDelete: Cascade)
+  patientInformation    PatientInformation? @relation(fields: [patientInformationId], references: [id])
   patientInformationId  Int
   refractionOd          String?
   refractionOdNegative  String?
