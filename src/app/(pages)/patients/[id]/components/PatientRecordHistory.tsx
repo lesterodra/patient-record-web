@@ -79,6 +79,7 @@ const PatientRecordHistory = (props: PatientRecordHistoryProps) => {
             className="rounded"
             onChange={(e) => {
               setSortOrder(e.target.value);
+              setCurrentPage(1);
             }}
           >
             <option value="desc">Newest First</option>
