@@ -5,7 +5,7 @@ import AccountSettingsForm from "./components/AccountSettingsForm";
 
 const SettingsPage = async () => {
   const session = (await getServerSession(options)) as {
-    user: { username: string; name: string };
+    user: { username: string; name: string; id: string };
   };
 
   return (
