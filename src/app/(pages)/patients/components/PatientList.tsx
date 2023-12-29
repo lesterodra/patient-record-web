@@ -78,9 +78,9 @@ const PatientList = () => {
                   >
                     Edit
                   </p>
-                  <p className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer">
+                  {/* <p className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer">
                     Delete
-                  </p>
+                  </p> */}
                 </Table.Cell>
               </Table.Row>
             ))}

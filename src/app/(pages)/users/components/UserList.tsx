@@ -75,14 +75,14 @@ const UserList = () => {
                   >
                     Edit
                   </p>
-                  <p
+                  {/* <p
                     onClick={() => {
                       setIsDialogOpen(true);
                     }}
                     className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
                   >
                     Delete
-                  </p>
+                  </p> */}
                 </Table.Cell>
               </Table.Row>
             ))}
