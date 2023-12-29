@@ -8,14 +8,15 @@ type ButtonWithSpinnerProps = {
   children: ReactNode;
   color?: string;
   onClick?: () => void;
+  disabled?: boolean;
 };
 
 const ButtonWithSpinner = (props: ButtonWithSpinnerProps) => {
-  const { isLoading, children, color, onClick } = props;
+  const { isLoading, children, color, onClick, disabled } = props;
 
   return (
     <div>
-      <Button disabled={isLoading} color={color} onClick={onClick}>
+      <Button disabled={isLoading || disabled} color={color} onClick={onClick}>
         {isLoading ? <LoadingSpinner /> : children}
       </Button>
     </div>

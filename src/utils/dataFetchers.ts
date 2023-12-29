@@ -406,6 +406,37 @@ export const registerUser = async (
   }
 };
 
+export const updateUserSettings = async (
+  dispatch: AppDispatch,
+  data: {
+    userId: number;
+    username?: string;
+    password?: string;
+    confirmPassword?: string;
+  }
+) => {
+  try {
+    const { userId, username, password, confirmPassword } = data;
+    const response = await axios.patch(`/api/users/${userId}/settings`, {
+      body: { username, password, confirmPassword },
+    });
+
+    dispatch(setSuccessfulAlert("Success"));
+
+    return { status: response.status, message: response.data.message };
+  } catch (error) {
+    dispatch(setErrorAlert("Error"));
+    if (error instanceof AxiosError) {
+      return {
+        status: error.response?.status,
+        message: error.response?.data.message,
+      };
+    }
+
+    throw error;
+  }
+};
+
 export const getDepartmentList = async (dispatch: AppDispatch) => {
   try {
     const response = await axios.get(`/api/departments`);
