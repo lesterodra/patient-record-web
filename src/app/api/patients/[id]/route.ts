@@ -54,6 +54,7 @@ export async function PATCH(
       appointmentType,
       dilateType,
       sourceOfReferral,
+      sourceOfReferralNotes,
     } = await request.json();
 
     const id = Number(params.id);
@@ -94,6 +95,7 @@ export async function PATCH(
         appointmentType,
         dilateType,
         sourceOfReferral,
+        sourceOfReferralNotes,
       },
       where: { id },
     });

@@ -93,6 +93,16 @@ const PatientDetail = ({
         <p>
           <b>Referral From: </b> {patientDetail.sourceOfReferral}
         </p>
+        {patientDetail?.sourceOfReferralNotes && (
+          <div>
+            <p className="text-xs italic">Notes</p>
+            <textarea
+              value={patientDetail.sourceOfReferralNotes}
+              disabled
+              className="rounded w-full h-28"
+            />
+          </div>
+        )}
         <p>
           <b>Known Allergy: </b>{" "}
           {getValueDisplay(patientDetail?.knownAllergies?.toString())}

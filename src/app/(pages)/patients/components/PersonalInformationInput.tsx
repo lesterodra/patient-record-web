@@ -187,6 +187,7 @@ const PersonalInformationInput = (props: PersonalInformationInputProps) => {
             "Relatives",
             "Friends",
             "Social Media",
+            "Coordinator",
             "Others",
           ]}
           formRegister={formRegister("sourceOfReferral", {
@@ -202,6 +203,7 @@ const PersonalInformationInput = (props: PersonalInformationInputProps) => {
           })}
         />
       </div>
+      <FormNotes formRegister={formRegister("sourceOfReferralNotes", {})} />
       <p className="mb-3 mt-8 font-bold text-xl">Known Allergies</p>
       <div className="flex gap-10">
         <FormCheckboxItem

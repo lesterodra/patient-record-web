@@ -27,6 +27,7 @@ export type PatientType = {
   appointmentType?: string;
   dilateType?: string;
   sourceOfReferral?: string;
+  sourceOfReferralNotes?: string;
 };
 
 type PatientListResponse = {

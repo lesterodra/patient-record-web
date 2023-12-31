@@ -43,6 +43,7 @@ const UpdatePatientModal = ({
     personalMedicalHistoriesNotes,
     previousSurgeries,
     previousSurgeriesNotes,
+    sourceOfReferralNotes,
   } = patientDetails ?? {};
   const dispatch = useDispatch<AppDispatch>();
   const { register, handleSubmit, formState, getValues, setValue } = useForm({
@@ -70,6 +71,7 @@ const UpdatePatientModal = ({
       previousSurgeriesNotes,
       appointmentType: [appointmentType],
       sourceOfReferral: [sourceOfReferral],
+      sourceOfReferralNotes,
     },
   });
 

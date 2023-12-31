@@ -38,6 +38,7 @@ model PatientInformation {
   appointmentType               String?
   dilateType                    String?
   sourceOfReferral              String?
+  sourceOfReferralNotes         String?         @db.Text
   patientRecords                PatientRecord[]
   createdAt                     DateTime        @default(now())
   updatedAt                     DateTime?       @updatedAt

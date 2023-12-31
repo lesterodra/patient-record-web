@@ -38,6 +38,7 @@ const CreatePatientModal = () => {
         knownAllergiesNotes: null,
         personalMedicalHistoriesNotes: null,
         previousSurgeriesNotes: null,
+        sourceOfReferralNotes: null,
         appointmentType: [],
         sourceOfReferral: [],
         knownAllergies: [],

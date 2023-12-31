@@ -107,6 +107,7 @@ export async function POST(request: Request) {
       appointmentType,
       dilateType,
       sourceOfReferral,
+      sourceOfReferralNotes,
     } = await request.json();
 
     await prisma.$transaction(async (tx) => {
@@ -136,6 +137,7 @@ export async function POST(request: Request) {
           appointmentType,
           dilateType,
           sourceOfReferral,
+          sourceOfReferralNotes,
         },
         select: { id: true },
       });
