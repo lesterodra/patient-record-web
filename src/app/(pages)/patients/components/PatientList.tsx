@@ -1,15 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Pagination, Table } from "flowbite-react";
-import Link from "next/link";
+import { Table } from "flowbite-react";
 import UpdatePatientModal from "./UpdatePatientModal";
 import { convertToReadableDate, getValueDisplay } from "@/utils/displayParser";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { getPatientDetailsById, getPatientList } from "@/utils/dataFetchers";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
-import { PatientType } from "@/redux/features/patient-slice";
 import PaginationFooter from "@/app/components/PaginationFooter";
 
 const PatientList = () => {
@@ -52,12 +50,12 @@ const PatientList = () => {
                 className="bg-white text-black dark:border-gray-700 dark:bg-gray-800 hover:bg-slate-100"
               >
                 <Table.Cell>
-                  <Link
+                  <a
                     className="underline text-blue-500"
                     href={`/patients/${patient.id}`}
                   >
                     {getValueDisplay(patient.patientNo)}
-                  </Link>
+                  </a>
                 </Table.Cell>
                 <Table.Cell className="text-black font-bold">
                   {`${patient.lastName}, ${patient.firstName} ${
