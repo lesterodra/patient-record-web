@@ -109,15 +109,15 @@ const DrawingCanvas = () => {
         onTouchEnd={stopDrawing}
         onTouchMove={draw}
       ></canvas>
-      <div className="flex gap-3">
+      <div className="flex gap-3 border border-black">
         <button
-          className={(isMarker && "border border-red-500") || ""}
+          className={(isMarker && "bg-cyan-500 text-white p-2") || ""}
           onClick={setToDraw}
         >
           Draw
         </button>
         <button
-          className={(!isMarker && "border border-red-500") || ""}
+          className={(!isMarker && "bg-cyan-500 text-white p-2") || ""}
           onClick={setToErase}
         >
           Erase

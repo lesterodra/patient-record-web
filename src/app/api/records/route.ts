@@ -11,6 +11,8 @@ export async function GET(request: NextRequest) {
     );
     const requestQuickSearchInput =
       request.nextUrl.searchParams.get("quickSearchInput");
+    const requestFollowUpDate =
+      request.nextUrl.searchParams.get("followUpDate");
 
     const requestRecordNo = request.nextUrl.searchParams.get("recordNo");
     const requestPatientNo = request.nextUrl.searchParams.get("patientNo");
@@ -38,6 +40,7 @@ export async function GET(request: NextRequest) {
     const skip = (page - 1) * limit;
     const orderBy = requestOrder ?? "desc";
     const dateToObject = dateTo && new Date(dateTo);
+    const followUpDate = requestFollowUpDate || undefined;
 
     if (dateToObject) {
       dateToObject.setDate(dateToObject.getDate() + 1);
@@ -55,6 +58,7 @@ export async function GET(request: NextRequest) {
         : {}),
       recordNo,
       patientInformationId,
+      followUpDate,
       createdAt: {
         gte: dateFrom && new Date(dateFrom),
         lt: dateToObject,

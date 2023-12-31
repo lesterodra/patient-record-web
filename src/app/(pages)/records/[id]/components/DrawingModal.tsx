@@ -7,11 +7,12 @@ import { useDispatch } from "react-redux";
 
 type DrawingModalProps = {
   patientRecordId: number;
+  isOpen: boolean;
+  setIsOpen: (value: boolean) => void;
 };
 
 const DrawingModal = (props: DrawingModalProps) => {
-  const { patientRecordId } = props;
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { patientRecordId, isOpen, setIsOpen } = props;
   const { drawingDataUrl } = useAppSelector(
     (state) => state.recordReducer.value
   );
@@ -28,14 +29,6 @@ const DrawingModal = (props: DrawingModalProps) => {
 
   return (
     <div>
-      <Button
-        color="yellow"
-        onClick={() => {
-          setIsOpen(true);
-        }}
-      >
-        Draw
-      </Button>
       <Modal show={isOpen} size="4xl" onClose={() => setIsOpen(false)}>
         <Modal.Header>Draw</Modal.Header>
         <Modal.Body>

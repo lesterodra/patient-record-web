@@ -110,6 +110,17 @@ const PatientRecordAdvanceSearchModal = () => {
               }}
             />
             <DatePicker
+              label="Follow Up date"
+              value={patientRecordListQueryParameters?.followUpDate ?? ""}
+              onChange={(e) => {
+                dispatch(
+                  updatePatientRecordListQueryParameters({
+                    followUpDate: e.target.value,
+                  })
+                );
+              }}
+            />
+            <DatePicker
               label="Record date from"
               value={patientRecordListQueryParameters?.dateFrom ?? ""}
               onChange={(e) => {

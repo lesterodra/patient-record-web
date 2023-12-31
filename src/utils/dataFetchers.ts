@@ -15,6 +15,7 @@ import {
   setPatientRecord,
   RecordType,
   RecordInputType,
+  setNoOfPatientsForFollowUp,
 } from "@/redux/features/record-slice";
 import {
   fetchDoctors,
@@ -127,6 +128,7 @@ export const getPatientRecordList = async (
     birthDate?: string;
     dateFrom?: string;
     dateTo?: string;
+    followUpDate?: string;
   }
 ) => {
   try {
@@ -142,6 +144,7 @@ export const getPatientRecordList = async (
       sortOrder,
       dateFrom,
       dateTo,
+      followUpDate,
       page = 1,
       limit = 5,
     } = data ?? {};
@@ -160,6 +163,7 @@ export const getPatientRecordList = async (
         birthDate,
         dateFrom,
         dateTo,
+        followUpDate,
       },
     });
 
@@ -185,6 +189,24 @@ export const appendPatientRecordList = async (
     });
 
     dispatch(appendRecords(response.data));
+  } catch (error) {
+    console.log({ error });
+  }
+};
+
+export const fetchNoOfPatientsForFollowUp = async (
+  dispatch: AppDispatch,
+  data?: {
+    followUpDate: string;
+  }
+) => {
+  try {
+    const { followUpDate } = data ?? {};
+    const response = await axios.get("/api/records", {
+      params: { page: 1, limit: 1, followUpDate },
+    });
+
+    dispatch(setNoOfPatientsForFollowUp(response.data.totalRecords));
   } catch (error) {
     console.log({ error });
   }
@@ -248,9 +270,13 @@ export const saveDrawing = async (
       dataUrl,
     });
 
+    dispatch(setSuccessfulAlert("Success"));
+
     return response.data;
   } catch (error) {
     console.log({ error });
+
+    dispatch(setErrorAlert("Error"));
   }
 };
 
@@ -258,9 +284,13 @@ export const deleteDrawing = async (dispatch: AppDispatch, id: number) => {
   try {
     const response = await axios.delete(`/api/drawings/${id}`);
 
+    dispatch(setSuccessfulAlert("Success"));
+
     return response.data;
   } catch (error) {
     console.log({ error });
+
+    dispatch(setErrorAlert("Error"));
   }
 };
 
@@ -417,6 +447,22 @@ export const updateRecordStatus = async (
   try {
     await axios.patch(`/api/records/${patientRecordId}/status`, {
       body: { status },
+    });
+
+    dispatch(setSuccessfulAlert("Success"));
+  } catch (error) {
+    dispatch(setErrorAlert("Error"));
+  }
+};
+
+export const updateRecordFollowUpDate = async (
+  dispatch: AppDispatch,
+  patientRecordId: number,
+  followUpDate: string
+) => {
+  try {
+    await axios.patch(`/api/records/${patientRecordId}/followUpDate`, {
+      body: { followUpDate },
     });
 
     dispatch(setSuccessfulAlert("Success"));

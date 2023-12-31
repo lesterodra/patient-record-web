@@ -6,6 +6,11 @@ export const getDisplayStatus = (status: string): string =>
   RECORD_STATUSES.find((recordStatus) => recordStatus.value === status)
     ?.label ?? "-";
 
+export const convertToDateString = (dateObject: Date): string =>
+  `${dateObject.getFullYear()}-${(dateObject.getMonth() + 1)
+    .toString()
+    .padStart(2, "0")}-${dateObject.getDate().toString().padStart(2, "0")}`;
+
 export const convertToReadableDate = (date: string | null | Date): string => {
   const parsedDate = new Date(date ?? "");
   const month = parsedDate.getMonth();

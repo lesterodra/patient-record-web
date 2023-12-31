@@ -13,11 +13,13 @@ type ChangeStatusModalProps = {
   currentStatus: string;
   patientRecordId: number;
   onStatusChange?: (status: string) => void;
+  isOpen: boolean;
+  setIsOpen: (value: boolean) => void;
 };
 
 const ChangeStatusModal = (props: ChangeStatusModalProps) => {
-  const { currentStatus, patientRecordId, onStatusChange } = props;
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { currentStatus, patientRecordId, onStatusChange, isOpen, setIsOpen } =
+    props;
   const dispatch = useDispatch<AppDispatch>();
   const { register, handleSubmit, formState, getValues } = useForm({
     values: {
@@ -35,14 +37,6 @@ const ChangeStatusModal = (props: ChangeStatusModalProps) => {
 
   return (
     <div>
-      <Button
-        color="green"
-        onClick={() => {
-          setIsOpen(true);
-        }}
-      >
-        Change Status
-      </Button>
       <Modal show={isOpen} size="sm" onClose={() => setIsOpen(false)}>
         <Modal.Header>Change record status</Modal.Header>
         <Modal.Body>

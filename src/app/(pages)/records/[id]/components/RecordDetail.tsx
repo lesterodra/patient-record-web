@@ -2,12 +2,17 @@
 
 import CheckboxItem from "@/app/components/CheckboxItem";
 import { Prisma } from "@prisma/client";
-import { Table } from "flowbite-react";
+import { Button, ListGroup, Table } from "flowbite-react";
 import DrawingModal from "./DrawingModal";
 import DrawingList from "./DrawingList";
-import { getDisplayStatus, getValueDisplay } from "@/utils/displayParser";
+import {
+  convertToReadableDate,
+  getDisplayStatus,
+  getValueDisplay,
+} from "@/utils/displayParser";
 import ChangeStatusModal from "./ChangeStatusModal";
 import { useState } from "react";
+import SetFollowUpVisitModal from "./SetFollowUpVisitModal";
 
 type RecordDetailType = {
   recordDetail: Prisma.PatientRecordGetPayload<{
@@ -23,6 +28,15 @@ type RecordDetailType = {
 const RecordDetail = (props: RecordDetailType) => {
   const { recordDetail } = props;
   const [status, setStatus] = useState<string>(recordDetail.status ?? "");
+  const [followUpDate, setFollowUpDate] = useState<string>(
+    recordDetail.followUpDate ?? ""
+  );
+  const [isActionOpen, setIsActionOpen] = useState<boolean>(false);
+  const [isChangeStatusModalOpen, setIsChangeStatusModalOpen] =
+    useState<boolean>(false);
+  const [isDrawModalOpen, setIsDrawModalOpen] = useState<boolean>(false);
+  const [isSetFollowUpVisitModalOpen, setIsSetFollowUpVisitModalOpen] =
+    useState<boolean>(false);
 
   const visualAcuityOd = recordDetail.visualAcuities.find(
     (visualAcuity) => visualAcuity.eyeType === "OD"
@@ -50,18 +64,68 @@ const RecordDetail = (props: RecordDetailType) => {
           </div>
         </div>
         <div className="flex gap-4">
-          <ChangeStatusModal
-            currentStatus={recordDetail.status as string}
-            patientRecordId={recordDetail.id}
-            onStatusChange={(status) => {
-              console.log({ status });
-              setStatus(status);
-            }}
-          />
-          <DrawingModal patientRecordId={recordDetail.id} />
+          <div className="relative">
+            <Button
+              className="mb-1"
+              onClick={() => setIsActionOpen((prev) => !prev)}
+            >
+              Actions
+            </Button>
+            {isActionOpen && (
+              <div className="absolute right-0">
+                <ListGroup className="w-48">
+                  <ListGroup.Item
+                    onClick={() => {
+                      setIsChangeStatusModalOpen(true);
+                    }}
+                  >
+                    Change Status
+                  </ListGroup.Item>
+                  <ListGroup.Item
+                    onClick={() => {
+                      setIsDrawModalOpen(true);
+                    }}
+                  >
+                    Draw
+                  </ListGroup.Item>
+                  <ListGroup.Item
+                    onClick={() => {
+                      setIsSetFollowUpVisitModalOpen(true);
+                    }}
+                  >
+                    Set follow-up visit
+                  </ListGroup.Item>
+                </ListGroup>
+              </div>
+            )}
+            <ChangeStatusModal
+              isOpen={isChangeStatusModalOpen}
+              setIsOpen={setIsChangeStatusModalOpen}
+              currentStatus={recordDetail.status as string}
+              patientRecordId={recordDetail.id}
+              onStatusChange={(status) => {
+                setStatus(status);
+              }}
+            />
+            <DrawingModal
+              isOpen={isDrawModalOpen}
+              setIsOpen={setIsDrawModalOpen}
+              patientRecordId={recordDetail.id}
+            />
+            <SetFollowUpVisitModal
+              isOpen={isSetFollowUpVisitModalOpen}
+              setIsOpen={setIsSetFollowUpVisitModalOpen}
+              patientRecordId={recordDetail.id}
+              followUpDate={recordDetail.followUpDate}
+              onFollowUpDateChange={(followUpDateValue) => {
+                console.log({ followUpDateValue });
+                setFollowUpDate(followUpDateValue);
+              }}
+            />
+          </div>
         </div>
       </div>
-      <div className=" flex justify-between  mb-5">
+      <div className=" flex justify-between mb-5">
         <CheckboxItem
           disabled
           name="type"
@@ -76,6 +140,10 @@ const RecordDetail = (props: RecordDetailType) => {
           isRow
           items={["OD", "OS", "OU"]}
         />
+      </div>
+      <div className="my-2">
+        <span className="text-xl font-bold">Follow Up date: </span>
+        <span>{convertToReadableDate(followUpDate)}</span>
       </div>
       <div className="my-2">
         <span className="text-xl font-bold">Reason for Visit: </span>

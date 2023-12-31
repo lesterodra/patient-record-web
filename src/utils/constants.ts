@@ -1,5 +1,6 @@
 export const REASON_FOR_VISIT = [
   "Follow-Up Visit",
+  "Foreign body",
   "BOV",
   "Trauma",
   "Dizziness/Headaches",

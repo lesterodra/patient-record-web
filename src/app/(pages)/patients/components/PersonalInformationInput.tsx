@@ -87,7 +87,10 @@ const PersonalInformationInput = (props: PersonalInformationInputProps) => {
         <div className="mb-3">
           <FormInput
             label="PHIC"
-            formRegister={formRegister("philHealthNo", { value: null })}
+            formRegister={formRegister("philHealthNo", {
+              value: null,
+              required: ERROR_MESSAGE.REQUIRED,
+            })}
             errorMessage={errors?.philHealthNo?.message?.toString()}
           />
         </div>

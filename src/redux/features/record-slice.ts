@@ -43,6 +43,7 @@ export type RecordInputType = {
 export type RecordType = {
   id: number;
   status: string;
+  followUpDate: string;
   dilateType: string;
   recordNo: string;
   visitType: string;
@@ -89,6 +90,7 @@ type PatientRecordListQueryParameters = {
   birthDate?: string;
   dateFrom?: string;
   dateTo?: string;
+  followUpDate?: string;
 };
 
 type InitialState = {
@@ -99,6 +101,7 @@ type InitialState = {
     drawingList?: Drawing[];
     patientRecordListQueryParameters: PatientRecordListQueryParameters;
     patientRecord?: RecordType;
+    noOfPatientsForFollowUp?: number;
   };
 };
 
@@ -110,6 +113,7 @@ const initialState: InitialState = {
     drawingList: undefined,
     patientRecordListQueryParameters: {},
     patientRecord: undefined,
+    noOfPatientsForFollowUp: undefined,
   },
 };
 
@@ -195,6 +199,12 @@ export const record = createSlice({
         },
       },
     }),
+    setNoOfPatientsForFollowUp: (state, action: PayloadAction<number>) => ({
+      value: {
+        ...state.value,
+        noOfPatientsForFollowUp: action.payload,
+      },
+    }),
   },
 });
 
@@ -208,5 +218,6 @@ export const {
   updatePatientRecordListQueryParameters,
   clearPatientRecordListQueryParameters,
   setPatientRecord,
+  setNoOfPatientsForFollowUp,
 } = record.actions;
 export default record.reducer;
