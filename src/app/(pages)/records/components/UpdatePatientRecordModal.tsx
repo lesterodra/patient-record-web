@@ -37,6 +37,8 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
     medicalDoctor,
     medicalDoctorUserId,
     dilateType,
+    surgeries,
+    surgeryNotes,
   } = patientRecord ?? {};
   const visualAcuityOd = visualAcuities?.find(
     (visualAcuity) => visualAcuity.eyeType === "OD"
@@ -78,6 +80,8 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
       intraOcularPressureOS,
       medicalDoctor,
       medicalDoctorUserId,
+      surgeries,
+      surgeryNotes,
     },
   });
 
@@ -113,10 +117,14 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
       medicalDoctor,
       medicalDoctorUserId,
       dilateType,
+      surgeries,
+      surgeryNotes,
     } = getValues();
 
     await updatePatientRecord(dispatch, patientRecord?.id as number, {
       reasonForVisit,
+      surgeries,
+      surgeryNotes,
       reasonForVisitNotes,
       previousMedicines,
       autoRefractionOD,

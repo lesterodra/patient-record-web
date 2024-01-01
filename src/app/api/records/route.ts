@@ -133,6 +133,8 @@ export async function POST(request: Request) {
       refractionPd,
       visitType,
       dilateType,
+      surgeries,
+      surgeryNotes,
     } = await request.json();
 
     await prisma.$transaction(async (tx) => {
@@ -160,6 +162,8 @@ export async function POST(request: Request) {
           visitType,
           status: "1",
           dilateType,
+          surgeries,
+          surgeryNotes,
         },
         select: { id: true },
       });

@@ -27,6 +27,8 @@ const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
         visitType: null,
         reasonForVisit: [],
         dilateType: [],
+        surgeries: [],
+        surgeryNotes: null,
         reasonForVisitNotes: null,
         previousMedicines: null,
         autoRefractionOD: null,
@@ -89,11 +91,15 @@ const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
       medicalDoctor,
       medicalDoctorUserId,
       dilateType,
+      surgeries,
+      surgeryNotes,
     } = getValues();
 
     await createPatientRecord(dispatch, {
       patientInformationId,
       reasonForVisit,
+      surgeries,
+      surgeryNotes,
       reasonForVisitNotes,
       previousMedicines,
       autoRefractionOD,

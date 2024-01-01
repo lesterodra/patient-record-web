@@ -70,6 +70,20 @@ const PatientRecordModal = ({
               </div>
             )}
             <div className="my-2">
+              <span className="text-xl font-bold">Surgeries: </span>
+              {patientRecord.surgeries?.toString()}
+            </div>
+            {patientRecord?.surgeryNotes && (
+              <div>
+                <p className="text-xs italic">Notes</p>
+                <textarea
+                  value={patientRecord.surgeryNotes}
+                  disabled
+                  className="rounded w-full h-28"
+                />
+              </div>
+            )}
+            <div className="my-2">
               <p className="text-xl font-bold">Previous Medicines: </p>
               <textarea
                 value={patientRecord?.previousMedicines ?? ""}

@@ -17,6 +17,8 @@ export type RecordInputType = {
   dilateType?: string;
   patientInformationId?: number;
   reasonForVisit?: string[];
+  surgeries?: string[];
+  surgeryNotes?: string;
   reasonForVisitNotes?: string;
   previousMedicines?: string;
   autoRefractionOD?: string;
@@ -47,6 +49,8 @@ export type RecordType = {
   dilateType: string;
   recordNo: string;
   visitType: string;
+  surgeries: string[];
+  surgeryNotes: string;
   patientInformationId: number;
   reasonForVisit: string[];
   reasonForVisitNotes: string;

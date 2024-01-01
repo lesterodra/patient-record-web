@@ -50,6 +50,8 @@ model PatientRecord {
   id                    Int                 @id @default(autoincrement())
   recordNo              String?             @unique
   reasonForVisit        Json?
+  surgeries             Json?
+  surgeryNotes          String?
   reasonForVisitNotes   String?             @db.Text
   visitType             String?
   dilateType            String?

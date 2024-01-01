@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Pagination, Table } from "flowbite-react";
+import { Table } from "flowbite-react";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import {
@@ -9,7 +9,6 @@ import {
   getPatientRecordById,
   getPatientRecordList,
 } from "@/utils/dataFetchers";
-import Link from "next/link";
 import {
   displayDateAndTime,
   displayFullName,
@@ -67,12 +66,12 @@ const PatientRecords = () => {
                 className="bg-white text-black dark:border-gray-700 dark:bg-gray-800"
               >
                 <Table.Cell>
-                  <Link
+                  <a
                     className="underline text-blue-500"
                     href={`/records/${patientRecord.id}`}
                   >
                     {getValueDisplay(patientRecord.recordNo)}
-                  </Link>
+                  </a>
                 </Table.Cell>
                 <Table.Cell className="text-black text-xs">
                   <div>

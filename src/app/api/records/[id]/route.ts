@@ -52,6 +52,8 @@ export async function PATCH(
       refractionPd,
       visitType,
       dilateType,
+      surgeries,
+      surgeryNotes,
     } = await request.json();
 
     const id = Number(params.id);
@@ -97,6 +99,8 @@ export async function PATCH(
         refractionPd,
         visitType,
         dilateType,
+        surgeries,
+        surgeryNotes,
       },
       where: { id },
     });

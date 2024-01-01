@@ -5,7 +5,11 @@ import FormDropdownWithId from "@/app/components/FormDropdownWithId";
 import FormInput from "@/app/components/FormInput";
 import FormNotes from "@/app/components/FormNotes";
 import { useAppSelector } from "@/redux/store";
-import { ERROR_MESSAGE, REASON_FOR_VISIT } from "@/utils/constants";
+import {
+  ERROR_MESSAGE,
+  PREVIOUS_SURGERIES,
+  REASON_FOR_VISIT,
+} from "@/utils/constants";
 import { Table } from "flowbite-react";
 import { FormState, UseFormRegister, UseFormSetValue } from "react-hook-form";
 
@@ -88,6 +92,16 @@ const MedicalInformationInput = (props: MedicalInformationInputProps) => {
         />
       </div>
       <FormNotes formRegister={formRegister("reasonForVisitNotes")} />
+      <p className="mb-3 mt-8 font-bold text-xl">Surgeries</p>
+      <div className="flex gap-10">
+        <FormCheckboxItem
+          name="surgeries"
+          items={PREVIOUS_SURGERIES}
+          itemPerColumn={5}
+          formRegister={formRegister("surgeries", {})}
+        />
+      </div>
+      <FormNotes formRegister={formRegister("surgeryNotes", {})} />
       <p className="mb-3 mt-8 font-bold text-xl">Previous Meds</p>
       <FormNotes
         withLabel={false}
