@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import { Spinner } from "flowbite-react";
+import ImageViewer from "@/app/components/ImageViewer";
 
 type AttachmentListProps = {
   patientRecordId: number;
@@ -22,7 +23,7 @@ const AttachmentList = (props: AttachmentListProps) => {
   const { attachmentList } = useAppSelector(
     (state) => state.recordReducer.value
   );
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [source, setSource] = useState<string>("");
 
   useEffect(() => {
     fetchAttachments(dispatch, patientRecordId);
@@ -30,28 +31,39 @@ const AttachmentList = (props: AttachmentListProps) => {
 
   return (
     <div className="flex gap-3 flex-wrap">
+      {source && (
+        <ImageViewer
+          source={source}
+          onCloseClick={() => {
+            setSource("");
+          }}
+        />
+      )}
       {attachmentList &&
         attachmentList.length > 0 &&
         attachmentList.map((attachment, index) => (
           <div
             key={`image-${index}`}
-            className="border border-black relative p-2"
+            className="border border-black relative p-2 cursor-pointer"
           >
             <div
               className="absolute p-2 right-2 border border-black rounded-xl bg-lime-100 hover:bg-lime-300 cursor-pointer"
               onClick={async () => {
-                setIsLoading(true);
                 await deleteAttachment(dispatch, attachment.id);
                 fetchAttachments(dispatch, patientRecordId);
               }}
             >
-              {isLoading ? <Spinner /> : <AiFillDelete />}
+              <AiFillDelete />
             </div>
             <Image
               src={attachment.url as string}
               alt=""
-              width={250}
-              height={250}
+              width={150}
+              height={150}
+              className="w-32 h-32"
+              onClick={() => {
+                setSource(attachment.url);
+              }}
             />
           </div>
         ))}

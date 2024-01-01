@@ -41,8 +41,9 @@ const DrawingList = (props: DrawingListProps) => {
             <Image
               src={drawing.data as string}
               alt=""
-              width={500}
-              height={400}
+              width={150}
+              height={150}
+              className="w-32 h-32"
             />
           </div>
         ))}
