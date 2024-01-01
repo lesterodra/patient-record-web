@@ -39,109 +39,115 @@ const PatientRecordAdvanceSearchModal = () => {
       >
         <AiFillSetting size="20" />
       </Button>
-      <Modal show={isOpen} size="md" onClose={() => setIsOpen(false)}>
+      <Modal show={isOpen} size="4xl" onClose={() => setIsOpen(false)}>
         <Modal.Header>Advance Search</Modal.Header>
         <Modal.Body>
-          <div className="space-y-6">
-            <LabeledInput
-              label="Record No."
-              value={patientRecordListQueryParameters?.recordNo ?? ""}
-              onChange={(e) => {
-                dispatch(
-                  updatePatientRecordListQueryParameters({
-                    recordNo: e.target.value,
-                  })
-                );
-              }}
-            />
-            <LabeledInput
-              label="Patient No."
-              value={patientRecordListQueryParameters?.patientNo ?? ""}
-              onChange={(e) => {
-                dispatch(
-                  updatePatientRecordListQueryParameters({
-                    patientNo: e.target.value,
-                  })
-                );
-              }}
-            />
-            <LabeledInput
-              label="Patient Last Name"
-              value={patientRecordListQueryParameters?.lastName ?? ""}
-              onChange={(e) => {
-                dispatch(
-                  updatePatientRecordListQueryParameters({
-                    lastName: e.target.value,
-                  })
-                );
-              }}
-            />
-            <LabeledInput
-              label="Patient First Name"
-              value={patientRecordListQueryParameters?.firstName ?? ""}
-              onChange={(e) => {
-                dispatch(
-                  updatePatientRecordListQueryParameters({
-                    firstName: e.target.value,
-                  })
-                );
-              }}
-            />
-            <LabeledInput
-              label="Patient Middle Name"
-              value={patientRecordListQueryParameters?.middleName ?? ""}
-              onChange={(e) => {
-                dispatch(
-                  updatePatientRecordListQueryParameters({
-                    middleName: e.target.value,
-                  })
-                );
-              }}
-            />
-            <DatePicker
-              label="Patient Birth date"
-              value={patientRecordListQueryParameters?.birthDate ?? ""}
-              onChange={(e) => {
-                dispatch(
-                  updatePatientRecordListQueryParameters({
-                    birthDate: e.target.value,
-                  })
-                );
-              }}
-            />
-            <DatePicker
-              label="Follow Up date"
-              value={patientRecordListQueryParameters?.followUpDate ?? ""}
-              onChange={(e) => {
-                dispatch(
-                  updatePatientRecordListQueryParameters({
-                    followUpDate: e.target.value,
-                  })
-                );
-              }}
-            />
-            <DatePicker
-              label="Record date from"
-              value={patientRecordListQueryParameters?.dateFrom ?? ""}
-              onChange={(e) => {
-                dispatch(
-                  updatePatientRecordListQueryParameters({
-                    dateFrom: e.target.value,
-                  })
-                );
-              }}
-            />
-            <DatePicker
-              label="Record date to"
-              value={patientRecordListQueryParameters?.dateTo ?? ""}
-              onChange={(e) => {
-                dispatch(
-                  updatePatientRecordListQueryParameters({
-                    dateTo: e.target.value,
-                  })
-                );
-              }}
-            />
+          <div className="">
+            <p>Record Information</p>
+            <div className="flex flex-wrap gap-5 mb-5 border border-gray-500 p-3 rounded">
+              <LabeledInput
+                label="Record No."
+                value={patientRecordListQueryParameters?.recordNo ?? ""}
+                onChange={(e) => {
+                  dispatch(
+                    updatePatientRecordListQueryParameters({
+                      recordNo: e.target.value,
+                    })
+                  );
+                }}
+              />
+              <DatePicker
+                label="Record date from"
+                value={patientRecordListQueryParameters?.dateFrom ?? ""}
+                onChange={(e) => {
+                  dispatch(
+                    updatePatientRecordListQueryParameters({
+                      dateFrom: e.target.value,
+                    })
+                  );
+                }}
+              />
+              <DatePicker
+                label="Record date to"
+                value={patientRecordListQueryParameters?.dateTo ?? ""}
+                onChange={(e) => {
+                  dispatch(
+                    updatePatientRecordListQueryParameters({
+                      dateTo: e.target.value,
+                    })
+                  );
+                }}
+              />
+              <DatePicker
+                label="Follow Up date"
+                value={patientRecordListQueryParameters?.followUpDate ?? ""}
+                onChange={(e) => {
+                  dispatch(
+                    updatePatientRecordListQueryParameters({
+                      followUpDate: e.target.value,
+                    })
+                  );
+                }}
+              />
+            </div>
+            <p>Patient Information</p>
+            <div className="flex flex-wrap gap-5 border border-gray-500 p-3 rounded">
+              <LabeledInput
+                label="Patient No."
+                value={patientRecordListQueryParameters?.patientNo ?? ""}
+                onChange={(e) => {
+                  dispatch(
+                    updatePatientRecordListQueryParameters({
+                      patientNo: e.target.value,
+                    })
+                  );
+                }}
+              />
+              <LabeledInput
+                label="Patient Last Name"
+                value={patientRecordListQueryParameters?.lastName ?? ""}
+                onChange={(e) => {
+                  dispatch(
+                    updatePatientRecordListQueryParameters({
+                      lastName: e.target.value,
+                    })
+                  );
+                }}
+              />
+              <LabeledInput
+                label="Patient First Name"
+                value={patientRecordListQueryParameters?.firstName ?? ""}
+                onChange={(e) => {
+                  dispatch(
+                    updatePatientRecordListQueryParameters({
+                      firstName: e.target.value,
+                    })
+                  );
+                }}
+              />
+              <LabeledInput
+                label="Patient Middle Name"
+                value={patientRecordListQueryParameters?.middleName ?? ""}
+                onChange={(e) => {
+                  dispatch(
+                    updatePatientRecordListQueryParameters({
+                      middleName: e.target.value,
+                    })
+                  );
+                }}
+              />
+              <DatePicker
+                label="Patient Birth date"
+                value={patientRecordListQueryParameters?.birthDate ?? ""}
+                onChange={(e) => {
+                  dispatch(
+                    updatePatientRecordListQueryParameters({
+                      birthDate: e.target.value,
+                    })
+                  );
+                }}
+              />
+            </div>
           </div>
         </Modal.Body>
         <Modal.Footer className="flex justify-end">

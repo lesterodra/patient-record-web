@@ -1,4 +1,5 @@
 import prisma from "@/db";
+import { Prisma } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
@@ -28,24 +29,36 @@ export async function GET(request: NextRequest) {
         ? {
             OR: [
               {
-                firstName: { contains: quickSearchInput },
+                firstName: {
+                  contains: quickSearchInput,
+                  mode: Prisma.QueryMode.insensitive,
+                },
               },
               {
-                lastName: { contains: quickSearchInput },
+                lastName: {
+                  contains: quickSearchInput,
+                  mode: Prisma.QueryMode.insensitive,
+                },
               },
               {
-                middleName: { contains: quickSearchInput },
+                middleName: {
+                  contains: quickSearchInput,
+                  mode: Prisma.QueryMode.insensitive,
+                },
               },
               {
-                patientNo: { contains: quickSearchInput },
+                patientNo: {
+                  contains: quickSearchInput,
+                  mode: Prisma.QueryMode.insensitive,
+                },
               },
             ],
           }
         : {}),
-      patientNo: { contains: patientNo },
-      firstName: { contains: firstName },
-      lastName: { contains: lastName },
-      middleName: { contains: middleName },
+      patientNo: { contains: patientNo, mode: Prisma.QueryMode.insensitive },
+      firstName: { contains: firstName, mode: Prisma.QueryMode.insensitive },
+      lastName: { contains: lastName, mode: Prisma.QueryMode.insensitive },
+      middleName: { contains: middleName, mode: Prisma.QueryMode.insensitive },
       birthDate,
     };
 

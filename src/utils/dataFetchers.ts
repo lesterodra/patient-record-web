@@ -578,3 +578,21 @@ export const updatePatientRecord = async (
     dispatch(setErrorAlert("Error"));
   }
 };
+
+export const uploadImages = async (
+  dispatch: AppDispatch,
+  id: number,
+  formData: FormData
+) => {
+  try {
+    await axios.post(`/api/records/${id}/attachments`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    dispatch(setSuccessfulAlert("Success"));
+  } catch (error) {
+    console.error({ error });
+
+    dispatch(setErrorAlert("Error"));
+  }
+};

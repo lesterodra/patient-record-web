@@ -13,6 +13,7 @@ import {
 import ChangeStatusModal from "./ChangeStatusModal";
 import { useState } from "react";
 import SetFollowUpVisitModal from "./SetFollowUpVisitModal";
+import UploadAttachmentModal from "./UploadAttachmentModal";
 
 type RecordDetailType = {
   recordDetail: Prisma.PatientRecordGetPayload<{
@@ -36,6 +37,8 @@ const RecordDetail = (props: RecordDetailType) => {
     useState<boolean>(false);
   const [isDrawModalOpen, setIsDrawModalOpen] = useState<boolean>(false);
   const [isSetFollowUpVisitModalOpen, setIsSetFollowUpVisitModalOpen] =
+    useState<boolean>(false);
+  const [isUploadAttachmentModalOpen, setIsUploadAttachmentModalOpen] =
     useState<boolean>(false);
 
   const visualAcuityOd = recordDetail.visualAcuities.find(
@@ -95,6 +98,13 @@ const RecordDetail = (props: RecordDetailType) => {
                   >
                     Set follow-up visit
                   </ListGroup.Item>
+                  <ListGroup.Item
+                    onClick={() => {
+                      setIsUploadAttachmentModalOpen(true);
+                    }}
+                  >
+                    Upload Attachments
+                  </ListGroup.Item>
                 </ListGroup>
               </div>
             )}
@@ -118,10 +128,16 @@ const RecordDetail = (props: RecordDetailType) => {
               patientRecordId={recordDetail.id}
               followUpDate={recordDetail.followUpDate}
               onFollowUpDateChange={(followUpDateValue) => {
-                console.log({ followUpDateValue });
                 setFollowUpDate(followUpDateValue);
               }}
             />
+            {isUploadAttachmentModalOpen && (
+              <UploadAttachmentModal
+                patientRecordId={recordDetail.id}
+                isOpen={isUploadAttachmentModalOpen}
+                setIsOpen={setIsUploadAttachmentModalOpen}
+              />
+            )}
           </div>
         </div>
       </div>

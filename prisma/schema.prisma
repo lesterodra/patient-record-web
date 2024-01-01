@@ -80,6 +80,7 @@ model PatientRecord {
   drawings              Drawing[]
   createdAt             DateTime            @default(now())
   updatedAt             DateTime?           @updatedAt
+  attachments           Attachment[]
 
   @@map("patient_records")
 }
@@ -98,6 +99,17 @@ model VisualAcuity {
   updatedAt       DateTime?     @updatedAt
 
   @@map("visual_acuities")
+}
+
+model Attachment {
+  id              Int           @id @default(autoincrement())
+  url             String
+  patientRecord   PatientRecord @relation(fields: [patientRecordId], references: [id], onDelete: Cascade)
+  patientRecordId Int
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime?     @updatedAt
+
+  @@map("attachments")
 }
 
 model Drawing {
