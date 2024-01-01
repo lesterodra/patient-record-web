@@ -1,4 +1,9 @@
-import { Drawing, PatientInformation, PatientRecord } from "@prisma/client";
+import {
+  Attachment,
+  Drawing,
+  PatientInformation,
+  PatientRecord,
+} from "@prisma/client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 export type VisualAcuity = {
@@ -106,6 +111,7 @@ type InitialState = {
     patientRecordListQueryParameters: PatientRecordListQueryParameters;
     patientRecord?: RecordType;
     noOfPatientsForFollowUp?: number;
+    attachmentList?: Attachment[];
   };
 };
 
@@ -118,6 +124,7 @@ const initialState: InitialState = {
     patientRecordListQueryParameters: {},
     patientRecord: undefined,
     noOfPatientsForFollowUp: undefined,
+    attachmentList: undefined,
   },
 };
 
@@ -180,6 +187,14 @@ export const record = createSlice({
         },
       };
     },
+    setAttachmentList: (state, action: PayloadAction<Attachment[]>) => {
+      return {
+        value: {
+          ...state.value,
+          attachmentList: action.payload,
+        },
+      };
+    },
     updatePatientRecordListQueryParameters: (
       state,
       action: PayloadAction<PatientRecordListQueryParameters>
@@ -223,5 +238,6 @@ export const {
   clearPatientRecordListQueryParameters,
   setPatientRecord,
   setNoOfPatientsForFollowUp,
+  setAttachmentList,
 } = record.actions;
 export default record.reducer;

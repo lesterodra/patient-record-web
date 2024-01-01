@@ -1,7 +1,7 @@
 import ButtonWithSpinner from "@/app/components/ButtonWithSpinner";
 import { AppDispatch } from "@/redux/store";
 import { ERROR_MESSAGE } from "@/utils/constants";
-import { uploadImages } from "@/utils/dataFetchers";
+import { fetchAttachments, uploadImages } from "@/utils/dataFetchers";
 import { Button, Modal } from "flowbite-react";
 import Image from "next/image";
 import { useState } from "react";
@@ -34,6 +34,8 @@ const UploadAttachmentModal = (props: UploadAttachmentModalProps) => {
 
     await uploadImages(dispatch, patientRecordId, formData);
     reset();
+    setIsOpen(false);
+    fetchAttachments(dispatch, patientRecordId);
   };
 
   return (

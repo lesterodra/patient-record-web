@@ -14,6 +14,7 @@ import ChangeStatusModal from "./ChangeStatusModal";
 import { useState } from "react";
 import SetFollowUpVisitModal from "./SetFollowUpVisitModal";
 import UploadAttachmentModal from "./UploadAttachmentModal";
+import AttachmentList from "./AttachmentList";
 
 type RecordDetailType = {
   recordDetail: Prisma.PatientRecordGetPayload<{
@@ -313,6 +314,10 @@ const RecordDetail = (props: RecordDetailType) => {
       <div className="mt-8">
         <span className="mb-3 mt-8 font-bold text-xl">Diagnosis: </span>
         <DrawingList patientRecordId={recordDetail.id} />
+      </div>
+      <div className="mt-8">
+        <span className="mb-3 mt-8 font-bold text-xl">Attachments: </span>
+        <AttachmentList patientRecordId={recordDetail.id} />
       </div>
     </div>
   );

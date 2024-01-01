@@ -16,6 +16,7 @@ import {
   RecordType,
   RecordInputType,
   setNoOfPatientsForFollowUp,
+  setAttachmentList,
 } from "@/redux/features/record-slice";
 import {
   fetchDoctors,
@@ -300,6 +301,20 @@ export const deleteDrawing = async (dispatch: AppDispatch, id: number) => {
   }
 };
 
+export const deleteAttachment = async (dispatch: AppDispatch, id: number) => {
+  try {
+    const response = await axios.delete(`/api/attachments/${id}`);
+
+    dispatch(setSuccessfulAlert("Success"));
+
+    return response.data;
+  } catch (error) {
+    console.log({ error });
+
+    dispatch(setErrorAlert("Error"));
+  }
+};
+
 export const fetchDrawings = async (
   dispatch: AppDispatch,
   patientRecordId: number
@@ -310,6 +325,22 @@ export const fetchDrawings = async (
     });
 
     dispatch(setDrawingList(response.data));
+    return;
+  } catch (error) {
+    console.log({ error });
+  }
+};
+
+export const fetchAttachments = async (
+  dispatch: AppDispatch,
+  patientRecordId: number
+) => {
+  try {
+    const response = await axios.get("/api/attachments", {
+      params: { patientRecordId },
+    });
+
+    dispatch(setAttachmentList(response.data));
     return;
   } catch (error) {
     console.log({ error });
