@@ -10,6 +10,9 @@ import {
   clearPatientRecordListQueryParameters,
   updatePatientRecordListQueryParameters,
 } from "@/redux/features/record-slice";
+import Dropdown from "@/app/components/Dropdown";
+import FormDropdownWithId from "@/app/components/FormDropdownWithId";
+import { PREVIOUS_SURGERIES, RECORD_STATUSES } from "@/utils/constants";
 
 const PatientRecordAdvanceSearchModal = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -17,6 +20,7 @@ const PatientRecordAdvanceSearchModal = () => {
   const { patientRecordListQueryParameters } = useAppSelector(
     (state) => state.recordReducer.value
   );
+  const { doctorList } = useAppSelector((state) => state.userReducer.value);
 
   const onSearchButtonClick = async () => {
     await getPatientRecordList(dispatch, {
@@ -85,6 +89,51 @@ const PatientRecordAdvanceSearchModal = () => {
                   dispatch(
                     updatePatientRecordListQueryParameters({
                       followUpDate: e.target.value,
+                    })
+                  );
+                }}
+              />
+              <FormDropdownWithId
+                label="Status"
+                selected={patientRecordListQueryParameters?.status}
+                options={RECORD_STATUSES}
+                onChange={(e) => {
+                  dispatch(
+                    updatePatientRecordListQueryParameters({
+                      status: e.target.value,
+                    })
+                  );
+                }}
+              />
+              <FormDropdownWithId
+                label="MD"
+                selected={patientRecordListQueryParameters?.medicalDoctorUserId}
+                options={
+                  doctorList
+                    ? doctorList.map((user) => ({
+                        label: `${user.lastName}, ${user.firstName}`,
+                        value: user.id,
+                      }))
+                    : []
+                }
+                onChange={(e) => {
+                  dispatch(
+                    updatePatientRecordListQueryParameters({
+                      medicalDoctorUserId: e.target.value
+                        ? Number(e.target.value)
+                        : undefined,
+                    })
+                  );
+                }}
+              />
+              <Dropdown
+                label="Surgery"
+                selected={patientRecordListQueryParameters?.surgery}
+                options={PREVIOUS_SURGERIES}
+                onChange={(e) => {
+                  dispatch(
+                    updatePatientRecordListQueryParameters({
+                      surgery: e.target.value,
                     })
                   );
                 }}

@@ -5,6 +5,7 @@ import {
   PatientRecord,
 } from "@prisma/client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { UserType } from "./user-slice";
 
 export type VisualAcuity = {
   eyeType: string;
@@ -66,6 +67,7 @@ export type RecordType = {
   intraOcularPressureOD: string;
   intraOcularPressureOS: string;
   medicalDoctor: string;
+  medicalDoctorUser: UserType;
   medicalDoctorUserId: number;
   patientInformation: PatientInformation;
   refractionOd: string;
@@ -100,6 +102,9 @@ type PatientRecordListQueryParameters = {
   dateFrom?: string;
   dateTo?: string;
   followUpDate?: string;
+  status?: string;
+  medicalDoctorUserId?: number;
+  surgery?: string;
 };
 
 type InitialState = {

@@ -23,6 +23,11 @@ export async function GET(request: NextRequest) {
     const requestBirthDate = request.nextUrl.searchParams.get("birthDate");
     const requestDateFrom = request.nextUrl.searchParams.get("dateFrom");
     const requestDateTo = request.nextUrl.searchParams.get("dateTo");
+    const requestStatus = request.nextUrl.searchParams.get("status");
+    const requestMedicalDoctorUserId = request.nextUrl.searchParams.get(
+      "medicalDoctorUserId"
+    );
+    const requestSurgery = request.nextUrl.searchParams.get("surgery");
 
     const dateFrom = requestDateFrom || undefined;
     const dateTo = requestDateTo || undefined;
@@ -42,12 +47,17 @@ export async function GET(request: NextRequest) {
     const orderBy = requestOrder ?? "desc";
     const dateToObject = dateTo && new Date(dateTo);
     const followUpDate = requestFollowUpDate || undefined;
+    const status = requestStatus || undefined;
+    const medicalDoctorUserId = requestMedicalDoctorUserId
+      ? parseInt(requestMedicalDoctorUserId, 10)
+      : undefined;
+    const surgery = requestSurgery || undefined;
 
     if (dateToObject) {
       dateToObject.setDate(dateToObject.getDate() + 1);
     }
 
-    const whereCondition = {
+    const whereCondition: Prisma.PatientRecordWhereInput = {
       ...(quickSearchInput
         ? {
             OR: [
@@ -67,6 +77,9 @@ export async function GET(request: NextRequest) {
         gte: dateFrom && new Date(dateFrom),
         lt: dateToObject,
       },
+      surgeries: surgery ? { array_contains: [surgery] } : undefined,
+      status,
+      medicalDoctorUserId,
       patientInformation: {
         patientNo: { contains: patientNo, mode: Prisma.QueryMode.insensitive },
         lastName: { contains: lastName, mode: Prisma.QueryMode.insensitive },

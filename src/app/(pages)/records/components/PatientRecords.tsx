@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Table } from "flowbite-react";
+import { Badge, Table } from "flowbite-react";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
 import {
@@ -65,13 +65,27 @@ const PatientRecords = () => {
                 key={patientRecord.id}
                 className="bg-white text-black dark:border-gray-700 dark:bg-gray-800"
               >
-                <Table.Cell>
-                  <a
-                    className="underline text-blue-500"
-                    href={`/records/${patientRecord.id}`}
-                  >
-                    {getValueDisplay(patientRecord.recordNo)}
-                  </a>
+                <Table.Cell className="relative">
+                  <div>
+                    <a
+                      className="underline text-blue-500"
+                      href={`/records/${patientRecord.id}`}
+                    >
+                      {getValueDisplay(patientRecord.recordNo)}
+                    </a>
+                    <p className="text-xs text-gray-700">
+                      {getValueDisplay(
+                        patientRecord.surgeries?.join(", ").toString()
+                      )}
+                    </p>
+                    <p className="text-xs">
+                      Doctor:{" "}
+                      {`${patientRecord.medicalDoctorUser.firstName} ${patientRecord.medicalDoctorUser.lastName}`}
+                    </p>
+                    <div className="inline-block absolute top-1 right-1">
+                      <Badge size="xs">OD</Badge>
+                    </div>
+                  </div>
                 </Table.Cell>
                 <Table.Cell className="text-black text-xs">
                   <div>

@@ -136,6 +136,9 @@ export const getPatientRecordList = async (
     dateFrom?: string;
     dateTo?: string;
     followUpDate?: string;
+    status?: string;
+    medicalDoctorUserId?: number;
+    surgery?: string;
   }
 ) => {
   try {
@@ -154,6 +157,9 @@ export const getPatientRecordList = async (
       followUpDate,
       page = 1,
       limit = 5,
+      status,
+      medicalDoctorUserId,
+      surgery,
     } = data ?? {};
     const response = await axios.get("/api/records", {
       params: {
@@ -171,6 +177,9 @@ export const getPatientRecordList = async (
         dateFrom,
         dateTo,
         followUpDate,
+        status,
+        medicalDoctorUserId,
+        surgery,
       },
     });
 

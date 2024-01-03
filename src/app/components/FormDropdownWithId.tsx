@@ -8,6 +8,7 @@ type DropdownProps = {
   formRegister?: UseFormRegisterReturn;
   errorMessage?: string;
   onChange?: ChangeEventHandler<HTMLSelectElement>;
+  selected?: string | number;
 };
 
 const FormDropdownWithId = ({
@@ -17,6 +18,7 @@ const FormDropdownWithId = ({
   formRegister,
   errorMessage,
   onChange,
+  selected,
 }: DropdownProps) => {
   return (
     <div>
@@ -31,7 +33,11 @@ const FormDropdownWithId = ({
       >
         <option></option>
         {options.map((option, index) => (
-          <option key={index} value={option.value}>
+          <option
+            key={index}
+            value={option.value}
+            selected={selected === option.value}
+          >
             {option.label}
           </option>
         ))}

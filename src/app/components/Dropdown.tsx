@@ -5,9 +5,16 @@ type DropdownProps = {
   width?: string;
   options: (string | null)[];
   onChange?: ChangeEventHandler<HTMLSelectElement>;
+  selected?: string;
 };
 
-const Dropdown = ({ label, width, options, onChange }: DropdownProps) => {
+const Dropdown = ({
+  label,
+  width,
+  options,
+  onChange,
+  selected,
+}: DropdownProps) => {
   return (
     <div>
       <p>{label}</p>
@@ -18,7 +25,9 @@ const Dropdown = ({ label, width, options, onChange }: DropdownProps) => {
       >
         <option></option>
         {options.map((option, index) => (
-          <option key={index}>{option}</option>
+          <option key={index} selected={selected === option}>
+            {option}
+          </option>
         ))}
       </select>
     </div>
