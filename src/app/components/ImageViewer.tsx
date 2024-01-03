@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AiFillDelete } from "react-icons/ai";
 import { FaWindowClose } from "react-icons/fa";
 import Image from "next/image";
+import { Spinner } from "flowbite-react";
 
 type ImageViewerProps = {
   source: string;
@@ -11,6 +12,7 @@ type ImageViewerProps = {
 const ImageViewer = (props: ImageViewerProps) => {
   const { source, onDeleteButtonClick } = props;
   const [isModelOpen, setIsModelOpen] = useState<boolean>(false);
+  const [isDeleteLoading, setIsDeleteLoading] = useState<boolean>(false);
 
   return (
     <div>
@@ -36,9 +38,12 @@ const ImageViewer = (props: ImageViewerProps) => {
       <div className="border border-black relative p-2 cursor-pointer">
         <div
           className="absolute p-2 right-2 border border-black rounded-xl bg-lime-100 hover:bg-lime-300 cursor-pointer"
-          onClick={onDeleteButtonClick}
+          onClick={() => {
+            setIsDeleteLoading(true);
+            onDeleteButtonClick();
+          }}
         >
-          <AiFillDelete />
+          {isDeleteLoading ? <Spinner /> : <AiFillDelete />}
         </div>
         <Image
           src={source}
