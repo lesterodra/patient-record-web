@@ -38,9 +38,11 @@ const ImageViewer = (props: ImageViewerProps) => {
       <div className="border border-black relative p-2 cursor-pointer">
         <div
           className="absolute p-2 right-2 border border-black rounded-xl bg-lime-100 hover:bg-lime-300 cursor-pointer"
-          onClick={() => {
+          onClick={async () => {
             setIsDeleteLoading(true);
-            onDeleteButtonClick();
+            await onDeleteButtonClick();
+
+            setIsDeleteLoading(false);
           }}
         >
           {isDeleteLoading ? <Spinner /> : <AiFillDelete />}
