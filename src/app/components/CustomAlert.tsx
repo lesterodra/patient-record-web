@@ -20,7 +20,7 @@ const CustomAlert = () => {
 
   return (
     alert && (
-      <div className="sticky w-full mt-10" style={{ zIndex: 500 }}>
+      <div className="fixed w-full mt-10" style={{ zIndex: 500 }}>
         <div className="flex justify-center">
           <Alert
             color={alert.type === "success" ? "success" : "failure"}
