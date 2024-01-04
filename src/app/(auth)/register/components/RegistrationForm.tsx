@@ -1,6 +1,6 @@
 "use client";
 
-import { getUserByEmailAddress, registerUser } from "@/utils/dataFetchers";
+import { registerUser, validateUserEmail } from "@/utils/dataFetchers";
 import { User } from "@prisma/client";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -17,23 +17,23 @@ const RegistrationForm = () => {
   const router = useRouter();
 
   const onClickNext = async () => {
-    const users = await getUserByEmailAddress(email);
+    try {
+      const user = await validateUserEmail(email);
 
-    if (users?.data?.length === 0) {
+      if (!user.isValid) {
+        setErrorMessage(
+          "Invalid Email. Please ask your administrator for assistance."
+        );
+
+        return;
+      }
+
+      setUser(user.data);
+    } catch (error) {
       setErrorMessage(
-        "Email not found. Please ask your administrator for assistance."
+        "Error encountered. Please ask your administrator for assistance."
       );
-
-      return;
     }
-
-    if (users.data[0].username) {
-      setErrorMessage("Email address already registered.");
-
-      return;
-    }
-
-    setUser(users.data[0]);
   };
 
   const onCreateAccountClick = async () => {

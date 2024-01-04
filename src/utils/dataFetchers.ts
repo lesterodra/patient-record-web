@@ -463,6 +463,19 @@ export const getUserByEmailAddress = async (email: string) => {
   }
 };
 
+export const validateUserEmail = async (email: string) => {
+  try {
+    const response = await axios.get("/api/registration/validate", {
+      params: { email },
+    });
+
+    return response.data;
+  } catch (error) {
+    console.log({ error });
+    throw error;
+  }
+};
+
 export const registerUser = async (
   userId: number,
   username: string,
