@@ -83,7 +83,7 @@ const PatientRecords = () => {
                       {`${patientRecord.medicalDoctorUser.firstName} ${patientRecord.medicalDoctorUser.lastName}`}
                     </p>
                     <div className="inline-block absolute top-1 right-1">
-                      <Badge size="xs">OD</Badge>
+                      <Badge size="xs">{patientRecord.dilateType}</Badge>
                     </div>
                   </div>
                 </Table.Cell>

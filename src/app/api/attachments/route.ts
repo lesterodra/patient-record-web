@@ -1,8 +1,17 @@
 import prisma from "@/db";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import authOptions from "../auth/[...nextauth]/option";
 
 export async function GET(request: NextRequest) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return new NextResponse(JSON.stringify({ message: "Unauthenticated" }), {
+        status: 401,
+      });
+    }
+
     const requestPatientRecordId =
       request.nextUrl.searchParams.get("patientRecordId");
     const patientRecordId = requestPatientRecordId

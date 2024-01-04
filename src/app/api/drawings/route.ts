@@ -1,8 +1,17 @@
 import prisma from "@/db";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
+import authOptions from "../auth/[...nextauth]/option";
 
 export async function POST(request: Request) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return new NextResponse(JSON.stringify({ message: "Unauthenticated" }), {
+        status: 401,
+      });
+    }
+
     const { patientRecordId, dataUrl } = await request.json();
 
     await prisma.drawing.create({
@@ -29,6 +38,13 @@ export async function POST(request: Request) {
 
 export async function GET(request: NextRequest) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return new NextResponse(JSON.stringify({ message: "Unauthenticated" }), {
+        status: 401,
+      });
+    }
+
     const requestPatientRecordId =
       request.nextUrl.searchParams.get("patientRecordId");
     const patientRecordId = requestPatientRecordId

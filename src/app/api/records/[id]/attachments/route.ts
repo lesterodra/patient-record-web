@@ -1,5 +1,7 @@
+import authOptions from "@/app/api/auth/[...nextauth]/option";
 import prisma from "@/db";
 import { put } from "@vercel/blob";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
 export async function POST(
@@ -7,6 +9,13 @@ export async function POST(
   { params }: { params: { id: string } }
 ) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return new NextResponse(JSON.stringify({ message: "Unauthenticated" }), {
+        status: 401,
+      });
+    }
+
     const formData = await request.formData();
     const file = formData.get("file");
     const filename = formData.get("filename");

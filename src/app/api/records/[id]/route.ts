@@ -1,8 +1,17 @@
 import prisma from "@/db";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import authOptions from "../../auth/[...nextauth]/option";
 
 export async function GET(_: any, { params }: { params: { id: string } }) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return new NextResponse(JSON.stringify({ message: "Unauthenticated" }), {
+        status: 401,
+      });
+    }
+
     const response = await prisma.patientRecord.findFirstOrThrow({
       where: { id: Number(params.id) },
       include: { visualAcuities: true },
@@ -30,6 +39,13 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return new NextResponse(JSON.stringify({ message: "Unauthenticated" }), {
+        status: 401,
+      });
+    }
+
     const {
       reasonForVisit,
       reasonForVisitNotes,

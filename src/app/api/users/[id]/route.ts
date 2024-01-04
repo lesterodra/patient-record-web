@@ -1,12 +1,21 @@
 import prisma from "@/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
+import { getServerSession } from "next-auth";
+import authOptions from "../../auth/[...nextauth]/option";
 
 export async function PATCH(
   request: Request,
   { params }: { params: { id: string } }
 ) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return new NextResponse(JSON.stringify({ message: "Unauthenticated" }), {
+        status: 401,
+      });
+    }
+
     const { firstName, lastName, middleName, departmentId, email, status } =
       await request.json();
     const id = Number(params.id);

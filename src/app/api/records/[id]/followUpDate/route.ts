@@ -1,4 +1,6 @@
+import authOptions from "@/app/api/auth/[...nextauth]/option";
 import prisma from "@/db";
+import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 
 export async function PATCH(
@@ -6,6 +8,13 @@ export async function PATCH(
   { params }: { params: { id: string } }
 ) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return new NextResponse(JSON.stringify({ message: "Unauthenticated" }), {
+        status: 401,
+      });
+    }
+
     const { body } = await request.json();
     const { followUpDate } = body;
 

@@ -14,6 +14,7 @@ const authOptions: NextAuthOptions = {
       async authorize(credentials, req) {
         if (typeof credentials !== "undefined") {
           const user = await prisma.user.findFirst({
+            include: { department: true },
             where: { username: credentials.username },
           });
 
@@ -24,7 +25,9 @@ const authOptions: NextAuthOptions = {
                 id: user.id.toString(),
                 username: user.username,
                 name: `${user.firstName ?? ""} ${user.lastName ?? ""}`,
-                email: "",
+                email: user.email,
+                departmentId: user.departmentId,
+                department: user.department,
                 image: null,
               }
             : null;
