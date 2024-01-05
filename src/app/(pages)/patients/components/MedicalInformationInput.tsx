@@ -1,6 +1,4 @@
-import Dropdown from "@/app/components/Dropdown";
 import FormCheckboxItem from "@/app/components/FormCheckboxItem";
-import FormDropdown from "@/app/components/FormDropdown";
 import FormDropdownWithId from "@/app/components/FormDropdownWithId";
 import FormInput from "@/app/components/FormInput";
 import FormNotes from "@/app/components/FormNotes";
@@ -21,7 +19,10 @@ type MedicalInformationInputProps = {
 
 const MedicalInformationInput = (props: MedicalInformationInputProps) => {
   const { formRegister, formState, formSetValue } = props;
-  const { doctorList } = useAppSelector((state) => state.userReducer.value);
+  const { doctorList, userList } = useAppSelector(
+    (state) => state.userReducer.value
+  );
+  const users = userList?.data ?? [];
 
   const { errors } = formState ?? {};
   const visitTypeErrorMessage = errors?.visitType?.message?.toString();
@@ -108,6 +109,15 @@ const MedicalInformationInput = (props: MedicalInformationInputProps) => {
         formRegister={formRegister("previousMedicines")}
       />
       <p className="mb-3 mt-8 font-bold text-xl">Auto Refraction</p>
+      <FormDropdownWithId
+        className="flex gap-3 items-baseline mb-2"
+        label="By:"
+        options={users.map((user) => ({
+          label: `${user.firstName} ${user.lastName}`,
+          value: user.id,
+        }))}
+        formRegister={formRegister("autoRefractionByUserId")}
+      />
       <div className="flex items-end gap-3">
         <p>OD:</p>
         <FormInput
@@ -125,6 +135,15 @@ const MedicalInformationInput = (props: MedicalInformationInputProps) => {
         />
       </div>
       <p className="mb-3 mt-8 font-bold text-xl">Visual Acuity</p>
+      <FormDropdownWithId
+        className="flex gap-3 items-baseline mb-2"
+        label="By:"
+        options={users.map((user) => ({
+          label: `${user.firstName} ${user.lastName}`,
+          value: user.id,
+        }))}
+        formRegister={formRegister("visualAcuityByUserId")}
+      />
       <Table hoverable>
         <Table.Head>
           <Table.HeadCell>EYE</Table.HeadCell>
@@ -218,6 +237,15 @@ const MedicalInformationInput = (props: MedicalInformationInputProps) => {
         </Table.Body>
       </Table>
       <p className="mb-3 mt-8 font-bold text-xl">Refraction</p>
+      <FormDropdownWithId
+        className="flex gap-3 items-baseline mb-2"
+        label="By:"
+        options={users.map((user) => ({
+          label: `${user.firstName} ${user.lastName}`,
+          value: user.id,
+        }))}
+        formRegister={formRegister("refractionByUserId")}
+      />
       <div className="flex mb-5">
         <div className="flex items-end gap-3">
           <p>OD:</p>
@@ -290,6 +318,15 @@ const MedicalInformationInput = (props: MedicalInformationInputProps) => {
         </div>
       </div>
       <p className="mb-3 mt-8 font-bold text-xl">Intra Ocular Pressure</p>
+      <FormDropdownWithId
+        className="flex gap-3 items-baseline mb-2"
+        label="By:"
+        options={users.map((user) => ({
+          label: `${user.firstName} ${user.lastName}`,
+          value: user.id,
+        }))}
+        formRegister={formRegister("intraOcularPressureByUserId")}
+      />
       <div className="flex gap-3 mb-5">
         <div className="flex items-end gap-3">
           <p>Time:</p>

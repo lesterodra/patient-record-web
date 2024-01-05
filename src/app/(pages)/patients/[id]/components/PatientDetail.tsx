@@ -8,7 +8,7 @@ import { convertToReadableDate, getValueDisplay } from "@/utils/displayParser";
 import PatientRecordHistory from "./PatientRecordHistory";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { getDoctorList } from "@/utils/dataFetchers";
+import { getDoctorList, getUserList } from "@/utils/dataFetchers";
 
 const PatientDetail = ({
   patientDetail,
@@ -21,6 +21,7 @@ const PatientDetail = ({
 
   useEffect(() => {
     getDoctorList(dispatch);
+    getUserList(dispatch, { limit: 20000 });
   }, []);
 
   return (

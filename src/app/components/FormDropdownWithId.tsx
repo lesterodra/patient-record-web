@@ -9,6 +9,7 @@ type DropdownProps = {
   errorMessage?: string;
   onChange?: ChangeEventHandler<HTMLSelectElement>;
   selected?: string | number;
+  className?: string;
 };
 
 const FormDropdownWithId = ({
@@ -19,9 +20,10 @@ const FormDropdownWithId = ({
   errorMessage,
   onChange,
   selected,
+  className,
 }: DropdownProps) => {
   return (
-    <div>
+    <div className={className}>
       <p>{label}</p>
       <select
         name={label}

@@ -56,6 +56,10 @@ const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
         intraOcularPressureOS: null,
         medicalDoctor: null,
         medicalDoctorUserId: null,
+        autoRefractionByUserId: null,
+        visualAcuityByUserId: null,
+        refractionByUserId: null,
+        intraOcularPressureByUserId: null,
       },
     });
 
@@ -93,6 +97,10 @@ const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
       dilateType,
       surgeries,
       surgeryNotes,
+      autoRefractionByUserId,
+      visualAcuityByUserId,
+      refractionByUserId,
+      intraOcularPressureByUserId,
     } = getValues();
 
     await createPatientRecord(dispatch, {
@@ -137,6 +145,10 @@ const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
       refractionPd,
       visitType: visitType && visitType[0],
       dilateType: dilateType && dilateType[0],
+      autoRefractionByUserId,
+      visualAcuityByUserId,
+      refractionByUserId,
+      intraOcularPressureByUserId,
     });
     reset();
     getPatientRecordList(dispatch, { patientInformationId, page: 1, limit: 3 });
