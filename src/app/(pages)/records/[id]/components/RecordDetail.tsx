@@ -8,6 +8,7 @@ import DrawingList from "./DrawingList";
 import {
   convertToReadableDate,
   getDisplayStatus,
+  getUserFullName,
   getValueDisplay,
 } from "@/utils/displayParser";
 import ChangeStatusModal from "./ChangeStatusModal";
@@ -23,6 +24,10 @@ type RecordDetailType = {
       visualAcuities: true;
       medicalDoctorUser: true;
       patientInformation: true;
+      autoRefractionByUser: true;
+      refractionByUser: true;
+      visualAcuityByUser: true;
+      intraOcularPressureByUser: true;
     };
   }>;
 };
@@ -200,6 +205,9 @@ const RecordDetail = (props: RecordDetailType) => {
       </div>
       <div className="my-4">
         <p className="text-xl font-bold">Auto Refraction: </p>
+        <p className="text-xs italic mb-3">
+          By: {getUserFullName(recordDetail.autoRefractionByUser)}
+        </p>
         <div>
           <div>
             <span className="font-bold">OD: </span>
@@ -213,6 +221,9 @@ const RecordDetail = (props: RecordDetailType) => {
       </div>
       <p>
         <span className="text-xl font-bold">Visual Acuity: </span>
+      </p>
+      <p className="text-xs italic mb-3">
+        By: {getUserFullName(recordDetail.visualAcuityByUser)}
       </p>
       <Table hoverable className="w-auto">
         <Table.Head>
@@ -246,7 +257,10 @@ const RecordDetail = (props: RecordDetailType) => {
           </Table.Row>
         </Table.Body>
       </Table>
-      <p className="mb-3 mt-8 font-bold text-xl">Refraction</p>
+      <p className="mt-8 font-bold text-xl">Refraction</p>
+      <p className="text-xs italic mb-3">
+        By: {getUserFullName(recordDetail.refractionByUser)}
+      </p>
       <div className="flex mb-5 gap-3">
         <div className="flex items-end gap-3">
           <p className="font-bold">OD:</p>
@@ -286,7 +300,10 @@ const RecordDetail = (props: RecordDetailType) => {
           <span>mm</span>
         </div>
       </div>
-      <p className="mb-3 mt-8 font-bold text-xl">Intra Ocular Pressure</p>
+      <p className="mt-8 font-bold text-xl">Intra Ocular Pressure</p>
+      <p className="text-xs italic mb-3">
+        By: {getUserFullName(recordDetail.intraOcularPressureByUser)}
+      </p>
       <div className="flex gap-3 mb-5">
         <div className="flex items-end gap-3">
           <p className="font-bold">Time:</p>

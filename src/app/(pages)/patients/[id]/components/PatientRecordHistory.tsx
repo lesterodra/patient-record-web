@@ -64,7 +64,14 @@ const PatientRecordHistory = (props: PatientRecordHistoryProps) => {
         <PatientRecordModal
           patientRecord={
             patientRecord as Prisma.PatientRecordGetPayload<{
-              include: { visualAcuities: true; medicalDoctorUser: true };
+              include: {
+                visualAcuities: true;
+                medicalDoctorUser: true;
+                autoRefractionByUser: true;
+                refractionByUser: true;
+                visualAcuityByUser: true;
+                intraOcularPressureByUser: true;
+              };
             }>
           }
           isOpen={isPatientRecordModalOpen}
@@ -112,7 +119,7 @@ const PatientRecordHistory = (props: PatientRecordHistoryProps) => {
       {recordList &&
         recordList?.data.length !== 0 &&
         recordList.totalPage > currentPage && (
-          <div ref={loadMoreRef} className="flex justify-center">
+          <div ref={loadMoreRef} className="flex justify-center mt-3">
             <Button onClick={onLoadMoreClick}>Load more</Button>
           </div>
         )}

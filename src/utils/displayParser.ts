@@ -6,6 +6,15 @@ export const getDisplayStatus = (status: string): string =>
   RECORD_STATUSES.find((recordStatus) => recordStatus.value === status)
     ?.label ?? "-";
 
+export const getUserFullName = (
+  user: {
+    firstName: string | null;
+    lastName: string | null;
+    middleName: String | null;
+  } | null
+): string =>
+  user ? `${user.lastName}, ${user.firstName} ${user.middleName}` : "-";
+
 export const convertToDateString = (dateObject: Date): string =>
   `${dateObject.getFullYear()}-${(dateObject.getMonth() + 1)
     .toString()

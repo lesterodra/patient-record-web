@@ -4,7 +4,7 @@ import CheckboxItem from "@/app/components/CheckboxItem";
 import { Button, Modal, Table } from "flowbite-react";
 import { PatientRecord, Prisma } from "@prisma/client";
 import Link from "next/link";
-import { getValueDisplay } from "@/utils/displayParser";
+import { getUserFullName, getValueDisplay } from "@/utils/displayParser";
 
 const PatientRecordModal = ({
   isOpen,
@@ -12,7 +12,14 @@ const PatientRecordModal = ({
   patientRecord,
 }: {
   patientRecord: Prisma.PatientRecordGetPayload<{
-    include: { visualAcuities: true; medicalDoctorUser: true };
+    include: {
+      visualAcuities: true;
+      medicalDoctorUser: true;
+      autoRefractionByUser: true;
+      refractionByUser: true;
+      visualAcuityByUser: true;
+      intraOcularPressureByUser: true;
+    };
   }>;
   isOpen: boolean;
   setIsOpen: (value: boolean) => void;
@@ -71,7 +78,7 @@ const PatientRecordModal = ({
             )}
             <div className="my-2">
               <span className="text-xl font-bold">Surgeries: </span>
-              {patientRecord.surgeries?.toString()}
+              {patientRecord.surgeries?.toString() || "-"}
             </div>
             {patientRecord?.surgeryNotes && (
               <div>
@@ -93,11 +100,17 @@ const PatientRecordModal = ({
             </div>
             <div className="my-2">
               <p className="text-xl font-bold">Auto Refraction: </p>
+              <p className="text-xs italic mb-3">
+                By: {getUserFullName(patientRecord.autoRefractionByUser)}
+              </p>
               <b>OD:</b> {getValueDisplay(patientRecord.autoRefractionOD)}{" "}
               <b>OS:</b> {getValueDisplay(patientRecord.autoRefractionOs)}
             </div>
             <p>
               <span className="text-xl font-bold">Visual Acuity: </span>
+            </p>
+            <p className="text-xs italic mb-3">
+              By: {getUserFullName(patientRecord.visualAcuityByUser)}
             </p>
             <Table hoverable className="w-full">
               <Table.Head>
@@ -135,7 +148,10 @@ const PatientRecordModal = ({
                 </Table.Row>
               </Table.Body>
             </Table>
-            <p className="mb-3 mt-8 font-bold text-xl">Refraction</p>
+            <p className="mt-8 font-bold text-xl">Refraction</p>
+            <p className="text-xs italic mb-3">
+              By: {getUserFullName(patientRecord.refractionByUser)}
+            </p>
             <div className="flex mb-5 gap-3">
               <div className="flex items-end gap-3">
                 <p className="font-bold">OD:</p>
@@ -175,7 +191,10 @@ const PatientRecordModal = ({
                 <span>mm</span>
               </div>
             </div>
-            <p className="mb-3 mt-8 font-bold text-xl">Intra Ocular Pressure</p>
+            <p className="mt-8 font-bold text-xl">Intra Ocular Pressure</p>
+            <p className="text-xs italic mb-3">
+              By: {getUserFullName(patientRecord.intraOcularPressureByUser)}
+            </p>
             <div className="flex gap-3 mb-5">
               <div className="flex items-end gap-3">
                 <p className="font-bold">Time:</p>

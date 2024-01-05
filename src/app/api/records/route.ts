@@ -115,6 +115,10 @@ export async function GET(request: NextRequest) {
         patientInformation: true,
         visualAcuities: true,
         medicalDoctorUser: true,
+        autoRefractionByUser: true,
+        refractionByUser: true,
+        visualAcuityByUser: true,
+        intraOcularPressureByUser: true,
       },
     });
 

@@ -11,6 +11,10 @@ const getRecordDetails = (id: number): Promise<any> =>
       visualAcuities: true,
       medicalDoctorUser: true,
       patientInformation: true,
+      autoRefractionByUser: true,
+      refractionByUser: true,
+      visualAcuityByUser: true,
+      intraOcularPressureByUser: true,
     },
   });
 
@@ -23,6 +27,10 @@ const PatientDetailPage = async ({ params }: { params: { id: string } }) => {
       visualAcuities: true;
       medicalDoctorUser: true;
       patientInformation: true;
+      autoRefractionByUser: true;
+      refractionByUser: true;
+      visualAcuityByUser: true;
+      intraOcularPressureByUser: true;
     };
   }>;
 

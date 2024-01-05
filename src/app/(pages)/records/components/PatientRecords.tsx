@@ -53,7 +53,7 @@ const PatientRecords = () => {
       <div className="mt-5" style={{ overflowX: "auto" }}>
         <Table hoverable>
           <Table.Head>
-            <Table.HeadCell className="w-52">Record No.</Table.HeadCell>
+            <Table.HeadCell className="w-52">Record</Table.HeadCell>
             <Table.HeadCell className="w-52">Patient Details</Table.HeadCell>
             <Table.HeadCell className="w-60">Record date</Table.HeadCell>
             <Table.HeadCell className="w-60">Status</Table.HeadCell>
@@ -73,7 +73,7 @@ const PatientRecords = () => {
                       className="underline text-blue-500"
                       href={`/records/${patientRecord.id}`}
                     >
-                      {getValueDisplay(patientRecord.recordNo)}
+                      <b>{getValueDisplay(patientRecord.recordNo)}</b>
                     </a>
                     <p className="text-xs text-gray-700">
                       {getValueDisplay(
@@ -91,9 +91,17 @@ const PatientRecords = () => {
                 </Table.Cell>
                 <Table.Cell className="text-black text-xs">
                   <div>
-                    <p>
-                      <b>{patientRecord.patientInformation?.patientNo}</b>
-                    </p>
+                    <a
+                      className="underline text-blue-500"
+                      href={`/patients/${patientRecord.patientInformationId}`}
+                      target="_blank"
+                    >
+                      <b>
+                        {getValueDisplay(
+                          patientRecord.patientInformation.patientNo
+                        )}
+                      </b>
+                    </a>
                     <p>
                       {displayFullName(
                         patientRecord.patientInformation?.lastName,
