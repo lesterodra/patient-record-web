@@ -53,10 +53,10 @@ export const createPatientRecord = async (
     refractionPd?: string | null;
     visualAcuities?: any[];
     visitType?: string | null;
-    autoRefractionByUserId?: string | null;
-    visualAcuityByUserId?: string | null;
-    refractionByUserId?: string | null;
-    intraOcularPressureByUserId?: string | null;
+    autoRefractionByUserId?: number | null;
+    visualAcuityByUserId?: number | null;
+    refractionByUserId?: number | null;
+    intraOcularPressureByUserId?: number | null;
   }
 ) => {
   try {

@@ -47,40 +47,48 @@ model PatientInformation {
 }
 
 model PatientRecord {
-  id                    Int                 @id @default(autoincrement())
-  recordNo              String?             @unique
-  reasonForVisit        Json?
-  surgeries             Json?
-  surgeryNotes          String?
-  reasonForVisitNotes   String?             @db.Text
-  visitType             String?
-  dilateType            String?
-  previousMedicines     String?             @db.Text
-  autoRefractionOD      String?
-  autoRefractionOs      String?
-  appointmentTime       String?
-  intraOcularPressureOD String?
-  intraOcularPressureOS String?
-  medicalDoctor         String?
-  medicalDoctorUserId   Int?
-  medicalDoctorUser     User?               @relation(fields: [medicalDoctorUserId], references: [id])
-  patientInformation    PatientInformation? @relation(fields: [patientInformationId], references: [id])
-  patientInformationId  Int
-  refractionOd          String?
-  refractionOdNegative  String?
-  refractionOdX         String?
-  refractionOs          String?
-  refractionOsNegative  String?
-  refractionOsX         String?
-  refractionAdd         String?
-  refractionPd          String?
-  status                String?
-  followUpDate          String?
-  visualAcuities        VisualAcuity[]
-  drawings              Drawing[]
-  createdAt             DateTime            @default(now())
-  updatedAt             DateTime?           @updatedAt
-  attachments           Attachment[]
+  id                          Int                 @id @default(autoincrement())
+  recordNo                    String?             @unique
+  reasonForVisit              Json?
+  surgeries                   Json?
+  surgeryNotes                String?
+  reasonForVisitNotes         String?             @db.Text
+  visitType                   String?
+  dilateType                  String?
+  previousMedicines           String?             @db.Text
+  autoRefractionOD            String?
+  autoRefractionOs            String?
+  appointmentTime             String?
+  intraOcularPressureOD       String?
+  intraOcularPressureOS       String?
+  medicalDoctor               String?
+  medicalDoctorUserId         Int?
+  medicalDoctorUser           User?               @relation(fields: [medicalDoctorUserId], references: [id])
+  patientInformation          PatientInformation? @relation(fields: [patientInformationId], references: [id])
+  patientInformationId        Int
+  refractionOd                String?
+  refractionOdNegative        String?
+  refractionOdX               String?
+  refractionOs                String?
+  refractionOsNegative        String?
+  refractionOsX               String?
+  refractionAdd               String?
+  refractionPd                String?
+  status                      String?
+  followUpDate                String?
+  autoRefractionByUser        User?               @relation(name: "autoRefractionByUser", fields: [autoRefractionByUserId], references: [id])
+  autoRefractionByUserId      Int?
+  visualAcuityByUser          User?               @relation(name: "visualAcuityByUser", fields: [visualAcuityByUserId], references: [id])
+  visualAcuityByUserId        Int?
+  refractionByUser            User?               @relation(name: "refractionByUser", fields: [refractionByUserId], references: [id])
+  refractionByUserId          Int?
+  intraOcularPressureByUser   User?               @relation(name: "intraOcularPressureByUser", fields: [intraOcularPressureByUserId], references: [id])
+  intraOcularPressureByUserId Int?
+  visualAcuities              VisualAcuity[]
+  drawings                    Drawing[]
+  createdAt                   DateTime            @default(now())
+  updatedAt                   DateTime?           @updatedAt
+  attachments                 Attachment[]
 
   @@map("patient_records")
 }
@@ -134,19 +142,23 @@ model Department {
 }
 
 model User {
-  id            Int             @id @default(autoincrement())
-  username      String?         @unique
-  password      String?
-  email         String?         @unique
-  firstName     String?
-  lastName      String?
-  middleName    String?
-  status        String?
-  departmentId  Int
-  department    Department      @relation(fields: [departmentId], references: [id])
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime?       @updatedAt
-  PatientRecord PatientRecord[]
+  id                         Int             @id @default(autoincrement())
+  username                   String?         @unique
+  password                   String?
+  email                      String?         @unique
+  firstName                  String?
+  lastName                   String?
+  middleName                 String?
+  status                     String?
+  departmentId               Int
+  department                 Department      @relation(fields: [departmentId], references: [id])
+  createdAt                  DateTime        @default(now())
+  updatedAt                  DateTime?       @updatedAt
+  PatientRecord              PatientRecord[]
+  autoRefractionByUsers      PatientRecord[] @relation(name: "autoRefractionByUser")
+  visualAcuityByUsers        PatientRecord[] @relation(name: "visualAcuityByUser")
+  refractionByUsers          PatientRecord[] @relation(name: "refractionByUser")
+  intraOcularPressureByUsers PatientRecord[] @relation(name: "intraOcularPressureByUser")
 
   @@map("users")
 }

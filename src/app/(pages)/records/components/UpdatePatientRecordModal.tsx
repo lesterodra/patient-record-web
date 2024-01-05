@@ -39,6 +39,10 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
     dilateType,
     surgeries,
     surgeryNotes,
+    autoRefractionByUserId,
+    visualAcuityByUserId,
+    refractionByUserId,
+    intraOcularPressureByUserId,
   } = patientRecord ?? {};
   const visualAcuityOd = visualAcuities?.find(
     (visualAcuity) => visualAcuity.eyeType === "OD"
@@ -82,6 +86,10 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
       medicalDoctorUserId,
       surgeries,
       surgeryNotes,
+      autoRefractionByUserId,
+      visualAcuityByUserId,
+      refractionByUserId,
+      intraOcularPressureByUserId,
     },
   });
 
@@ -119,6 +127,10 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
       dilateType,
       surgeries,
       surgeryNotes,
+      autoRefractionByUserId,
+      visualAcuityByUserId,
+      refractionByUserId,
+      intraOcularPressureByUserId,
     } = getValues();
 
     await updatePatientRecord(dispatch, patientRecord?.id as number, {
@@ -162,6 +174,18 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
       refractionPd,
       visitType: visitType && visitType[0],
       dilateType: dilateType && dilateType[0],
+      autoRefractionByUserId: autoRefractionByUserId
+        ? Number(autoRefractionByUserId)
+        : null,
+      visualAcuityByUserId: visualAcuityByUserId
+        ? Number(visualAcuityByUserId)
+        : null,
+      refractionByUserId: refractionByUserId
+        ? Number(refractionByUserId)
+        : null,
+      intraOcularPressureByUserId: intraOcularPressureByUserId
+        ? Number(intraOcularPressureByUserId)
+        : null,
     });
   };
 

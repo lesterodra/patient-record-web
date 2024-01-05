@@ -8,6 +8,7 @@ import {
   getDoctorList,
   getPatientRecordById,
   getPatientRecordList,
+  getUserList,
 } from "@/utils/dataFetchers";
 import {
   displayDateAndTime,
@@ -29,6 +30,7 @@ const PatientRecords = () => {
 
   useEffect(() => {
     getDoctorList(dispatch);
+    getUserList(dispatch, { limit: 20000 });
   }, []);
 
   useEffect(() => {

@@ -46,6 +46,10 @@ export type RecordInputType = {
   refractionPd?: string;
   createdAt?: string;
   updatedAt?: string;
+  autoRefractionByUserId?: number | null;
+  visualAcuityByUserId?: number | null;
+  refractionByUserId?: number | null;
+  intraOcularPressureByUserId?: number | null;
 };
 
 export type RecordType = {
@@ -81,6 +85,10 @@ export type RecordType = {
   visualAcuities: VisualAcuity[];
   createdAt: Date;
   updatedAt: Date;
+  autoRefractionByUserId: number;
+  visualAcuityByUserId: number;
+  refractionByUserId: number;
+  intraOcularPressureByUserId: number;
 };
 
 type RecordListResponse = {

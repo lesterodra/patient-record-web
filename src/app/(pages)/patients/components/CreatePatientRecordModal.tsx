@@ -145,10 +145,18 @@ const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
       refractionPd,
       visitType: visitType && visitType[0],
       dilateType: dilateType && dilateType[0],
-      autoRefractionByUserId,
-      visualAcuityByUserId,
-      refractionByUserId,
-      intraOcularPressureByUserId,
+      autoRefractionByUserId: autoRefractionByUserId
+        ? Number(autoRefractionByUserId)
+        : null,
+      visualAcuityByUserId: visualAcuityByUserId
+        ? Number(visualAcuityByUserId)
+        : null,
+      refractionByUserId: refractionByUserId
+        ? Number(refractionByUserId)
+        : null,
+      intraOcularPressureByUserId: intraOcularPressureByUserId
+        ? Number(intraOcularPressureByUserId)
+        : null,
     });
     reset();
     getPatientRecordList(dispatch, { patientInformationId, page: 1, limit: 3 });

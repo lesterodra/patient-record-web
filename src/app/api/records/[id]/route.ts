@@ -70,6 +70,10 @@ export async function PATCH(
       dilateType,
       surgeries,
       surgeryNotes,
+      autoRefractionByUserId,
+      visualAcuityByUserId,
+      refractionByUserId,
+      intraOcularPressureByUserId,
     } = await request.json();
 
     const id = Number(params.id);
@@ -117,6 +121,10 @@ export async function PATCH(
         dilateType,
         surgeries,
         surgeryNotes,
+        autoRefractionByUserId,
+        visualAcuityByUserId,
+        refractionByUserId,
+        intraOcularPressureByUserId,
       },
       where: { id },
     });
