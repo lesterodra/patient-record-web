@@ -2,6 +2,15 @@ import prisma from "@/db";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import authOptions from "../../auth/[...nextauth]/option";
+import Pusher from "pusher";
+
+const pusher = new Pusher({
+  appId: process.env.PUSHER_APP_ID ?? "",
+  key: process.env.PUSHER_APP_KEY ?? "",
+  secret: process.env.PUSHER_APP_SECRET ?? "",
+  cluster: process.env.PUSHER_APP_CLUSTER ?? "",
+  useTLS: true,
+});
 
 export async function GET(_: any, { params }: { params: { id: string } }) {
   try {
@@ -146,6 +155,14 @@ export async function PATCH(
         where: { eyeType: "OS", patientRecordId: id },
       }),
     ]);
+
+    try {
+      if (medicalDoctorUserId !== patientRecord.medicalDoctorUserId) {
+        pusher.trigger("dashboard", "updateDoctorRecordCount", { data: {} });
+      }
+    } catch (error) {
+      console.log("Pusher error:", error);
+    }
 
     return new NextResponse(
       JSON.stringify({ message: "Successful", data: response }),

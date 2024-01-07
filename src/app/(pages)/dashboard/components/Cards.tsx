@@ -2,19 +2,19 @@
 
 import { useRouter } from "next/navigation";
 import { AppDispatch, useAppSelector } from "@/redux/store";
-import { fetchNoOfPatientsForFollowUp } from "@/utils/dataFetchers";
+import { fetchDashboard } from "@/utils/dataFetchers";
 import { Button, Card, Spinner } from "flowbite-react";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { updatePatientRecordListQueryParameters } from "@/redux/features/record-slice";
 import { convertToDateString } from "@/utils/displayParser";
+import Pusher from "pusher-js";
 
 const Cards = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-  const { noOfPatientsForFollowUp } = useAppSelector(
-    (state) => state.recordReducer.value
-  );
+  const { dashboard } = useAppSelector((state) => state.dashboardReducer.value);
+  const { noOfPatientsForFollowUp, forCheckupByDoctors } = dashboard ?? {};
 
   const dateObject = new Date();
   const dateNextThreeDays = new Date(
@@ -23,7 +23,22 @@ const Cards = () => {
   const followUpDate = convertToDateString(dateNextThreeDays);
 
   useEffect(() => {
-    fetchNoOfPatientsForFollowUp(dispatch, { followUpDate });
+    fetchDashboard(dispatch, { followUpDate });
+
+    const pusher = new Pusher("150657a51a30a05a005d", {
+      cluster: "ap1",
+    });
+    const channel = pusher.subscribe("dashboard");
+    channel.bind("updateDoctorRecordCount", (data: any) => {
+      console.log({ data });
+      fetchDashboard(dispatch, { followUpDate });
+      // this.setState({ chats: [...this.state.chats, data], test: '' });
+    });
+
+    return () => {
+      console.log("component unmounted");
+      pusher.unsubscribe("dashboard");
+    };
   }, []);
 
   const onViewPatientsForFollowUpClick = () => {
@@ -31,9 +46,9 @@ const Cards = () => {
     router.push("/records");
   };
 
-  return (
+  return dashboard ? (
     <div className="flex gap-5 flex-wrap">
-      <Card className="max-w-sm">
+      <Card className="max-w-sm w-52">
         <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
           No. of Patient for Follow up
         </h5>
@@ -44,22 +59,36 @@ const Cards = () => {
             noOfPatientsForFollowUp
           )}
         </p>
-        <Button onClick={onViewPatientsForFollowUpClick}>
-          View
-          <svg
-            className="-mr-1 ml-2 h-4 w-4"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              fillRule="evenodd"
-              d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </Button>
+        <Button onClick={onViewPatientsForFollowUpClick}>View</Button>
       </Card>
+      {forCheckupByDoctors?.map((doctor, index) => (
+        <Card className="max-w-sm w-52" key={`card-${index}`}>
+          <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
+            For Checkup By: <p>{doctor.name}</p>
+          </h5>
+          <p className="text-center text-5xl font-extrabold text-gray-700 dark:text-gray-400">
+            {doctor.count}
+          </p>
+          <Button
+            onClick={() => {
+              dispatch(
+                updatePatientRecordListQueryParameters({
+                  medicalDoctorUserId: doctor.id,
+                  status: "1",
+                })
+              );
+              router.push("/records");
+            }}
+          >
+            View
+          </Button>
+        </Card>
+      ))}
+    </div>
+  ) : (
+    <div className="flex flex-col justify-center">
+      <p>Please wait </p>
+      <Spinner />
     </div>
   );
 };

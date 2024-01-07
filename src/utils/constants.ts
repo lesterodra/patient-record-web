@@ -77,6 +77,8 @@ export const RECORD_STATUSES = [
   },
 ];
 
+export const VISIT_TYPE = ["OPERATION", "CONSULTATION", "DIAGNOSTIC"];
+
 export const NATIONALITY_LIST = [
   "Filipino",
   "Afghan",

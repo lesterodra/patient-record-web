@@ -5,6 +5,7 @@ import { Button, Modal, Table } from "flowbite-react";
 import { PatientRecord, Prisma } from "@prisma/client";
 import Link from "next/link";
 import { getUserFullName, getValueDisplay } from "@/utils/displayParser";
+import { VISIT_TYPE } from "@/utils/constants";
 
 const PatientRecordModal = ({
   isOpen,
@@ -51,7 +52,7 @@ const PatientRecordModal = ({
                 disabled
                 name="missing"
                 isRow
-                items={["OR", "CONS"]}
+                items={VISIT_TYPE}
                 checkedValue={patientRecord.visitType ?? ""}
               />
               <CheckboxItem

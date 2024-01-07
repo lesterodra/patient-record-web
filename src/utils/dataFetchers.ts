@@ -3,6 +3,7 @@ import {
   setErrorAlert,
   setSuccessfulAlert,
 } from "@/redux/features/application-slice";
+import { setDashboardValue } from "@/redux/features/dashboard-slice";
 import {
   PatientType,
   fetchPatients,
@@ -222,7 +223,7 @@ export const appendPatientRecordList = async (
   }
 };
 
-export const fetchNoOfPatientsForFollowUp = async (
+export const fetchDashboard = async (
   dispatch: AppDispatch,
   data?: {
     followUpDate: string;
@@ -230,11 +231,11 @@ export const fetchNoOfPatientsForFollowUp = async (
 ) => {
   try {
     const { followUpDate } = data ?? {};
-    const response = await axios.get("/api/records", {
-      params: { page: 1, limit: 1, followUpDate },
+    const response = await axios.get("/api/dashboard", {
+      params: { followUpDate },
     });
 
-    dispatch(setNoOfPatientsForFollowUp(response.data.totalRecords));
+    dispatch(setDashboardValue(response.data));
   } catch (error) {
     console.log({ error });
   }

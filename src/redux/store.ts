@@ -4,6 +4,7 @@ import patientReducer from "./features/patient-slice";
 import recordReducer from "./features/record-slice";
 import userReducer from "./features/user-slice";
 import applicationReducer from "./features/application-slice";
+import dashboardReducer from "./features/dashboard-slice";
 
 export const store = configureStore({
   reducer: {
@@ -11,6 +12,7 @@ export const store = configureStore({
     recordReducer,
     userReducer,
     applicationReducer,
+    dashboardReducer,
   },
 });
 

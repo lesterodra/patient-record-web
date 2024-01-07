@@ -7,6 +7,7 @@ import {
   ERROR_MESSAGE,
   PREVIOUS_SURGERIES,
   REASON_FOR_VISIT,
+  VISIT_TYPE,
 } from "@/utils/constants";
 import { Table } from "flowbite-react";
 import { FormState, UseFormRegister, UseFormSetValue } from "react-hook-form";
@@ -37,7 +38,7 @@ const MedicalInformationInput = (props: MedicalInformationInputProps) => {
           <FormCheckboxItem
             name="visitType"
             isRow
-            items={["OR", "CONS"]}
+            items={VISIT_TYPE}
             formRegister={formRegister("visitType", {
               required: ERROR_MESSAGE.REQUIRED,
               onChange: (e) => {

@@ -2,6 +2,15 @@ import authOptions from "@/app/api/auth/[...nextauth]/option";
 import prisma from "@/db";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
+import Pusher from "pusher";
+
+const pusher = new Pusher({
+  appId: process.env.PUSHER_APP_ID ?? "",
+  key: process.env.PUSHER_APP_KEY ?? "",
+  secret: process.env.PUSHER_APP_SECRET ?? "",
+  cluster: process.env.PUSHER_APP_CLUSTER ?? "",
+  useTLS: true,
+});
 
 export async function PATCH(
   request: Request,
@@ -39,6 +48,12 @@ export async function PATCH(
       },
       where: { id },
     });
+
+    try {
+      pusher.trigger("dashboard", "updateDoctorRecordCount", { data: {} });
+    } catch (error) {
+      console.log("Pusher error:", error);
+    }
 
     return new NextResponse(JSON.stringify({ message: "Successful" }), {
       status: 200,
