@@ -2,10 +2,13 @@ import { Button, Modal } from "flowbite-react";
 import { useForm } from "react-hook-form";
 import MedicalInformationInput from "../../patients/components/MedicalInformationInput";
 import { RecordType } from "@/redux/features/record-slice";
-import { updatePatientRecord } from "@/utils/dataFetchers";
+import {
+  getPatientRecordList,
+  updatePatientRecord,
+} from "@/utils/dataFetchers";
 import ButtonWithSpinner from "@/app/components/ButtonWithSpinner";
 import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/redux/store";
+import { AppDispatch, useAppSelector } from "@/redux/store";
 
 type UpdatePatientRecordModalProps = {
   isOpen: boolean;
@@ -51,6 +54,9 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
     (visualAcuity) => visualAcuity.eyeType === "OS"
   );
   const dispatch = useDispatch<AppDispatch>();
+  const { patientRecordListQueryParameters } = useAppSelector(
+    (state) => state.recordReducer.value
+  );
 
   const { register, handleSubmit, formState, getValues, setValue } = useForm({
     values: {
@@ -187,6 +193,14 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
         ? Number(intraOcularPressureByUserId)
         : null,
     });
+
+    getPatientRecordList(dispatch, {
+      ...patientRecordListQueryParameters,
+      page: 1,
+      limit: 5,
+    });
+
+    setIsOpen(false);
   };
 
   return (

@@ -85,7 +85,7 @@ const Cards = () => {
       ))}
     </div>
   ) : (
-    <div className="flex flex-col justify-center">
+    <div className="flex flex-col justify-center items-center">
       <p>Please wait </p>
       <Spinner />
     </div>
