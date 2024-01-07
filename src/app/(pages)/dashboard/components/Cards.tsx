@@ -25,18 +25,15 @@ const Cards = () => {
   useEffect(() => {
     fetchDashboard(dispatch, { followUpDate });
 
-    const pusher = new Pusher("150657a51a30a05a005d", {
-      cluster: "ap1",
+    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_ID ?? "", {
+      cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER ?? "",
     });
     const channel = pusher.subscribe("dashboard");
     channel.bind("updateDoctorRecordCount", (data: any) => {
-      console.log({ data });
       fetchDashboard(dispatch, { followUpDate });
-      // this.setState({ chats: [...this.state.chats, data], test: '' });
     });
 
     return () => {
-      console.log("component unmounted");
       pusher.unsubscribe("dashboard");
     };
   }, []);
