@@ -25,8 +25,8 @@ const Cards = () => {
   useEffect(() => {
     fetchDashboard(dispatch, { followUpDate });
 
-    const pusher = new Pusher(process.env.NEXT_PUBLIC_PUSHER_APP_ID ?? "", {
-      cluster: process.env.NEXT_PUBLIC_PUSHER_APP_CLUSTER ?? "",
+    const pusher = new Pusher("1735576", {
+      cluster: "ap1",
     });
     const channel = pusher.subscribe("dashboard");
     channel.bind("updateDoctorRecordCount", (data: any) => {
