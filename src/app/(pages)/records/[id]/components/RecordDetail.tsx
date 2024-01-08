@@ -16,6 +16,7 @@ import { useState } from "react";
 import SetFollowUpVisitModal from "./SetFollowUpVisitModal";
 import UploadAttachmentModal from "./UploadAttachmentModal";
 import AttachmentList from "./AttachmentList";
+import { VISIT_TYPE } from "@/utils/constants";
 
 type RecordDetailType = {
   recordDetail: Prisma.PatientRecordGetPayload<{
@@ -153,7 +154,7 @@ const RecordDetail = (props: RecordDetailType) => {
           name="type"
           checkedValue={recordDetail.visitType ?? ""}
           isRow
-          items={["OR", "CONS"]}
+          items={VISIT_TYPE}
         />
         <CheckboxItem
           disabled

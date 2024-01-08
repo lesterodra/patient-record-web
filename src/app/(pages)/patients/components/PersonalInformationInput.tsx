@@ -1,12 +1,7 @@
 import { useDispatch } from "react-redux";
 import { FormState, UseFormRegister, UseFormSetValue } from "react-hook-form";
-import { updatePatientInformationInput } from "@/redux/features/patient-slice";
 import { AppDispatch } from "@/redux/store";
-import CheckboxItem from "@/app/components/CheckboxItem";
-import DatePicker from "@/app/components/DatePicker";
-import Dropdown from "@/app/components/Dropdown";
 import FormGenderSelect from "@/app/components/FormGenderSelect";
-import LabeledInput from "@/app/components/LabeledInput";
 import {
   ERROR_MESSAGE,
   MEDICAL_HISTORY,
@@ -15,7 +10,6 @@ import {
 } from "@/utils/constants";
 import AddressInput from "@/app/components/AddressInput";
 import { useCallback } from "react";
-import Notes from "@/app/components/Notes";
 import FormInput from "@/app/components/FormInput";
 import FormDropdown from "@/app/components/FormDropdown";
 import FormDatePicker from "@/app/components/FormDatePicker";
@@ -145,7 +139,7 @@ const PersonalInformationInput = (props: PersonalInformationInputProps) => {
           />
           <FormDropdown
             label="Civil Status"
-            options={["Single", "Married", "Divorced", "Widowed"]}
+            options={["Single", "Married", "Divorced", "Widowed", "Children"]}
             formRegister={formRegister("civilStatus", {
               required: ERROR_MESSAGE.REQUIRED,
             })}
