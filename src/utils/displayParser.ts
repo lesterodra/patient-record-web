@@ -1,4 +1,4 @@
-import { MONTHS, RECORD_STATUSES } from "./constants";
+import { MEDICAL_HISTORY_OBJECT, MONTHS, RECORD_STATUSES } from "./constants";
 
 export const getValueDisplay = (value: any): string => value || "-";
 
@@ -46,3 +46,13 @@ export const displayFullName = (
   firstName?: string | null,
   middleName?: string | null
 ): string => `${lastName}, ${firstName} ${middleName}`;
+
+export const getPersonalMedicalHistoryData = (input: any) => {
+  const data = MEDICAL_HISTORY_OBJECT.map((medicalHistory) =>
+    input[`${medicalHistory.code}Checkbox`]
+      ? { id: medicalHistory.id, notes: input[`${medicalHistory.code}Input`] }
+      : null
+  ).filter((data) => data);
+
+  return data;
+};

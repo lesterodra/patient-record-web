@@ -30,6 +30,18 @@ export const MEDICAL_HISTORY = [
   "Others",
 ];
 
+export const MEDICAL_HISTORY_OBJECT = [
+  { name: "Diabetes", code: "diabetes", id: 1 },
+  { name: "Hypertension", code: "hypertension", id: 2 },
+  { name: "Asthma", code: "asthma", id: 3 },
+  { name: "Arthritis", code: "arthritis", id: 4 },
+  { name: "Lung Problem", code: "lungProblem", id: 5 },
+  { name: "Glaucoma", code: "glaucoma", id: 6 },
+  { name: "Cancer", code: "cancer", id: 7 },
+  { name: "Heart Disease", code: "heartDisease", id: 8 },
+  { name: "Others", code: "others", id: 9 },
+];
+
 export const PREVIOUS_SURGERIES = [
   "Cataract",
   "Pterygium",

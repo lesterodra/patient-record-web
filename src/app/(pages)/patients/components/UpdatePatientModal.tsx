@@ -8,6 +8,27 @@ import { updatePatientDetails } from "@/utils/dataFetchers";
 import ButtonWithSpinner from "@/app/components/ButtonWithSpinner";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
+import { MEDICAL_HISTORY_OBJECT } from "@/utils/constants";
+import { getPersonalMedicalHistoryData } from "@/utils/displayParser";
+
+const parsePersonalMedicalHistory = (
+  personalMedicalHistories?: ({ id: number; notes: string } | null)[]
+) => {
+  return personalMedicalHistories
+    ?.map((data) => {
+      const medicalHistory = MEDICAL_HISTORY_OBJECT.find(
+        (obj) => obj.id === data?.id
+      );
+
+      return {
+        [`${medicalHistory?.code}Checkbox`]: true,
+        [`${medicalHistory?.code}Input`]: data?.notes,
+      };
+    })
+    .reduce((prev, cur) => {
+      return { ...prev, ...cur };
+    }, {});
+};
 
 const UpdatePatientModal = ({
   isOpen,
@@ -65,21 +86,26 @@ const UpdatePatientModal = ({
       weight,
       knownAllergies,
       knownAllergiesNotes,
-      personalMedicalHistories,
       personalMedicalHistoriesNotes,
       previousSurgeries,
       previousSurgeriesNotes,
       appointmentType: [appointmentType],
       sourceOfReferral: [sourceOfReferral],
       sourceOfReferralNotes,
+      ...parsePersonalMedicalHistory(personalMedicalHistories),
     },
   });
 
   const onUpdateRecordClick = async () => {
     const updatedPatientDetails = getValues();
 
+    const personalMedicalHistories = getPersonalMedicalHistoryData(
+      updatedPatientDetails
+    );
+
     await updatePatientDetails(dispatch, Number(id), {
       ...updatedPatientDetails,
+      personalMedicalHistories,
       sourceOfReferral:
         updatedPatientDetails?.sourceOfReferral &&
         updatedPatientDetails?.sourceOfReferral[0],

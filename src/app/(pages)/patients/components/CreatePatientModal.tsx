@@ -13,6 +13,7 @@ import {
   setErrorAlert,
   setSuccessfulAlert,
 } from "@/redux/features/application-slice";
+import { getPersonalMedicalHistoryData } from "@/utils/displayParser";
 
 const CreatePatientModal = () => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -49,10 +50,14 @@ const CreatePatientModal = () => {
   const savePatient = async (url: string) => {
     try {
       const patientDetails = getValues();
+      const personalMedicalHistories =
+        getPersonalMedicalHistoryData(patientDetails);
+
       const response = await fetch(url, {
         method: "POST",
         body: JSON.stringify({
           ...patientDetails,
+          personalMedicalHistories,
           sourceOfReferral:
             patientDetails?.sourceOfReferral &&
             patientDetails?.sourceOfReferral[0],
