@@ -1,4 +1,10 @@
-import { MEDICAL_HISTORY_OBJECT, MONTHS, RECORD_STATUSES } from "./constants";
+import { Prisma } from "@prisma/client";
+import {
+  MEDICAL_HISTORY_OBJECT,
+  MONTHS,
+  PREVIOUS_SURGERIES_OBJECT,
+  RECORD_STATUSES,
+} from "./constants";
 
 export const getValueDisplay = (value: any): string => value || "-";
 
@@ -51,6 +57,16 @@ export const getPersonalMedicalHistoryData = (input: any) => {
   const data = MEDICAL_HISTORY_OBJECT.map((medicalHistory) =>
     input[`${medicalHistory.code}Checkbox`]
       ? { id: medicalHistory.id, notes: input[`${medicalHistory.code}Input`] }
+      : null
+  ).filter((data) => data);
+
+  return data;
+};
+
+export const getPreviousSurgeriesData = (input: any) => {
+  const data = PREVIOUS_SURGERIES_OBJECT.map((previousSurgery) =>
+    input[`${previousSurgery.code}Checkbox`]
+      ? { id: previousSurgery.id, notes: input[`${previousSurgery.code}Input`] }
       : null
   ).filter((data) => data);
 

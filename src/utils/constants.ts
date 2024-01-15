@@ -42,6 +42,19 @@ export const MEDICAL_HISTORY_OBJECT = [
   { name: "Others", code: "others", id: 9 },
 ];
 
+export const PREVIOUS_SURGERIES_OBJECT = [
+  { name: "Cataract", code: "cataract", id: 1 },
+  { name: "Pterygium", code: "pterygium", id: 2 },
+  { name: "Glaucoma", code: "glaucomaSur", id: 3 },
+  { name: "Retina", code: "retina", id: 4 },
+  { name: "PRP", code: "prp", id: 5 },
+  { name: "FLT", code: "flt", id: 6 },
+  { name: "YAG-CAP", code: "yagCap", id: 7 },
+  { name: "YAG-LI", code: "yagLi", id: 8 },
+  { name: "ANTI-VEGF", code: "antiVegf", id: 9 },
+  { name: "Others", code: "others", id: 10 },
+];
+
 export const PREVIOUS_SURGERIES = [
   "Cataract",
   "Pterygium",

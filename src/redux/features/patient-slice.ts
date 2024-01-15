@@ -22,7 +22,7 @@ export type PatientType = {
   knownAllergiesNotes?: string;
   personalMedicalHistories?: ({ id: number; notes: string } | null)[];
   personalMedicalHistoriesNotes?: string;
-  previousSurgeries?: string[];
+  previousSurgeries?: ({ id: number; notes: string } | null)[];
   previousSurgeriesNotes?: string;
   appointmentType?: string;
   dilateType?: string;

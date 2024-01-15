@@ -8,8 +8,14 @@ import { updatePatientDetails } from "@/utils/dataFetchers";
 import ButtonWithSpinner from "@/app/components/ButtonWithSpinner";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
-import { MEDICAL_HISTORY_OBJECT } from "@/utils/constants";
-import { getPersonalMedicalHistoryData } from "@/utils/displayParser";
+import {
+  MEDICAL_HISTORY_OBJECT,
+  PREVIOUS_SURGERIES_OBJECT,
+} from "@/utils/constants";
+import {
+  getPersonalMedicalHistoryData,
+  getPreviousSurgeriesData,
+} from "@/utils/displayParser";
 
 const parsePersonalMedicalHistory = (
   personalMedicalHistories?: ({ id: number; notes: string } | null)[]
@@ -23,6 +29,25 @@ const parsePersonalMedicalHistory = (
       return {
         [`${medicalHistory?.code}Checkbox`]: true,
         [`${medicalHistory?.code}Input`]: data?.notes,
+      };
+    })
+    .reduce((prev, cur) => {
+      return { ...prev, ...cur };
+    }, {});
+};
+
+const parsePreviousSurgeries = (
+  previousSurgeries?: ({ id: number; notes: string } | null)[]
+) => {
+  return previousSurgeries
+    ?.map((data) => {
+      const previousSurgery = PREVIOUS_SURGERIES_OBJECT.find(
+        (obj) => obj.id === data?.id
+      );
+
+      return {
+        [`${previousSurgery?.code}Checkbox`]: true,
+        [`${previousSurgery?.code}Input`]: data?.notes,
       };
     })
     .reduce((prev, cur) => {
@@ -93,6 +118,7 @@ const UpdatePatientModal = ({
       sourceOfReferral: [sourceOfReferral],
       sourceOfReferralNotes,
       ...parsePersonalMedicalHistory(personalMedicalHistories),
+      ...parsePreviousSurgeries(previousSurgeries),
     },
   });
 
@@ -103,9 +129,12 @@ const UpdatePatientModal = ({
       updatedPatientDetails
     );
 
+    const previousSurgeries = getPreviousSurgeriesData(updatedPatientDetails);
+
     await updatePatientDetails(dispatch, Number(id), {
       ...updatedPatientDetails,
       personalMedicalHistories,
+      previousSurgeries,
       sourceOfReferral:
         updatedPatientDetails?.sourceOfReferral &&
         updatedPatientDetails?.sourceOfReferral[0],

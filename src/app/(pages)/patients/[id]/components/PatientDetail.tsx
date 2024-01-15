@@ -3,12 +3,75 @@
 import CreatePatientRecordModal from "../../components/CreatePatientRecordModal";
 import { Button } from "flowbite-react";
 import { useEffect, useState } from "react";
-import { PatientInformation } from "@prisma/client";
+import { PatientInformation, Prisma } from "@prisma/client";
 import { convertToReadableDate, getValueDisplay } from "@/utils/displayParser";
 import PatientRecordHistory from "./PatientRecordHistory";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
 import { getDoctorList, getUserList } from "@/utils/dataFetchers";
+import {
+  MEDICAL_HISTORY_OBJECT,
+  PREVIOUS_SURGERIES_OBJECT,
+} from "@/utils/constants";
+
+const displayPersonalMedicalHistories = (
+  personalMedicalHistories: Prisma.JsonArray
+) => {
+  if (personalMedicalHistories.length === 0) {
+    return <p className="italic text-xs">none</p>;
+  }
+
+  return (
+    <div>
+      {personalMedicalHistories.map((personalMedicalHistory, index) => {
+        const parsedPersonalMedicalHistory = personalMedicalHistory as {
+          id: number;
+          notes: string;
+        };
+        const medicalHistoryObj = MEDICAL_HISTORY_OBJECT.find(
+          (data) => data.id === parsedPersonalMedicalHistory?.id
+        );
+
+        return (
+          <div key={`medHistory-${index}`}>
+            <p>
+              {medicalHistoryObj?.name}:{" "}
+              {parsedPersonalMedicalHistory?.notes || "-"}
+            </p>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
+
+const displayPreviousSurgeries = (previousSurgeries: Prisma.JsonArray) => {
+  if (previousSurgeries.length === 0) {
+    return <p className="italic text-xs">none</p>;
+  }
+
+  return (
+    <div>
+      {previousSurgeries.map((previousSurgery, index) => {
+        const parsedPreviousSurgery = previousSurgery as {
+          id: number;
+          notes: string;
+        };
+        const previousSurgeryObj = PREVIOUS_SURGERIES_OBJECT.find(
+          (data) => data.id === parsedPreviousSurgery?.id
+        );
+
+        return (
+          <div key={`prevSurgery-${index}`}>
+            <p>
+              {previousSurgeryObj?.name}: {parsedPreviousSurgery?.notes || "-"}
+            </p>
+          </div>
+        );
+      })}
+    </div>
+  );
+};
 
 const PatientDetail = ({
   patientDetail,
@@ -120,8 +183,10 @@ const PatientDetail = ({
         )}
         <p>
           <b>Personal Medical History: </b>{" "}
-          {getValueDisplay(patientDetail.personalMedicalHistories?.toString())}
         </p>
+        {displayPersonalMedicalHistories(
+          patientDetail.personalMedicalHistories as Prisma.JsonArray
+        )}
         {patientDetail?.personalMedicalHistoriesNotes && (
           <div>
             <p className="text-xs italic">Notes</p>
@@ -134,8 +199,10 @@ const PatientDetail = ({
         )}
         <p>
           <b>Previous Laser/Surgery: </b>{" "}
-          {getValueDisplay(patientDetail.previousSurgeries?.toString())}
         </p>
+        {displayPreviousSurgeries(
+          patientDetail.previousSurgeries as Prisma.JsonArray
+        )}
         {patientDetail?.previousSurgeriesNotes && (
           <div>
             <p className="text-xs italic">Notes</p>

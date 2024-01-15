@@ -16,6 +16,7 @@ import FormDatePicker from "@/app/components/FormDatePicker";
 import FormCheckboxItem from "@/app/components/FormCheckboxItem";
 import FormNotes from "@/app/components/FormNotes";
 import PersonalMedicalHistoryInput from "./PersonalMedicalHistoryInput";
+import PreviousLaserSurgeryInput from "./PreviousLaserSurgery";
 
 type PersonalInformationInputProps = {
   formRegister: UseFormRegister<any>;
@@ -210,27 +211,12 @@ const PersonalInformationInput = (props: PersonalInformationInputProps) => {
       </div>
       <FormNotes formRegister={formRegister("knownAllergiesNotes", {})} />
       <p className="mb-3 mt-8 font-bold text-xl">Personal Medical History</p>
-      {/* <div className="flex gap-10">
-        <FormCheckboxItem
-          name="personalMedicalHistories"
-          items={MEDICAL_HISTORY}
-          itemPerColumn={3}
-          formRegister={formRegister("personalMedicalHistories", {})}
-        />
-      </div> */}
       <PersonalMedicalHistoryInput formRegister={formRegister} />
       <FormNotes
         formRegister={formRegister("personalMedicalHistoriesNotes", {})}
       />
       <p className="mb-3 mt-8 font-bold text-xl">Previous Laser/Surgery</p>
-      <div className="flex gap-10">
-        <FormCheckboxItem
-          name="previousSurgeries"
-          items={PREVIOUS_SURGERIES}
-          itemPerColumn={5}
-          formRegister={formRegister("previousSurgeries", {})}
-        />
-      </div>
+      <PreviousLaserSurgeryInput formRegister={formRegister} />
       <FormNotes formRegister={formRegister("previousSurgeriesNotes", {})} />
     </>
   );
