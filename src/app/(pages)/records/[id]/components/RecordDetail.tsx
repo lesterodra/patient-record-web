@@ -17,6 +17,7 @@ import SetFollowUpVisitModal from "./SetFollowUpVisitModal";
 import UploadAttachmentModal from "./UploadAttachmentModal";
 import AttachmentList from "./AttachmentList";
 import { VISIT_TYPE } from "@/utils/constants";
+import PrintModal from "./PrintModal";
 
 type RecordDetailType = {
   recordDetail: Prisma.PatientRecordGetPayload<{
@@ -47,6 +48,7 @@ const RecordDetail = (props: RecordDetailType) => {
     useState<boolean>(false);
   const [isUploadAttachmentModalOpen, setIsUploadAttachmentModalOpen] =
     useState<boolean>(false);
+  const [isPrintModalOpen, setIsPrintModalOpen] = useState<boolean>(false);
 
   const visualAcuityOd = recordDetail.visualAcuities.find(
     (visualAcuity) => visualAcuity.eyeType === "OD"
@@ -112,6 +114,13 @@ const RecordDetail = (props: RecordDetailType) => {
                   >
                     Upload Attachments
                   </ListGroup.Item>
+                  {/* <ListGroup.Item
+                    onClick={() => {
+                      setIsPrintModalOpen(true);
+                    }}
+                  >
+                    Print
+                  </ListGroup.Item> */}
                 </ListGroup>
               </div>
             )}
@@ -143,6 +152,13 @@ const RecordDetail = (props: RecordDetailType) => {
                 patientRecordId={recordDetail.id}
                 isOpen={isUploadAttachmentModalOpen}
                 setIsOpen={setIsUploadAttachmentModalOpen}
+              />
+            )}
+            {isPrintModalOpen && (
+              <PrintModal
+                patientRecordId={recordDetail.id}
+                isOpen={isPrintModalOpen}
+                setIsOpen={setIsPrintModalOpen}
               />
             )}
           </div>

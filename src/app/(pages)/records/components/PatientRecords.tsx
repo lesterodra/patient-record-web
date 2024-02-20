@@ -69,6 +69,7 @@ const PatientRecords = () => {
               >
                 <Table.Cell className="relative">
                   <div>
+                    <p className="text-xs">{patientRecord.visitType}</p>
                     <a
                       className="underline text-blue-500"
                       href={`/records/${patientRecord.id}`}
