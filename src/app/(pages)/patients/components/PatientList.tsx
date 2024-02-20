@@ -3,14 +3,24 @@
 import { useEffect, useState } from "react";
 import { Table } from "flowbite-react";
 import UpdatePatientModal from "./UpdatePatientModal";
-import { convertToReadableDate, getValueDisplay } from "@/utils/displayParser";
+import {
+  convertToReadableDate,
+  getValueDisplay,
+  isAdminUser,
+} from "@/utils/displayParser";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { getPatientDetailsById, getPatientList } from "@/utils/dataFetchers";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import PaginationFooter from "@/app/components/PaginationFooter";
+import { UserType } from "@/redux/features/user-slice";
 
-const PatientList = () => {
+type PatientListProps = {
+  session: { user: UserType };
+};
+
+const PatientList = (props: PatientListProps) => {
+  const { session } = props;
   const [isUpdatePatientModalOpen, setIsUpdatePatientModalOpen] =
     useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -67,15 +77,17 @@ const PatientList = () => {
                   {convertToReadableDate(patient.birthDate ?? "")}
                 </Table.Cell>
                 <Table.Cell>
-                  <p
-                    className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
-                    onClick={async () => {
-                      await getPatientDetailsById(dispatch, patient.id ?? "");
-                      setIsUpdatePatientModalOpen(true);
-                    }}
-                  >
-                    Edit
-                  </p>
+                  {isAdminUser(session) && (
+                    <p
+                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
+                      onClick={async () => {
+                        await getPatientDetailsById(dispatch, patient.id ?? "");
+                        setIsUpdatePatientModalOpen(true);
+                      }}
+                    >
+                      Edit
+                    </p>
+                  )}
                   {/* <p className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer">
                     Delete
                   </p> */}

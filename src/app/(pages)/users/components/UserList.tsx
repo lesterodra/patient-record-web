@@ -6,13 +6,18 @@ import { Table } from "flowbite-react";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { getDepartmentList, getUserList } from "@/utils/dataFetchers";
-import { getValueDisplay } from "@/utils/displayParser";
+import { getValueDisplay, isAdminUser } from "@/utils/displayParser";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import UpdateUserModal from "./UpdateUserModal";
 import { UserType } from "@/redux/features/user-slice";
 import PaginationFooter from "@/app/components/PaginationFooter";
 
-const UserList = () => {
+type UserListProps = {
+  session: { user: UserType };
+};
+
+const UserList = (props: UserListProps) => {
+  const { session } = props;
   const [isDialogOpen, setIsDialogOpen] = useState<boolean>(false);
   const [isUpdateUserOpen, setIsUpdateUserOpen] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
@@ -66,15 +71,17 @@ const UserList = () => {
                 </Table.Cell>
                 <Table.Cell>{getValueDisplay(user?.status)}</Table.Cell>
                 <Table.Cell>
-                  <p
-                    className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
-                    onClick={() => {
-                      setSelectedUser(user);
-                      setIsUpdateUserOpen(true);
-                    }}
-                  >
-                    Edit
-                  </p>
+                  {isAdminUser(session) && (
+                    <p
+                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
+                      onClick={() => {
+                        setSelectedUser(user);
+                        setIsUpdateUserOpen(true);
+                      }}
+                    >
+                      Edit
+                    </p>
+                  )}
                   {/* <p
                     onClick={() => {
                       setIsDialogOpen(true);

@@ -15,12 +15,19 @@ import {
   displayFullName,
   getDisplayStatus,
   getValueDisplay,
+  isAdminUser,
 } from "@/utils/displayParser";
 import LoadingSpinner from "@/app/components/LoadingSpinner";
 import UpdatePatientRecordModal from "./UpdatePatientRecordModal";
 import PaginationFooter from "@/app/components/PaginationFooter";
+import { UserType } from "@/redux/features/user-slice";
 
-const PatientRecords = () => {
+type PatientRecordsProps = {
+  session: { user: UserType };
+};
+
+const PatientRecords = (props: PatientRecordsProps) => {
+  const { session } = props;
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isUpdatePatientRecordModalOpen, setIsUpdatePatientRecordModalOpen] =
     useState<boolean>(false);
@@ -121,18 +128,20 @@ const PatientRecords = () => {
                   {getDisplayStatus(patientRecord.status)}
                 </Table.Cell>
                 <Table.Cell>
-                  <p
-                    className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
-                    onClick={async () => {
-                      await getPatientRecordById(
-                        dispatch,
-                        patientRecord?.id?.toString()
-                      );
-                      setIsUpdatePatientRecordModalOpen(true);
-                    }}
-                  >
-                    Edit
-                  </p>
+                  {isAdminUser(session) && (
+                    <p
+                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
+                      onClick={async () => {
+                        await getPatientRecordById(
+                          dispatch,
+                          patientRecord?.id?.toString()
+                        );
+                        setIsUpdatePatientRecordModalOpen(true);
+                      }}
+                    >
+                      Edit
+                    </p>
+                  )}
                   {/* <p className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer">
                     Delete
                   </p> */}

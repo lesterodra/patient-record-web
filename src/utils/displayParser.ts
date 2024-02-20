@@ -5,6 +5,7 @@ import {
   PREVIOUS_SURGERIES_OBJECT,
   RECORD_STATUSES,
 } from "./constants";
+import { UserType } from "@/redux/features/user-slice";
 
 export const getValueDisplay = (value: any): string => value || "-";
 
@@ -72,3 +73,6 @@ export const getPreviousSurgeriesData = (input: any) => {
 
   return data;
 };
+
+export const isAdminUser = (session: { user: UserType }): boolean =>
+  session?.user?.department?.name === "Admin";

@@ -66,6 +66,7 @@ const AccountSettingsForm = (props: AccountSettingProps) => {
   return (
     <div className="mt-5">
       <div className="mt-3 flex flex-col gap-2">
+        <p className="text-lg font-bold">Update your Username</p>
         <p>Username</p>
         <input
           type="text"
@@ -84,6 +85,7 @@ const AccountSettingsForm = (props: AccountSettingProps) => {
           </ButtonWithSpinner>
         </div>
         <hr className="my-6" />
+        <p className="text-lg font-bold">Update your Password</p>
         <p>Password</p>
         <input
           type="password"
