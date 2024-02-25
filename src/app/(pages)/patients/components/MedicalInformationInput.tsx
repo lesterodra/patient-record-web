@@ -5,6 +5,7 @@ import FormNotes from "@/app/components/FormNotes";
 import { useAppSelector } from "@/redux/store";
 import {
   ERROR_MESSAGE,
+  PAYMENT_TYPE,
   PREVIOUS_SURGERIES,
   REASON_FOR_VISIT,
   VISIT_TYPE,
@@ -371,6 +372,23 @@ const MedicalInformationInput = (props: MedicalInformationInputProps) => {
           })}
           errorMessage={errors?.medicalDoctorUserId?.message?.toString()}
         />
+      </div>
+      <p className="mb-3 mt-8 font-bold text-xl">Payment Details</p>
+      <div>
+        <FormCheckboxItem
+          name="paymentType"
+          isRow
+          items={PAYMENT_TYPE}
+          formRegister={formRegister("paymentType", {
+            onChange: (e) => {
+              formSetValue(
+                "paymentType",
+                e.target.checked ? e.target.value : null
+              );
+            },
+          })}
+        />
+        <FormNotes formRegister={formRegister("paymentNotes")} />
       </div>
     </>
   );

@@ -58,6 +58,8 @@ export const createPatientRecord = async (
     visualAcuityByUserId?: number | null;
     refractionByUserId?: number | null;
     intraOcularPressureByUserId?: number | null;
+    paymentType?: string | null;
+    paymentNotes?: string | null;
   }
 ) => {
   try {
@@ -90,6 +92,8 @@ export const createPatientRecord = async (
       visualAcuityByUserId,
       refractionByUserId,
       intraOcularPressureByUserId,
+      paymentType,
+      paymentNotes,
     } = data;
 
     const response = await axios.post("/api/records", {
@@ -121,6 +125,8 @@ export const createPatientRecord = async (
       visualAcuityByUserId,
       refractionByUserId,
       intraOcularPressureByUserId,
+      paymentType,
+      paymentNotes,
     });
 
     dispatch(setSuccessfulAlert("Success"));
@@ -636,6 +642,24 @@ export const updatePatientRecord = async (
 ) => {
   try {
     await axios.patch(`/api/records/${id}`, data);
+
+    dispatch(setSuccessfulAlert("Success"));
+  } catch (error) {
+    console.error({ error });
+
+    dispatch(setErrorAlert("Error"));
+  }
+};
+
+export const saveDoctorDiagnosisNotes = async (
+  dispatch: AppDispatch,
+  patientRecordId: number,
+  diagnosisNotes: string | null
+) => {
+  try {
+    await axios.patch(`/api/records/${patientRecordId}/diagnosisNotes`, {
+      body: { diagnosisNotes },
+    });
 
     dispatch(setSuccessfulAlert("Success"));
   } catch (error) {

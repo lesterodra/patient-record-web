@@ -87,6 +87,8 @@ export const ERROR_MESSAGE = {
   REQUIRED: "Field is required",
 };
 
+export const PAYMENT_TYPE = ["With Payment", "Without Payment"];
+
 export const RECORD_STATUSES = [
   {
     label: "For Doctors checkup",
@@ -99,6 +101,18 @@ export const RECORD_STATUSES = [
   {
     label: "Done",
     value: "3",
+  },
+  {
+    label: "For Followup Checkup",
+    value: "4",
+  },
+  {
+    label: "For diagnostic examination",
+    value: "5",
+  },
+  {
+    label: "For Charging to PhilHealth",
+    value: "6",
   },
 ];
 

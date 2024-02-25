@@ -50,6 +50,9 @@ export type RecordInputType = {
   visualAcuityByUserId?: number | null;
   refractionByUserId?: number | null;
   intraOcularPressureByUserId?: number | null;
+  paymentType?: string;
+  paymentNotes?: string;
+  diagnosisNotes?: string;
 };
 
 export type RecordType = {
@@ -89,6 +92,9 @@ export type RecordType = {
   visualAcuityByUserId: number;
   refractionByUserId: number;
   intraOcularPressureByUserId: number;
+  paymentType: string;
+  paymentNotes: string;
+  diagnosisNotes: string;
 };
 
 type RecordListResponse = {

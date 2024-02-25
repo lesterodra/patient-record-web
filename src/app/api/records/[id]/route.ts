@@ -83,6 +83,8 @@ export async function PATCH(
       visualAcuityByUserId,
       refractionByUserId,
       intraOcularPressureByUserId,
+      paymentType,
+      paymentNotes,
     } = await request.json();
 
     const id = Number(params.id);
@@ -134,6 +136,8 @@ export async function PATCH(
         visualAcuityByUserId,
         refractionByUserId,
         intraOcularPressureByUserId,
+        paymentNotes,
+        paymentType,
       },
       where: { id },
     });

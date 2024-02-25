@@ -220,6 +220,17 @@ const PatientRecordModal = ({
                 )}
               </span>
             </div>
+            <div>
+              <span className="mb-3 mt-8 font-bold text-xl">
+                Payment Details:{" "}
+              </span>
+              <span>{getValueDisplay(patientRecord.paymentType)}</span>
+            </div>
+            <textarea
+              value={patientRecord?.paymentNotes ?? ""}
+              disabled
+              className="rounded w-full h-28"
+            />
           </div>
         </div>
       </Modal.Body>

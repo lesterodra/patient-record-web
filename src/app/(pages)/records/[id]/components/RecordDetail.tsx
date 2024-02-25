@@ -18,6 +18,7 @@ import UploadAttachmentModal from "./UploadAttachmentModal";
 import AttachmentList from "./AttachmentList";
 import { VISIT_TYPE } from "@/utils/constants";
 import PrintModal from "./PrintModal";
+import DoctorDiagnosisNotes from "./DoctorDiagnosis";
 
 type RecordDetailType = {
   recordDetail: Prisma.PatientRecordGetPayload<{
@@ -345,8 +346,23 @@ const RecordDetail = (props: RecordDetailType) => {
           )}
         </span>
       </div>
+      <div className="my-2">
+        <span className="text-xl font-bold">Payment details: </span>
+        <span>{getValueDisplay(recordDetail.paymentType)}</span>
+        <textarea
+          value={recordDetail.paymentNotes ?? ""}
+          disabled
+          className="rounded w-full h-28"
+        />
+      </div>
       <div className="mt-8">
-        <span className="mb-3 mt-8 font-bold text-xl">Diagnosis: </span>
+        <DoctorDiagnosisNotes
+          diagnosisNotes={recordDetail.diagnosisNotes}
+          patientRecordId={recordDetail.id}
+        />
+      </div>
+      <div className="mt-8">
+        <span className="mb-3 mt-8 font-bold text-xl">Doctor Drawings: </span>
         <DrawingList patientRecordId={recordDetail.id} />
       </div>
       <div className="mt-8">

@@ -89,6 +89,9 @@ model PatientRecord {
   createdAt                   DateTime            @default(now())
   updatedAt                   DateTime?           @updatedAt
   attachments                 Attachment[]
+  paymentType                 String?
+  paymentNotes                String?             @db.Text
+  diagnosisNotes              String?             @db.Text
 
   @@map("patient_records")
 }
