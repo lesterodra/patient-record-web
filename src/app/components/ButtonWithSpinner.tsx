@@ -9,14 +9,20 @@ type ButtonWithSpinnerProps = {
   color?: string;
   onClick?: () => void;
   disabled?: boolean;
+  buttonClass?: string;
 };
 
 const ButtonWithSpinner = (props: ButtonWithSpinnerProps) => {
-  const { isLoading, children, color, onClick, disabled } = props;
+  const { isLoading, children, color, onClick, disabled, buttonClass } = props;
 
   return (
     <div>
-      <Button disabled={isLoading || disabled} color={color} onClick={onClick}>
+      <Button
+        disabled={isLoading || disabled}
+        color={color}
+        onClick={onClick}
+        className={buttonClass ?? ""}
+      >
         {isLoading ? <LoadingSpinner /> : children}
       </Button>
     </div>

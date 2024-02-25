@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+export type ForCheckupByDoctor = {
+  id: number;
+  count: number;
+  name: string;
+};
+
 type DashboardType = {
   noOfPatientsForFollowUp: number;
-  forCheckupByDoctors: {
-    id: number;
-    count: number;
-    name: string;
-  }[];
+  forCheckupByDoctors: ForCheckupByDoctor[];
 };
 
 type InitialState = {

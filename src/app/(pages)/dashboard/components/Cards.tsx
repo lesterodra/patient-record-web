@@ -10,6 +10,8 @@ import { updatePatientRecordListQueryParameters } from "@/redux/features/record-
 import { convertToDateString } from "@/utils/displayParser";
 import { pusherClient } from "@/libs/pusher";
 import TimeAgo from "timeago-react";
+import ButtonWithSpinner from "@/app/components/ButtonWithSpinner";
+import ForDoctorCheckupCard from "./ForDoctorCheckupCard";
 
 const Cards = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -70,27 +72,7 @@ const Cards = () => {
           <Button onClick={onViewPatientsForFollowUpClick}>View</Button>
         </Card>
         {forCheckupByDoctors?.map((doctor, index) => (
-          <Card className="max-w-sm w-52" key={`card-${index}`}>
-            <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
-              For Checkup By: <p>{doctor.name}</p>
-            </h5>
-            <p className="text-center text-5xl font-extrabold text-gray-700 dark:text-gray-400">
-              {doctor.count}
-            </p>
-            <Button
-              onClick={() => {
-                dispatch(
-                  updatePatientRecordListQueryParameters({
-                    medicalDoctorUserId: doctor.id,
-                    status: "1",
-                  })
-                );
-                router.push("/records");
-              }}
-            >
-              View
-            </Button>
-          </Card>
+          <ForDoctorCheckupCard doctor={doctor} key={`card-${index}`} />
         ))}
       </div>
     </div>
