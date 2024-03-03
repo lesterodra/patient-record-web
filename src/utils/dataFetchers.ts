@@ -18,6 +18,7 @@ import {
   RecordInputType,
   setNoOfPatientsForFollowUp,
   setAttachmentList,
+  setPatientRecordListFilterParameters,
 } from "@/redux/features/record-slice";
 import {
   fetchDoctors,
@@ -158,6 +159,8 @@ export const getPatientRecordList = async (
     status?: string;
     medicalDoctorUserId?: number;
     surgery?: string;
+    statusName?: string;
+    doctorName?: string;
   }
 ) => {
   try {
@@ -177,8 +180,10 @@ export const getPatientRecordList = async (
       page = 1,
       limit = 5,
       status,
+      statusName,
       medicalDoctorUserId,
       surgery,
+      doctorName,
     } = data ?? {};
     const response = await axios.get("/api/records", {
       params: {
@@ -203,6 +208,24 @@ export const getPatientRecordList = async (
     });
 
     dispatch(fetchRecords(response.data));
+    dispatch(
+      setPatientRecordListFilterParameters({
+        quickSearchInput,
+        recordNo,
+        patientNo,
+        lastName,
+        firstName,
+        middleName,
+        birthDate,
+        dateFrom,
+        dateTo,
+        followUpDate,
+        statusName,
+        medicalDoctorUserId,
+        surgery,
+        doctorName,
+      })
+    );
   } catch (error) {
     console.log({ error });
   }

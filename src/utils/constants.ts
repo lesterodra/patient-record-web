@@ -89,6 +89,62 @@ export const ERROR_MESSAGE = {
 
 export const PAYMENT_TYPE = ["With Payment", "Without Payment"];
 
+export const patientRecordSearchParameterMapper = [
+  {
+    field: "quickSearchInput",
+    label: "Quick Search",
+  },
+  {
+    field: "recordNo",
+    label: "Record No",
+  },
+  {
+    field: "patientNo",
+    label: "Patient No",
+  },
+  {
+    field: "lastName",
+    label: "Patient Last Name",
+  },
+  {
+    field: "firstName",
+    label: "Patient First Name",
+  },
+  {
+    field: "middleName",
+    label: "Patient Middle Name",
+  },
+
+  {
+    field: "birthDate",
+    label: "Birth Date",
+  },
+  {
+    field: "dateFrom",
+    label: "Record Date From",
+  },
+  {
+    field: "dateTo",
+    label: "Record Date To",
+  },
+  {
+    field: "followUpDate",
+    label: "Patient FollowUp Date",
+  },
+  {
+    field: "statusName",
+    label: "Record Status",
+  },
+  {
+    field: "surgery",
+    label: "Surgery",
+  },
+  {
+    field: "doctorName",
+    label: "Doctor",
+  },
+];
+
 export const RECORD_STATUSES = [
   {
     label: "For Doctors checkup",

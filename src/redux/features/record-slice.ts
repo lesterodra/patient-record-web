@@ -117,6 +117,8 @@ type PatientRecordListQueryParameters = {
   dateTo?: string;
   followUpDate?: string;
   status?: string;
+  statusName?: string;
+  doctorName?: string;
   medicalDoctorUserId?: number;
   surgery?: string;
 };
@@ -128,6 +130,7 @@ type InitialState = {
     drawingDataUrl?: string;
     drawingList?: Drawing[];
     patientRecordListQueryParameters: PatientRecordListQueryParameters;
+    patientRecordListSearchParameters: PatientRecordListQueryParameters;
     patientRecord?: RecordType;
     noOfPatientsForFollowUp?: number;
     attachmentList?: Attachment[];
@@ -141,6 +144,7 @@ const initialState: InitialState = {
     drawingDataUrl: "",
     drawingList: undefined,
     patientRecordListQueryParameters: {},
+    patientRecordListSearchParameters: {},
     patientRecord: undefined,
     noOfPatientsForFollowUp: undefined,
     attachmentList: undefined,
@@ -226,8 +230,22 @@ export const record = createSlice({
         },
       },
     }),
+    setPatientRecordListFilterParameters: (
+      state,
+      action: PayloadAction<PatientRecordListQueryParameters>
+    ) => ({
+      value: {
+        ...state.value,
+        patientRecordListSearchParameters: {
+          ...action.payload,
+        },
+      },
+    }),
     clearPatientRecordListQueryParameters: (state) => ({
-      value: { ...state.value, patientRecordListQueryParameters: {} },
+      value: {
+        ...state.value,
+        patientRecordListQueryParameters: {},
+      },
     }),
     setPatientRecord: (state, action: PayloadAction<RecordType>) => ({
       value: {
@@ -258,5 +276,6 @@ export const {
   setPatientRecord,
   setNoOfPatientsForFollowUp,
   setAttachmentList,
+  setPatientRecordListFilterParameters,
 } = record.actions;
 export default record.reducer;

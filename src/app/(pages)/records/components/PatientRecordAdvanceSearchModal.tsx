@@ -101,6 +101,7 @@ const PatientRecordAdvanceSearchModal = () => {
                   dispatch(
                     updatePatientRecordListQueryParameters({
                       status: e.target.value,
+                      statusName: e.target.selectedOptions[0].label,
                     })
                   );
                 }}
@@ -122,6 +123,7 @@ const PatientRecordAdvanceSearchModal = () => {
                       medicalDoctorUserId: e.target.value
                         ? Number(e.target.value)
                         : undefined,
+                      doctorName: e.target.selectedOptions[0].label,
                     })
                   );
                 }}

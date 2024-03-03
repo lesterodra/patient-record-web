@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { getPatientRecordList } from "@/utils/dataFetchers";
 import { updatePatientRecordListQueryParameters } from "@/redux/features/record-slice";
+import SearchFilterDisplay from "@/app/components/SearchFilterDisplay";
 
 const PatientRecordSearch = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -42,6 +43,7 @@ const PatientRecordSearch = () => {
         </Button>
         <PatientRecordAdvanceSearchModal />
       </div>
+      <SearchFilterDisplay />
     </div>
   );
 };
