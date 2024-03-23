@@ -23,7 +23,7 @@ const PaginationFooter = (props: PaginationFooterProps) => {
         } of ${totalRecords} Records`}</p>
       </div>
       <Pagination
-        currentPage={currentPage}
+        currentPage={totalPage ? currentPage : 0}
         onPageChange={onPageChange}
         totalPages={totalPage}
       />
