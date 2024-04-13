@@ -1,7 +1,8 @@
 import ButtonWithSpinner from "@/app/components/ButtonWithSpinner";
 import { ForCheckupByDoctor } from "@/redux/features/dashboard-slice";
-import { updatePatientRecordListQueryParameters } from "@/redux/features/record-slice";
+import { setPatientRecordListFilterParameters } from "@/redux/features/record-slice";
 import { AppDispatch } from "@/redux/store";
+import { RECORD_STATUSES } from "@/utils/constants";
 import { Card } from "flowbite-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -30,9 +31,13 @@ const ForDoctorCheckupCard = (props: ForDoctorCheckupCardProps) => {
         onClick={() => {
           setIsLoading(true);
           dispatch(
-            updatePatientRecordListQueryParameters({
+            setPatientRecordListFilterParameters({
               medicalDoctorUserId: doctor.id,
               status: "1",
+              doctorName: doctor.name,
+              statusName:
+                RECORD_STATUSES.find((status) => status.value === "1")?.label ??
+                "",
             })
           );
           router.push("/records");
