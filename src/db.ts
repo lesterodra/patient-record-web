@@ -19,6 +19,7 @@ const globalForPrisma = globalThis as unknown as {
 
 const prisma = globalForPrisma.prisma ?? prismaClientSingleton();
 
+//
 // prisma.$on("query", (e) => {
 //   console.log("Query: " + e.query);
 //   console.log("Params: " + e.params);
