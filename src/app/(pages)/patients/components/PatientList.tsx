@@ -77,17 +77,15 @@ const PatientList = (props: PatientListProps) => {
                   {convertToReadableDate(patient.birthDate ?? "")}
                 </Table.Cell>
                 <Table.Cell>
-                  {isAdminUser(session) && (
-                    <p
-                      className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
-                      onClick={async () => {
-                        await getPatientDetailsById(dispatch, patient.id ?? "");
-                        setIsUpdatePatientModalOpen(true);
-                      }}
-                    >
-                      Edit
-                    </p>
-                  )}
+                  <p
+                    className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
+                    onClick={async () => {
+                      await getPatientDetailsById(dispatch, patient.id ?? "");
+                      setIsUpdatePatientModalOpen(true);
+                    }}
+                  >
+                    Edit
+                  </p>
                   {/* <p className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer">
                     Delete
                   </p> */}

@@ -16,7 +16,7 @@ const PatientSearch = () => {
   return (
     <div className="mt-6">
       <div className="flex gap-2">
-        <input
+        {/* <input
           type="text"
           value={patientListQueryParameters?.quickSearchInput ?? ""}
           className="rounded-md"
@@ -39,7 +39,7 @@ const PatientSearch = () => {
           }}
         >
           GO
-        </Button>
+        </Button> */}
         <AdvanceSearchModal />
       </div>
     </div>

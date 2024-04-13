@@ -17,7 +17,7 @@ const PatientRecordSearch = () => {
   return (
     <div className="mt-6">
       <div className="flex gap-2">
-        <input
+        {/* <input
           type="text"
           className="rounded-md"
           placeholder="Quick Search..."
@@ -40,7 +40,7 @@ const PatientRecordSearch = () => {
           }}
         >
           GO
-        </Button>
+        </Button> */}
         <PatientRecordAdvanceSearchModal />
       </div>
       <SearchFilterDisplay />

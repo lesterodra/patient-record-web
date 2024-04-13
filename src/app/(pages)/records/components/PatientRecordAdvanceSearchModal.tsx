@@ -36,12 +36,13 @@ const PatientRecordAdvanceSearchModal = () => {
   return (
     <>
       <Button
-        color="white"
+        color="green"
         onClick={() => {
           setIsOpen(true);
         }}
       >
-        <AiFillSetting size="20" />
+        {/* <AiFillSetting size="20" /> */}
+        Search Filters
       </Button>
       <Modal show={isOpen} size="4xl" onClose={() => setIsOpen(false)}>
         <Modal.Header>Advance Search</Modal.Header>
