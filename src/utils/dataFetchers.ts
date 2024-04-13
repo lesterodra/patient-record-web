@@ -8,6 +8,7 @@ import {
   PatientType,
   fetchPatients,
   setPatientInformation,
+  setPatientListFilterParameters,
 } from "@/redux/features/patient-slice";
 import {
   fetchRecords,
@@ -308,6 +309,15 @@ export const getPatientList = async (
     });
 
     dispatch(fetchPatients(response.data));
+    dispatch(
+      setPatientListFilterParameters({
+        patientNo,
+        lastName,
+        firstName,
+        middleName,
+        birthDate,
+      })
+    );
   } catch (error) {
     console.log({ error });
   }

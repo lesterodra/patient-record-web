@@ -3,11 +3,7 @@
 import { useEffect, useState } from "react";
 import { Table } from "flowbite-react";
 import UpdatePatientModal from "./UpdatePatientModal";
-import {
-  convertToReadableDate,
-  getValueDisplay,
-  isAdminUser,
-} from "@/utils/displayParser";
+import { convertToReadableDate, getValueDisplay } from "@/utils/displayParser";
 import { useDispatch } from "react-redux";
 import { AppDispatch, useAppSelector } from "@/redux/store";
 import { getPatientDetailsById, getPatientList } from "@/utils/dataFetchers";
@@ -20,18 +16,15 @@ type PatientListProps = {
 };
 
 const PatientList = (props: PatientListProps) => {
-  const { session } = props;
   const [isUpdatePatientModalOpen, setIsUpdatePatientModalOpen] =
     useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const dispatch = useDispatch<AppDispatch>();
-  const { patientList, patientInformation } = useAppSelector(
-    (state) => state.patientReducer.value
-  );
+  const { patientList, patientInformation, patientListSearchParameters } =
+    useAppSelector((state) => state.patientReducer.value);
 
   useEffect(() => {
-    getPatientList(dispatch, { page: currentPage, limit: 5 });
-  }, [currentPage]);
+    getPatientList(dispatch, { page: 1, limit: 5 });
+  }, []);
 
   return (
     <>
@@ -108,12 +101,16 @@ const PatientList = (props: PatientListProps) => {
         </Table>
         {patientList && (
           <PaginationFooter
-            currentPage={currentPage}
+            currentPage={patientList.page}
             totalPage={patientList?.totalPage}
             totalRecords={patientList.totalRecords}
             pageSize={patientList.limit}
             onPageChange={(page) => {
-              setCurrentPage(page);
+              getPatientList(dispatch, {
+                ...patientListSearchParameters,
+                page,
+                limit: 5,
+              });
             }}
           />
         )}

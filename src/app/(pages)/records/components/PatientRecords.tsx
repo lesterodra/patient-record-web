@@ -28,25 +28,21 @@ type PatientRecordsProps = {
 
 const PatientRecords = (props: PatientRecordsProps) => {
   const { session } = props;
-  const [currentPage, setCurrentPage] = useState<number>(1);
   const [isUpdatePatientRecordModalOpen, setIsUpdatePatientRecordModalOpen] =
     useState<boolean>(false);
-  const { recordList, patientRecordListQueryParameters, patientRecord } =
+  const { recordList, patientRecord, patientRecordListSearchParameters } =
     useAppSelector((state) => state.recordReducer.value);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
     getDoctorList(dispatch);
     getUserList(dispatch, { limit: 20000 });
-  }, []);
-
-  useEffect(() => {
     getPatientRecordList(dispatch, {
-      ...patientRecordListQueryParameters,
-      page: currentPage,
+      ...patientRecordListSearchParameters,
+      page: 1,
       limit: 5,
     });
-  }, [currentPage]);
+  }, []);
 
   return (
     <>
@@ -74,15 +70,15 @@ const PatientRecords = (props: PatientRecordsProps) => {
                 key={patientRecord.id}
                 className="bg-white text-black dark:border-gray-700 dark:bg-gray-800"
               >
-                <Table.Cell className="relative">
+                <Table.Cell className="relative align-baseline">
                   <div>
-                    <p className="text-xs">{patientRecord.visitType}</p>
                     <a
-                      className="underline text-blue-500"
+                      className="underline text-blue-500 text-sm"
                       href={`/records/${patientRecord.id}`}
                     >
-                      <b>{getValueDisplay(patientRecord.recordNo)}</b>
+                      {getValueDisplay(patientRecord.recordNo)}
                     </a>
+                    <p className="text-xs">{patientRecord.visitType}</p>
                     <p className="text-xs text-gray-700">
                       {getValueDisplay(
                         patientRecord.surgeries?.join(", ").toString()
@@ -97,10 +93,10 @@ const PatientRecords = (props: PatientRecordsProps) => {
                     </div>
                   </div>
                 </Table.Cell>
-                <Table.Cell className="text-black text-xs">
+                <Table.Cell className="text-black text-xs align-baseline">
                   <div>
                     <a
-                      className="underline text-blue-500"
+                      className="underline text-blue-500 text-xs font-thin"
                       href={`/patients/${patientRecord.patientInformationId}`}
                       target="_blank"
                     >
@@ -110,7 +106,7 @@ const PatientRecords = (props: PatientRecordsProps) => {
                         )}
                       </b>
                     </a>
-                    <p>
+                    <p className="text-sm font-bold">
                       {displayFullName(
                         patientRecord.patientInformation?.lastName,
                         patientRecord.patientInformation?.firstName,
@@ -119,15 +115,15 @@ const PatientRecords = (props: PatientRecordsProps) => {
                     </p>
                   </div>
                 </Table.Cell>
-                <Table.Cell>
+                <Table.Cell className="align-baseline">
                   {displayDateAndTime(
                     patientRecord.createdAt as unknown as string
                   )}
                 </Table.Cell>
-                <Table.Cell>
+                <Table.Cell className="align-baseline">
                   {getDisplayStatus(patientRecord.status)}
                 </Table.Cell>
-                <Table.Cell>
+                <Table.Cell className="align-baseline">
                   {isAdminUser(session) && (
                     <p
                       className="font-medium text-cyan-600 hover:underline dark:text-cyan-500 cursor-pointer"
@@ -164,12 +160,16 @@ const PatientRecords = (props: PatientRecordsProps) => {
         </Table>
         {recordList && (
           <PaginationFooter
-            currentPage={currentPage}
+            currentPage={recordList.page}
             totalPage={recordList?.totalPage}
             totalRecords={recordList.totalRecords}
             pageSize={recordList.limit}
             onPageChange={(page) => {
-              setCurrentPage(page);
+              getPatientRecordList(dispatch, {
+                ...patientRecordListSearchParameters,
+                page,
+                limit: 5,
+              });
             }}
           />
         )}

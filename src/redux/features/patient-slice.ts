@@ -53,6 +53,7 @@ type InitialState = {
     patientList?: PatientListResponse;
     patientInformationInput?: PatientType;
     patientListQueryParameters?: PatientListQueryParameters;
+    patientListSearchParameters?: PatientListQueryParameters;
     patientInformation?: PatientType;
   };
 };
@@ -63,6 +64,7 @@ const initialState: InitialState = {
     patientInformationInput: {},
     patientListQueryParameters: {},
     patientInformation: undefined,
+    patientListSearchParameters: {},
   },
 };
 
@@ -104,6 +106,17 @@ export const patient = createSlice({
         },
       },
     }),
+    setPatientListFilterParameters: (
+      state,
+      action: PayloadAction<PatientListQueryParameters>
+    ) => ({
+      value: {
+        ...state.value,
+        patientListSearchParameters: {
+          ...action.payload,
+        },
+      },
+    }),
     clearPatientInformationInput: (state) => ({
       value: { ...state.value, patientInformationInput: {} },
     }),
@@ -126,5 +139,6 @@ export const {
   updatePatientListQueryParameters,
   clearPatientListQueryParameters,
   setPatientInformation,
+  setPatientListFilterParameters,
 } = patient.actions;
 export default patient.reducer;
