@@ -2,6 +2,7 @@ import prisma from "@/db";
 import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import authOptions from "../../auth/[...nextauth]/option";
+import * as logger from "@/utils/logger";
 
 export async function GET(_: any, { params }: { params: { id: string } }) {
   try {
@@ -45,6 +46,15 @@ export async function PATCH(
       });
     }
 
+    const id = Number(params.id);
+    const requestBody = await request.json();
+
+    logger.info(
+      `update patient request: ${id}`,
+      requestBody,
+      session.user.username
+    );
+
     const {
       lastName,
       firstName,
@@ -71,9 +81,7 @@ export async function PATCH(
       dilateType,
       sourceOfReferral,
       sourceOfReferralNotes,
-    } = await request.json();
-
-    const id = Number(params.id);
+    } = requestBody;
 
     const patient = await prisma.patientInformation.findFirst({
       where: { id },
@@ -115,6 +123,8 @@ export async function PATCH(
       },
       where: { id },
     });
+
+    logger.info(`update patient success: ${id}`, {}, session.user.username);
 
     return new NextResponse(
       JSON.stringify({ message: "Successful", data: response }),

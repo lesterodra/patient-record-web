@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import authOptions from "../auth/[...nextauth]/option";
+import * as logger from "@/utils/logger";
 
 export async function GET(request: NextRequest) {
   try {
@@ -111,6 +112,10 @@ export async function POST(request: Request) {
       });
     }
 
+    const requestBody = await request.json();
+
+    logger.info("create patient request", requestBody, session.user.username);
+
     const {
       firstName,
       lastName,
@@ -137,7 +142,7 @@ export async function POST(request: Request) {
       dilateType,
       sourceOfReferral,
       sourceOfReferralNotes,
-    } = await request.json();
+    } = requestBody;
 
     await prisma.$transaction(async (tx) => {
       const patientInformation = await tx.patientInformation.create({
@@ -182,6 +187,12 @@ export async function POST(request: Request) {
         },
         where: { id: patientInformation.id },
       });
+
+      logger.info(
+        "create patient success",
+        { patientInformation },
+        session.user.username
+      );
     });
 
     return new NextResponse(JSON.stringify({ data: "Successful" }), {

@@ -190,11 +190,7 @@ export async function PATCH(
       console.log("Pusher error:", error);
     }
 
-    logger.info(
-      "successful patient record update",
-      requestBody,
-      session.user.username
-    );
+    logger.info("successful patient record update", {}, session.user.username);
 
     return new NextResponse(
       JSON.stringify({ message: "Successful", data: response }),

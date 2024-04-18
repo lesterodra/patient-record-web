@@ -2,6 +2,7 @@ import prisma from "@/db";
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
+import * as logger from "@/utils/logger";
 
 const authOptions: NextAuthOptions = {
   providers: [
@@ -13,24 +14,34 @@ const authOptions: NextAuthOptions = {
       },
       async authorize(credentials, req) {
         if (typeof credentials !== "undefined") {
+          logger.info("login attempt", {}, credentials.username);
+
           const user = await prisma.user.findFirst({
             include: { department: true },
             where: { username: credentials.username },
           });
 
-          return user &&
+          if (
+            user &&
             user.status === "Active" &&
             bcrypt.compareSync(credentials?.password, user.password ?? "")
-            ? {
-                id: user.id.toString(),
-                username: user.username,
-                name: `${user.firstName ?? ""} ${user.lastName ?? ""}`,
-                email: user.email,
-                departmentId: user.departmentId,
-                department: user.department,
-                image: null,
-              }
-            : null;
+          ) {
+            logger.info("login success", {}, credentials.username);
+
+            return {
+              id: user.id.toString(),
+              username: user.username,
+              name: `${user.firstName ?? ""} ${user.lastName ?? ""}`,
+              email: user.email,
+              departmentId: user.departmentId,
+              department: user.department,
+              image: null,
+            };
+          } else {
+            logger.info("login failed", {}, credentials.username);
+
+            return null;
+          }
         } else {
           return null;
         }

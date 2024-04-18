@@ -3,6 +3,7 @@ import { Prisma } from "@prisma/client";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import authOptions from "../auth/[...nextauth]/option";
+import * as logger from "@/utils/logger";
 
 export async function GET(request: NextRequest) {
   try {
@@ -150,6 +151,14 @@ export async function POST(request: Request) {
       });
     }
 
+    const requestBody = await request.json();
+
+    logger.info(
+      "create patient record request",
+      requestBody,
+      session.user.username
+    );
+
     const {
       patientInformationId,
       reasonForVisit,
@@ -185,7 +194,7 @@ export async function POST(request: Request) {
       isConstric,
       dilateTime,
       surgeryDilateType,
-    } = await request.json();
+    } = requestBody;
 
     await prisma.$transaction(async (tx) => {
       const patientRecord = await tx.patientRecord.create({
@@ -244,7 +253,14 @@ export async function POST(request: Request) {
           patientRecordId: patientRecord.id,
         })),
       });
+
+      logger.info(
+        "create patient record success",
+        { patientRecord },
+        session.user.username
+      );
     });
+
     return new NextResponse(JSON.stringify({ data: "Successful" }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
