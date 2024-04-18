@@ -3,6 +3,7 @@ import { getServerSession } from "next-auth";
 import { NextResponse } from "next/server";
 import authOptions from "../../auth/[...nextauth]/option";
 import Pusher from "pusher";
+import * as logger from "@/utils/logger";
 
 const pusher = new Pusher({
   appId: process.env.PUSHER_APP_ID ?? "",
@@ -55,6 +56,15 @@ export async function PATCH(
       });
     }
 
+    const id = Number(params.id);
+    const requestBody = await request.json();
+
+    logger.info(
+      `update record request for id: ${id}`,
+      requestBody,
+      session.user.username
+    );
+
     const {
       reasonForVisit,
       reasonForVisitNotes,
@@ -85,9 +95,11 @@ export async function PATCH(
       intraOcularPressureByUserId,
       paymentType,
       paymentNotes,
-    } = await request.json();
-
-    const id = Number(params.id);
+      isDilate,
+      isConstric,
+      dilateTime,
+      surgeryDilateType,
+    } = requestBody;
 
     const patientRecord = await prisma.patientRecord.findFirst({
       where: { id },
@@ -95,6 +107,12 @@ export async function PATCH(
     });
 
     if (!patientRecord) {
+      logger.info(
+        "patient record not found",
+        requestBody,
+        session.user.username
+      );
+
       return new NextResponse(
         JSON.stringify({ message: "Invalid patient record." }),
         {
@@ -138,6 +156,10 @@ export async function PATCH(
         intraOcularPressureByUserId,
         paymentNotes,
         paymentType,
+        isDilate,
+        isConstric,
+        dilateTime,
+        surgeryDilateType,
       },
       where: { id },
     });
@@ -167,6 +189,12 @@ export async function PATCH(
     } catch (error) {
       console.log("Pusher error:", error);
     }
+
+    logger.info(
+      "successful patient record update",
+      requestBody,
+      session.user.username
+    );
 
     return new NextResponse(
       JSON.stringify({ message: "Successful", data: response }),

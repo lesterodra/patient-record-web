@@ -92,6 +92,10 @@ model PatientRecord {
   paymentType                 String?
   paymentNotes                String?             @db.Text
   diagnosisNotes              String?             @db.Text
+  isDilate                    Boolean?
+  isConstric                  Boolean?
+  dilateTime                  String?
+  surgeryDilateType           String?
 
   @@map("patient_records")
 }

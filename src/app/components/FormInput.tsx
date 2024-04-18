@@ -5,6 +5,7 @@ type FormInputProps = {
   inputClassName?: string;
   formRegister?: UseFormRegisterReturn;
   errorMessage?: string;
+  placeholder?: string;
 };
 
 const FormInput = ({
@@ -12,6 +13,7 @@ const FormInput = ({
   inputClassName,
   formRegister,
   errorMessage,
+  placeholder,
 }: FormInputProps) => {
   return (
     <div>
@@ -21,6 +23,7 @@ const FormInput = ({
         className={`${
           errorMessage ? "border border-red-700" : ""
         }  rounded-md ${inputClassName}`}
+        placeholder={placeholder}
         {...formRegister}
       />
       {errorMessage && <p className="text-xs text-red-500">{errorMessage}</p>}

@@ -69,11 +69,17 @@ const RecordDetail = (props: RecordDetailType) => {
             </span>
           </div>
           <div>
-            <p>{recordDetail?.patientInformation?.patientNo}</p>
-            <p>
-              {recordDetail?.patientInformation?.lastName},{" "}
-              {recordDetail?.patientInformation?.firstName}
-            </p>
+            <div className="flex gap-2 items-baseline">
+              <p className="text-xs font-bold">Patient No:</p>
+              <p>{recordDetail?.patientInformation?.patientNo}</p>
+            </div>
+            <div className="flex gap-2 items-baseline">
+              <p className="text-xs font-bold">Patient Name:</p>
+              <p>
+                {recordDetail?.patientInformation?.lastName},{" "}
+                {recordDetail?.patientInformation?.firstName}
+              </p>
+            </div>
           </div>
         </div>
         <div className="flex gap-4">
@@ -165,7 +171,7 @@ const RecordDetail = (props: RecordDetailType) => {
           </div>
         </div>
       </div>
-      <div className=" flex justify-between mb-5">
+      <div className=" flex justify-between mb-3">
         <CheckboxItem
           disabled
           name="type"
@@ -179,6 +185,25 @@ const RecordDetail = (props: RecordDetailType) => {
           checkedValue={recordDetail.dilateType ?? ""}
           isRow
           items={["OD", "OS", "OU"]}
+        />
+      </div>
+      <div className="flex mb-3 items-center">
+        <CheckboxItem
+          disabled
+          name="isDilate"
+          checkedValue={recordDetail.isDilate ? "Dilate" : ""}
+          isRow
+          items={["Dilate"]}
+        />
+        <p>({getValueDisplay(recordDetail.dilateTime)})</p>
+      </div>
+      <div className="mb-5">
+        <CheckboxItem
+          disabled
+          name="isConstric"
+          checkedValue={recordDetail.isConstric ? "Constric" : ""}
+          isRow
+          items={["Constric"]}
         />
       </div>
       <div className="my-2">
@@ -200,7 +225,9 @@ const RecordDetail = (props: RecordDetailType) => {
         </div>
       )}
       <div className="my-2">
-        <span className="text-xl font-bold">Surgeries: </span>
+        <span className="text-xl font-bold">
+          Surgeries({getValueDisplay(recordDetail.surgeryDilateType)}) :
+        </span>
         <span>{recordDetail.surgeries?.toString()}</span>
       </div>
       {recordDetail?.surgeryNotes && (

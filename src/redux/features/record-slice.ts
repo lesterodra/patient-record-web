@@ -53,6 +53,10 @@ export type RecordInputType = {
   paymentType?: string;
   paymentNotes?: string;
   diagnosisNotes?: string;
+  isConstric?: boolean;
+  isDilate?: boolean;
+  dilateTime?: string;
+  surgeryDilateType?: string | null;
 };
 
 export type RecordType = {
@@ -95,6 +99,10 @@ export type RecordType = {
   paymentType: string;
   paymentNotes: string;
   diagnosisNotes: string;
+  isConstric: boolean;
+  isDilate: boolean;
+  dilateTime: string;
+  surgeryDilateType: string;
 };
 
 type RecordListResponse = {

@@ -80,6 +80,40 @@ const MedicalInformationInput = (props: MedicalInformationInputProps) => {
           )}
         </div>
       </div>
+      <div className="mb-5">
+        <div className="flex">
+          <FormCheckboxItem
+            name="isDilate"
+            isRow
+            items={["Dilate"]}
+            formRegister={formRegister("isDilate", {
+              onChange: (e) => {
+                formSetValue("isDilate", Boolean(e.target.checked));
+              },
+            })}
+          />
+          <FormInput
+            label=""
+            inputClassName="w-28"
+            placeholder="Dilate Time"
+            formRegister={formRegister("dilateTime")}
+          />
+        </div>
+      </div>
+      <div className="mb-5">
+        <div className="flex">
+          <FormCheckboxItem
+            name="isConstric"
+            isRow
+            items={["Constric"]}
+            formRegister={formRegister("isConstric", {
+              onChange: (e) => {
+                formSetValue("isConstric", Boolean(e.target.checked));
+              },
+            })}
+          />
+        </div>
+      </div>
       <p className="mb-3 font-bold text-xl">Reason for your Visit/Complaints</p>
       {reasonForVisitErrorMessage && (
         <p className="text-xs text-red-500">{reasonForVisitErrorMessage}</p>
@@ -95,7 +129,23 @@ const MedicalInformationInput = (props: MedicalInformationInputProps) => {
         />
       </div>
       <FormNotes formRegister={formRegister("reasonForVisitNotes")} />
-      <p className="mb-3 mt-8 font-bold text-xl">Surgeries</p>
+      <div className="mb-5 mt-8 gap-3 flex">
+        <p className="font-bold text-xl">Surgeries</p>
+
+        <FormCheckboxItem
+          name="surgeryDilateType"
+          isRow
+          items={["OD", "OS", "OU"]}
+          formRegister={formRegister("surgeryDilateType", {
+            onChange: (e) => {
+              formSetValue(
+                "surgeryDilateType",
+                e.target.checked ? e.target.value : null
+              );
+            },
+          })}
+        />
+      </div>
       <div className="flex gap-10">
         <FormCheckboxItem
           name="surgeries"

@@ -63,6 +63,25 @@ const PatientRecordModal = ({
                 checkedValue={patientRecord.dilateType ?? ""}
               />
             </div>
+            <div className="flex items-center mb-3">
+              <CheckboxItem
+                disabled
+                name=""
+                isRow
+                items={["Dilate"]}
+                checkedValue={patientRecord.isDilate ? "Dilate" : ""}
+              />
+              <p>({getValueDisplay(patientRecord.dilateTime)})</p>
+            </div>
+            <div>
+              <CheckboxItem
+                disabled
+                name=""
+                isRow
+                items={["Constric"]}
+                checkedValue={patientRecord.isConstric ? "Constric" : ""}
+              />
+            </div>
             <div className="my-2">
               <span className="text-xl font-bold">Reason for Visit: </span>
               {patientRecord.reasonForVisit?.toString()}
@@ -78,7 +97,9 @@ const PatientRecordModal = ({
               </div>
             )}
             <div className="my-2">
-              <span className="text-xl font-bold">Surgeries: </span>
+              <span className="text-xl font-bold">
+                Surgeries({getValueDisplay(patientRecord.surgeryDilateType)}) :{" "}
+              </span>
               {patientRecord.surgeries?.toString() || "-"}
             </div>
             {patientRecord?.surgeryNotes && (

@@ -48,6 +48,10 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
     intraOcularPressureByUserId,
     paymentNotes,
     paymentType,
+    isDilate,
+    isConstric,
+    dilateTime,
+    surgeryDilateType,
   } = patientRecord ?? {};
   const visualAcuityOd = visualAcuities?.find(
     (visualAcuity) => visualAcuity.eyeType === "OD"
@@ -100,6 +104,10 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
       intraOcularPressureByUserId,
       paymentType: [paymentType],
       paymentNotes,
+      isDilate: isDilate ? "Dilate" : null,
+      isConstric: isConstric ? "Constric" : null,
+      dilateTime,
+      surgeryDilateType: [surgeryDilateType],
     },
   });
 
@@ -143,6 +151,10 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
       intraOcularPressureByUserId,
       paymentType,
       paymentNotes,
+      isConstric,
+      isDilate,
+      dilateTime,
+      surgeryDilateType,
     } = getValues();
 
     await updatePatientRecord(dispatch, patientRecord?.id as number, {
@@ -200,6 +212,11 @@ const UpdatePatientRecordModal = (props: UpdatePatientRecordModalProps) => {
         : null,
       paymentType: paymentType && paymentType[0],
       paymentNotes,
+      isConstric: Boolean(isConstric),
+      isDilate: Boolean(isDilate),
+      dilateTime,
+      surgeryDilateType:
+        surgeryDilateType?.length > 0 ? surgeryDilateType[0] : null,
     });
 
     getPatientRecordList(dispatch, {

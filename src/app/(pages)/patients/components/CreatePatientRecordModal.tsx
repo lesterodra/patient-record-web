@@ -27,7 +27,11 @@ const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
         visitType: null,
         reasonForVisit: [],
         dilateType: [],
+        surgeryDilateType: [],
         surgeries: [],
+        isDilate: null,
+        dilateTime: null,
+        isConstric: null,
         surgeryNotes: null,
         reasonForVisitNotes: null,
         previousMedicines: null,
@@ -105,6 +109,10 @@ const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
       intraOcularPressureByUserId,
       paymentType,
       paymentNotes,
+      isDilate,
+      isConstric,
+      dilateTime,
+      surgeryDilateType,
     } = getValues();
 
     await createPatientRecord(dispatch, {
@@ -163,6 +171,10 @@ const CreatePatientRecordModal = (props: CreatePatientRecordModalProps) => {
         : null,
       paymentType: paymentType && paymentType[0],
       paymentNotes,
+      isDilate: Boolean(isDilate),
+      isConstric: Boolean(isConstric),
+      dilateTime,
+      surgeryDilateType: surgeryDilateType && surgeryDilateType[0],
     });
     reset();
     getPatientRecordList(dispatch, { patientInformationId, page: 1, limit: 3 });

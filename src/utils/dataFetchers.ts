@@ -62,6 +62,10 @@ export const createPatientRecord = async (
     intraOcularPressureByUserId?: number | null;
     paymentType?: string | null;
     paymentNotes?: string | null;
+    isDilate?: boolean;
+    isConstric?: boolean;
+    dilateTime?: string | null;
+    surgeryDilateType?: string | null;
   }
 ) => {
   try {
@@ -96,6 +100,10 @@ export const createPatientRecord = async (
       intraOcularPressureByUserId,
       paymentType,
       paymentNotes,
+      isDilate,
+      isConstric,
+      dilateTime,
+      surgeryDilateType,
     } = data;
 
     const response = await axios.post("/api/records", {
@@ -129,6 +137,10 @@ export const createPatientRecord = async (
       intraOcularPressureByUserId,
       paymentType,
       paymentNotes,
+      isDilate,
+      isConstric,
+      dilateTime,
+      surgeryDilateType,
     });
 
     dispatch(setSuccessfulAlert("Success"));
