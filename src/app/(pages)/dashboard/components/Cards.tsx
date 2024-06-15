@@ -57,7 +57,7 @@ const Cards = () => {
           opts={{ minInterval: 30 }}
         />
       </div>
-      <div className="flex gap-5 flex-wrap justify-center">
+      <div className="flex gap-5 flex-wrap justify-center sm:justify-start">
         <Card className="max-w-sm w-52">
           <h5 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">
             No. of Patient for Follow up
