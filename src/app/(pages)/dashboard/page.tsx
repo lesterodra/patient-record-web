@@ -2,7 +2,7 @@ import Cards from "./components/Cards";
 
 const Dashboard = () => {
   return (
-    <div className="flex justify-center">
+    <div className="">
       <Cards />
     </div>
   );
